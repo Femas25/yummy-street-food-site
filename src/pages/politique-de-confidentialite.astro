@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+import contact from '../data/contact.json';
+---
+
+<Layout
+  title="Politique de confidentialité"
+  description="Politique de confidentialité de Yummy Street Food : quelles données sont collectées via le formulaire de contact et comment elles sont utilisées."
+>
+  <section class="mx-auto max-w-3xl px-4 py-16">
+    <h1 class="reveal mb-8 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Politique de confidentialité</h1>
+
+    <div class="reveal flex flex-col gap-8 font-body text-anthracite/90" style="--reveal-delay:80ms">
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-bold text-primary-dark">Responsable du traitement</h2>
+        <p>
+          Christelle Muller, exerçant sous le nom "Yummy Street Food" (TVA BE0745981765), est responsable du
+          traitement des données collectées sur ce site. Pour toute question, contactez{' '}
+          <a href={`mailto:${contact.email}`} class="text-primary hover:underline">{contact.email}</a>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-bold text-primary-dark">Données collectées</h2>
+        <p>
+          Ce site ne collecte des données personnelles que si vous remplissez volontairement le formulaire de
+          contact, à savoir : votre nom, votre adresse email, votre numéro de téléphone (facultatif), le type
+          d'événement concerné (facultatif) et le contenu de votre message.
+        </p>
+        <p class="mt-2">Aucun cookie de suivi ou outil d'analyse (statistiques, publicité) n'est utilisé sur ce site.</p>
+      </div>
+
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-bold text-primary-dark">Finalité et base légale</h2>
+        <p>
+          Ces données sont utilisées uniquement pour répondre à votre demande de contact, de commande ou de
+          réservation d'événement. Le traitement repose sur votre consentement, exprimé par l'envoi volontaire du
+          formulaire.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-bold text-primary-dark">Destinataires et sous-traitants</h2>
+        <p>
+          Le formulaire de contact est acheminé par le service tiers{' '}
+          <a href="https://web3forms.com" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+            Web3Forms
+          </a>{' '}
+          qui transmet votre message par email à Yummy Street Food. Consultez la{' '}
+          <a href="https://web3forms.com/privacy" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+            politique de confidentialité de Web3Forms
+          </a>{' '}
+          pour en savoir plus. Le site est hébergé par Vercel Inc. (voir nos{' '}
+          <a href="/mentions-legales" class="text-primary hover:underline">mentions légales</a>).
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-bold text-primary-dark">Durée de conservation</h2>
+        <p>
+          Vos données sont conservées le temps nécessaire au traitement de votre demande, puis supprimées dans un
+          délai raisonnable une fois celle-ci résolue.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-2 font-heading text-lg font-bold text-primary-dark">Vos droits</h2>
+        <p>
+          Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès,
+          de rectification, d'effacement et d'opposition concernant vos données personnelles. Pour exercer ces
+          droits, contactez-nous à{' '}
+          <a href={`mailto:${contact.email}`} class="text-primary hover:underline">{contact.email}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
