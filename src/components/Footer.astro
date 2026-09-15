@@ -2,6 +2,10 @@
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo.png';
 import contact from '../data/contact.json';
+import Mail from './icons/Mail.astro';
+import Phone from './icons/Phone.astro';
+import Instagram from './icons/Instagram.astro';
+import Facebook from './icons/Facebook.astro';
 
 const year = new Date().getFullYear();
 ---
@@ -28,10 +32,22 @@ const year = new Date().getFullYear();
     <div>
       <h3 class="mb-3 font-heading text-sm font-bold uppercase tracking-wide text-lime">Contact</h3>
       <ul class="flex flex-col gap-2 font-body text-sm">
-        <li><a href={`mailto:${contact.email}`} class="hover:text-lime">{contact.email}</a></li>
-        <li><a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-lime">{contact.telephone}</a></li>
-        <li><a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">Instagram : {contact.reseaux.instagram}</a></li>
-        <li><a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">Facebook : {contact.reseaux.facebook}</a></li>
+        <li class="flex items-center gap-2">
+          <Mail class="h-4 w-4 shrink-0 text-lime" />
+          <a href={`mailto:${contact.email}`} class="hover:text-lime">{contact.email}</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <Phone class="h-4 w-4 shrink-0 text-lime" />
+          <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-lime">{contact.telephone}</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <Instagram class="h-4 w-4 shrink-0 text-lime" />
+          <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">{contact.reseaux.instagram}</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <Facebook class="h-4 w-4 shrink-0 text-lime" />
+          <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">{contact.reseaux.facebook}</a>
+        </li>
       </ul>
     </div>
   </div>

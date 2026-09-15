@@ -5,6 +5,10 @@ import logo from '../assets/brand/logo.png';
 import Leaf from '../components/icons/Leaf.astro';
 import Burger from '../components/icons/Burger.astro';
 import Wrap from '../components/icons/Wrap.astro';
+import Mail from '../components/icons/Mail.astro';
+import Phone from '../components/icons/Phone.astro';
+import Instagram from '../components/icons/Instagram.astro';
+import Facebook from '../components/icons/Facebook.astro';
 import contact from '../data/contact.json';
 import champPhoto from '../assets/gallery/jardin-serre-fleurs.jpg';
 import recoltePanierLegumes from '../assets/gallery/recolte-panier-legumes.jpg';
@@ -149,10 +153,22 @@ const mosaic = [
     <div class="reveal mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center">
       <h2 class="font-heading text-xl font-bold">Retrouvez-nous aussi ici</h2>
       <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 font-body text-sm text-mint">
-        <a href={`mailto:${contact.email}`} class="hover:text-lime hover:underline">{contact.email}</a>
-        <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-lime hover:underline">{contact.telephone}</a>
-        <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime hover:underline">Instagram : {contact.reseaux.instagram}</a>
-        <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime hover:underline">Facebook : {contact.reseaux.facebook}</a>
+        <a href={`mailto:${contact.email}`} class="flex items-center gap-1.5 hover:text-lime hover:underline">
+          <Mail class="h-4 w-4 shrink-0" />
+          {contact.email}
+        </a>
+        <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="flex items-center gap-1.5 hover:text-lime hover:underline">
+          <Phone class="h-4 w-4 shrink-0" />
+          {contact.telephone}
+        </a>
+        <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-lime hover:underline">
+          <Instagram class="h-4 w-4 shrink-0" />
+          {contact.reseaux.instagram}
+        </a>
+        <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-lime hover:underline">
+          <Facebook class="h-4 w-4 shrink-0" />
+          {contact.reseaux.facebook}
+        </a>
       </div>
     </div>
   </section>

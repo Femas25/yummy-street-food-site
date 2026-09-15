@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo.png';
 import Leaf from './icons/Leaf.astro';
 import Wrap from './icons/Wrap.astro';
+import Burger from './icons/Burger.astro';
 
 const navItems = [
   { href: '/', label: 'Accueil' },
@@ -10,15 +11,20 @@ const navItems = [
   { href: '/localisation', label: 'Où nous trouver' },
 ];
 
-const currentPath = Astro.url.pathname;
+// Normalise les chemins (avec/sans slash final) pour que la mise en avant de la
+// page active fonctionne quel que soit le format d'URL renvoyé par l'hébergeur.
+const normalize = (p: string) => p.replace(/\/+$/, '') || '/';
+const currentPath = normalize(Astro.url.pathname);
 ---
 
-<header id="site-header" class="sticky top-0 z-50 overflow-hidden border-b border-cream/0 bg-primary-dark text-cream transition-[padding,box-shadow,border-color] duration-300">
-  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+<header id="site-header" class="sticky top-0 z-50 border-b border-cream/0 bg-primary-dark text-cream transition-[padding,box-shadow,border-color] duration-300">
+  <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
     <Leaf class="leaf-deco absolute -left-4 -top-6 w-14 opacity-70 md:w-16" style="--rot:-16deg; --float-delay: 0s" />
     <Leaf class="leaf-deco absolute -bottom-7 right-[6%] w-12 opacity-60 md:right-[16%] md:w-16" style="--rot:14deg; --float-delay: 1.1s" />
     <Leaf class="leaf-deco hidden md:absolute md:block md:-top-5 md:right-[38%] md:w-20 md:opacity-25" style="--rot:-6deg; --float-delay: 2.2s" />
     <Wrap class="leaf-deco absolute -bottom-4 left-[42%] hidden w-12 opacity-25 sm:block md:w-14" style="--rot:10deg; --float-delay: 1.6s" />
+    <Burger class="leaf-deco absolute -bottom-5 left-[8%] hidden w-11 opacity-25 sm:block md:w-14" style="--rot:-9deg; --float-delay: 0.9s" />
+    <Burger class="leaf-deco hidden w-16 opacity-15 lg:block lg:absolute lg:-top-6 lg:right-[24%]" style="--rot:8deg; --float-delay: 2s" />
   </div>
 
   <div class="relative z-10 mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 transition-[padding] duration-300 md:grid md:grid-cols-[auto_1fr_auto] md:py-3" id="header-inner">
