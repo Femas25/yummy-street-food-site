@@ -20,3 +20,13 @@ npm-debug.log*
 
 .vercel
 .env*
+
+# Personal/business files kept in this folder but not part of the site —
+# raw photos, docs, spreadsheets, installers dropped at the project root.
+/*.heic
+/*.png
+/*.jpg
+/*.docx
+/*.xlsx
+/*.exe
+/Yummy_Evenements_Referencement_2026*.md
