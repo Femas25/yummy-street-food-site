@@ -1,5 +1,6 @@
 ---
-// Icône burger en ligne, dans le même esprit graphique que Leaf.astro (trait crème/menthe sur fond foncé).
+// Icône burger colorée en coupe (pain crème, salade verte, tomate rouge, steak),
+// même esprit décoratif que Leaf.astro mais avec un peu plus de relief/couleur.
 interface Props {
   class?: string;
   style?: string;
@@ -8,25 +9,39 @@ interface Props {
 const { class: className = '', style = '' } = Astro.props;
 ---
 
-<svg viewBox="0 0 200 200" class={className} style={style} aria-hidden="true" focusable="false" fill="none">
+<svg viewBox="0 0 200 200" class={className} style={style} aria-hidden="true" focusable="false">
+  <!-- pain du dessus -->
+  <path d="M36 90 C36 56 64 34 100 34 C136 34 164 56 164 90 Z" fill="#F8F6F2" />
+  <path d="M36 90 C36 56 64 34 100 34 C136 34 164 56 164 90 Z" fill="none" stroke="#083E23" stroke-width="3" stroke-linejoin="round" />
+  <circle cx="80" cy="58" r="4" fill="#E8D9B0" />
+  <circle cx="100" cy="49" r="4" fill="#E8D9B0" />
+  <circle cx="120" cy="58" r="4" fill="#E8D9B0" />
+
+  <!-- salade -->
   <path
-    d="M40 88 C40 58 66 38 100 38 C134 38 160 58 160 88 Z"
-    stroke="#F8F6F2"
-    stroke-width="8"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    d="M32 100 C55 116 145 116 168 100 C168 106 166 110 160 113 C140 122 60 122 40 113 C34 110 32 106 32 100 Z"
+    fill="#5FB98A"
   />
-  <circle cx="82" cy="60" r="3.5" fill="#F8F6F2" />
-  <circle cx="100" cy="52" r="3.5" fill="#F8F6F2" />
-  <circle cx="118" cy="60" r="3.5" fill="#F8F6F2" />
-  <path d="M34 98 C55 108 145 108 166 98" stroke="#5FB98A" stroke-width="9" stroke-linecap="round" />
-  <path d="M38 116 H162" stroke="#F8F6F2" stroke-width="9" stroke-linecap="round" />
-  <path d="M42 134 H158" stroke="#F8F6F2" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 16" />
+  <path d="M32 100 C55 116 145 116 168 100" fill="none" stroke="#083E23" stroke-width="3" stroke-linecap="round" />
+
+  <!-- tomate -->
+  <path d="M38 118 H162 C162 130 158 138 150 138 H50 C42 138 38 130 38 118 Z" fill="#E0574B" />
+  <circle cx="66" cy="128" r="4" fill="#F8B7AC" opacity="0.7" />
+  <circle cx="104" cy="130" r="4" fill="#F8B7AC" opacity="0.7" />
+  <circle cx="140" cy="128" r="4" fill="#F8B7AC" opacity="0.7" />
+  <path d="M38 118 H162" fill="none" stroke="#083E23" stroke-width="3" stroke-linecap="round" />
+
+  <!-- steak -->
+  <path d="M42 142 H158 C158 152 154 158 146 158 H54 C46 158 42 152 42 142 Z" fill="#8B5A2B" />
+  <path d="M42 142 H158" fill="none" stroke="#083E23" stroke-width="3" stroke-linecap="round" />
+
+  <!-- pain du dessous -->
+  <path d="M34 162 H166 C166 178 148 188 100 188 C52 188 34 178 34 162 Z" fill="#F8F6F2" />
   <path
-    d="M34 148 H166 C166 164 148 174 100 174 C52 174 34 164 34 148 Z"
-    stroke="#F8F6F2"
-    stroke-width="8"
-    stroke-linecap="round"
+    d="M34 162 H166 C166 178 148 188 100 188 C52 188 34 178 34 162 Z"
+    fill="none"
+    stroke="#083E23"
+    stroke-width="3"
     stroke-linejoin="round"
   />
 </svg>
