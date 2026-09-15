@@ -17,3 +17,6 @@ npm-debug.log*
 
 # local tooling config (not part of the site)
 .claude/
+
+.vercel
+.env*
