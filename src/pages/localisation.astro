@@ -1,0 +1,311 @@
+---
+import Layout from '../layouts/Layout.astro';
+import planning from '../data/planning.json';
+import evenementsData from '../data/evenements.json';
+import Trailer from '../components/icons/Trailer.astro';
+import Leaf from '../components/icons/Leaf.astro';
+
+const { evenements } = evenementsData;
+const isoDateRe = /^\d{4}-\d{2}-\d{2}$/;
+
+const formatDate = (iso: string) => {
+  if (!isoDateRe.test(iso)) return iso;
+  const d = new Date(`${iso}T00:00:00`);
+  return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+};
+
+const eventsForCalendar = evenements
+  .filter((e) => isoDateRe.test(e.date))
+  .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, horaires: e.horaires, dateFormatted: formatDate(e.date) }));
+
+const hasProchainsPassages = planning.prochains_passages.length > 0;
+---
+
+<Layout
+  title="Où nous trouver"
+  description="Retrouvez Yummy Street Food grâce à notre calendrier des prochains événements publics et nos emplacements confirmés."
+>
+  <div class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+      <Leaf class="leaf-deco absolute left-1 top-4 w-12 opacity-45 sm:w-14 md:left-6 md:w-16 md:opacity-55" style="--rot:-11deg; --float-delay: 0.4s" />
+      <Leaf class="leaf-deco absolute bottom-10 left-1 w-12 opacity-40 sm:w-16 md:left-6 md:w-20 md:opacity-55" style="--rot:10deg; --float-delay: 1.6s" />
+      <Trailer class="leaf-deco absolute right-1 top-6 w-20 opacity-70 sm:w-24 md:right-8 md:w-28 md:opacity-85" style="--rot:6deg; --float-delay: 0.9s" />
+    </div>
+
+    <section class="relative z-10 mx-auto max-w-5xl px-4 pt-16">
+      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Où nous trouver</h1>
+      <p class="reveal mb-4 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">
+        Retrouvez-nous lors de nos prochains événements publics — consultez le calendrier ci-dessous.
+      </p>
+    </section>
+
+    <section class="relative z-10 bg-mint/50 py-14 md:py-16">
+      <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <Leaf class="leaf-deco absolute right-0 top-[10%] hidden w-24 opacity-20 md:block lg:w-32" style="--rot:-4deg; --float-delay: 2.4s" />
+      </div>
+
+      <div class="relative mx-auto max-w-5xl px-4">
+        <div class="reveal mb-10 text-center">
+          <span class="mb-2 inline-block rounded-full bg-primary px-4 py-1 font-heading text-xs font-bold uppercase tracking-wide text-cream">
+            Calendrier
+          </span>
+          <h2 class="font-heading text-2xl font-bold text-primary-dark md:text-3xl">Nos prochains événements</h2>
+          <p class="mx-auto mt-2 max-w-xl font-body text-anthracite/70">
+            Marchés, festivals, soirées spéciales — cliquez sur un jour marqué pour voir le détail.
+          </p>
+        </div>
+
+        <div class="grid gap-8 lg:grid-cols-[400px_1fr] lg:items-start lg:gap-12">
+          <div class="reveal-scale rounded-2xl bg-white p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl md:p-7">
+            <div class="mb-4 flex items-center justify-between">
+              <button
+                id="cal-prev"
+                type="button"
+                aria-label="Mois précédent"
+                class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 font-heading text-lg text-primary-dark transition-colors hover:bg-primary hover:text-cream"
+              >
+                ‹
+              </button>
+              <h3 id="cal-label" class="font-heading text-xl font-bold capitalize text-primary-dark">—</h3>
+              <button
+                id="cal-next"
+                type="button"
+                aria-label="Mois suivant"
+                class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 font-heading text-lg text-primary-dark transition-colors hover:bg-primary hover:text-cream"
+              >
+                ›
+              </button>
+            </div>
+
+            <div class="mb-2 grid grid-cols-7 gap-1 text-center font-heading text-[0.7rem] font-bold uppercase tracking-wide text-primary/60">
+              <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+            </div>
+            <div id="cal-grid" class="grid grid-cols-7 gap-1"></div>
+
+            <div class="mt-5 flex flex-col gap-2 border-t border-mint pt-4 font-body text-xs text-anthracite/70">
+              <p class="flex items-center gap-2">
+                <span class="h-2.5 w-2.5 rounded-full bg-primary shadow-[0_0_0_3px_rgba(21,158,123,0.2)]"></span>
+                Jour avec un événement Yummy
+              </p>
+              <p class="flex items-center gap-2">
+                <span class="h-2.5 w-2.5 rounded-full border-2 border-primary-dark"></span>
+                Aujourd'hui
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-5">
+            {
+              evenements.map((ev, i) => (
+                <div
+                  id={isoDateRe.test(ev.date) ? `event-${ev.date}` : undefined}
+                  class="reveal-scale group flex flex-col gap-2 rounded-2xl border-l-4 border-primary bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                  style={`--reveal-delay:${i * 110}ms`}
+                >
+                  <div>
+                    <p class="font-heading text-base font-bold text-primary-dark">{ev.titre}</p>
+                    <p class="font-body text-sm capitalize text-anthracite/70">{formatDate(ev.date)}</p>
+                  </div>
+                  <div class="flex flex-col gap-1 sm:items-end">
+                    <span class="rounded-full bg-mint px-3 py-1 font-heading text-xs font-bold uppercase tracking-wide text-primary-dark transition-colors group-hover:bg-leaf/40">
+                      {ev.lieu}
+                    </span>
+                    <span class="font-body text-xs text-anthracite/60">{ev.horaires}</span>
+                  </div>
+                </div>
+              ))
+            }
+            <p class="reveal font-body text-xs text-anthracite/50" style={`--reveal-delay:${evenements.length * 110}ms`}>
+              {evenementsData.note}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="relative z-10 mx-auto max-w-5xl px-4 py-16">
+      <div class={`grid gap-10 ${hasProchainsPassages ? 'md:grid-cols-2' : ''}`}>
+        {
+          hasProchainsPassages && (
+            <div class="flex flex-col gap-4">
+              <h2 class="reveal mb-2 font-heading text-xl font-bold text-primary-dark">Nos emplacements réguliers</h2>
+              {planning.prochains_passages.map((p, i) => (
+                <div
+                  class="reveal-scale flex flex-col gap-1 rounded-2xl border-l-4 border-primary bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                  style={`--reveal-delay:${i * 90}ms`}
+                >
+                  <div>
+                    <p class="font-heading text-base font-bold text-primary-dark">{p.jour}</p>
+                    <p class="font-body text-sm text-anthracite/70">{p.lieu}</p>
+                  </div>
+                  <span class="rounded-full bg-mint px-3 py-1 font-heading text-xs font-bold uppercase tracking-wide text-primary-dark sm:shrink-0">
+                    {p.horaires}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )
+        }
+
+        <!--
+          [À compléter] Carte interactive
+          Une fois les emplacements réels confirmés, remplacer ce bloc par un iframe Google Maps
+          (Google Maps > Partager > Intégrer une carte) pointant vers l'adresse ou les adresses du truck.
+        -->
+        <div class={`reveal-scale flex min-h-[220px] items-center justify-center rounded-2xl border-2 border-dashed border-primary/30 bg-mint/50 p-6 text-center shadow-inner ${hasProchainsPassages ? '' : 'md:mx-auto md:max-w-xl'}`}>
+          <p class="font-body text-sm font-semibold text-primary-dark/70">
+            [Carte à intégrer une fois les emplacements confirmés]
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div
+    id="event-modal"
+    class="fixed inset-0 z-[60] hidden items-center justify-center bg-anthracite/50 p-4 backdrop-blur-[2px]"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="event-modal-title"
+  >
+    <div id="event-modal-card" class="relative w-full max-w-sm scale-95 rounded-2xl bg-white p-6 opacity-0 shadow-2xl transition-all duration-200">
+      <button
+        id="event-modal-close"
+        type="button"
+        aria-label="Fermer"
+        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary-dark transition-colors hover:bg-primary hover:text-cream"
+      >
+        ✕
+      </button>
+      <p id="event-modal-date" class="mb-1 font-heading text-xs font-bold uppercase tracking-wide text-primary/70"></p>
+      <h3 id="event-modal-title" class="mb-4 font-heading text-xl font-bold text-primary-dark"></h3>
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl bg-primary/5 p-3">
+          <p class="font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70">Lieu</p>
+          <p id="event-modal-lieu" class="font-body text-sm text-anthracite/80"></p>
+        </div>
+        <div class="rounded-xl bg-primary/5 p-3">
+          <p class="font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70">Horaires</p>
+          <p id="event-modal-horaires" class="font-body text-sm text-anthracite/80"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ eventsForCalendar }}>
+  const grid = document.getElementById('cal-grid');
+  const label = document.getElementById('cal-label');
+  const prevBtn = document.getElementById('cal-prev');
+  const nextBtn = document.getElementById('cal-next');
+
+  const eventsByDate = new Map(eventsForCalendar.map((e) => [e.date, e]));
+
+  const modal = document.getElementById('event-modal');
+  const modalCard = document.getElementById('event-modal-card');
+  const modalClose = document.getElementById('event-modal-close');
+  const modalDate = document.getElementById('event-modal-date');
+  const modalTitle = document.getElementById('event-modal-title');
+  const modalLieu = document.getElementById('event-modal-lieu');
+  const modalHoraires = document.getElementById('event-modal-horaires');
+
+  function openEventModal(event) {
+    modalDate.textContent = event.dateFormatted;
+    modalTitle.textContent = event.titre;
+    modalLieu.textContent = event.lieu;
+    modalHoraires.textContent = event.horaires;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    requestAnimationFrame(() => {
+      modalCard.classList.remove('scale-95', 'opacity-0');
+      modalCard.classList.add('scale-100', 'opacity-100');
+    });
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeEventModal() {
+    modalCard.classList.add('scale-95', 'opacity-0');
+    modalCard.classList.remove('scale-100', 'opacity-100');
+    document.body.classList.remove('overflow-hidden');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }, 200);
+  }
+
+  modalClose?.addEventListener('click', closeEventModal);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeEventModal();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeEventModal();
+  });
+
+  const today = new Date();
+  let viewYear = today.getFullYear();
+  let viewMonth = today.getMonth();
+
+  const pad = (n) => String(n).padStart(2, '0');
+
+  function render() {
+    const first = new Date(viewYear, viewMonth, 1);
+    const startOffset = (first.getDay() + 6) % 7; // Monday-first
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    label.textContent = first.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+
+    grid.innerHTML = '';
+
+    for (let i = 0; i < startOffset; i++) {
+      const empty = document.createElement('div');
+      grid.appendChild(empty);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const iso = `${viewYear}-${pad(viewMonth + 1)}-${pad(d)}`;
+      const isToday = iso === `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+      const event = eventsByDate.get(iso);
+
+      const cell = document.createElement('button');
+      cell.type = 'button';
+      cell.textContent = String(d);
+      cell.className =
+        'relative flex h-9 items-center justify-center rounded-lg font-body text-sm transition-all duration-200 hover:bg-primary/10';
+
+      if (isToday) cell.classList.add('border-2', 'border-primary-dark', 'font-bold', 'text-primary-dark');
+      else cell.classList.add('text-anthracite/80');
+
+      if (event) {
+        cell.classList.add('bg-primary/10', 'font-bold', 'text-primary-dark', 'hover:scale-110');
+        cell.setAttribute('aria-label', `${event.titre} — voir les détails`);
+        cell.title = event.titre;
+        const dot = document.createElement('span');
+        dot.className = 'absolute bottom-1 h-1.5 w-1.5 rounded-full bg-primary';
+        cell.appendChild(dot);
+        cell.addEventListener('click', () => openEventModal(event));
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  prevBtn?.addEventListener('click', () => {
+    viewMonth -= 1;
+    if (viewMonth < 0) {
+      viewMonth = 11;
+      viewYear -= 1;
+    }
+    render();
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    viewMonth += 1;
+    if (viewMonth > 11) {
+      viewMonth = 0;
+      viewYear += 1;
+    }
+    render();
+  });
+
+  render();
+</script>

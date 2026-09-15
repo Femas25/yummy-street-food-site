@@ -1,0 +1,88 @@
+---
+// Formulaire statique sans backend, prêt pour un service d'envoi d'emails
+// gratuit type Web3Forms (https://web3forms.com) ou Formspree.
+// [À compléter] : remplacer WEB3FORMS_ACCESS_KEY par la vraie clé une fois un compte créé,
+// sinon le formulaire ne délivrera pas encore les messages.
+const WEB3FORMS_ACCESS_KEY = '[À compléter]';
+---
+
+<form
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  class="flex flex-col gap-4 rounded-xl border border-primary/20 bg-white p-6 shadow-sm md:p-8"
+>
+  <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+  <input type="hidden" name="subject" value="Nouveau message depuis le site Yummy" />
+  <input type="checkbox" name="botcheck" class="hidden" style="display: none" />
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="flex flex-col gap-1">
+      <label for="name" class="font-body text-sm font-semibold text-anthracite">Nom</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        required
+        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="email" class="font-body text-sm font-semibold text-anthracite">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        required
+        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      />
+    </div>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="flex flex-col gap-1">
+      <label for="phone" class="font-body text-sm font-semibold text-anthracite">Téléphone (facultatif)</label>
+      <input
+        id="phone"
+        name="phone"
+        type="tel"
+        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="event_type" class="font-body text-sm font-semibold text-anthracite">Type d'événement (facultatif)</label>
+      <select
+        id="event_type"
+        name="event_type"
+        class="rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      >
+        <option value="">Sélectionnez...</option>
+        <option value="Commande à emporter">Commande à emporter</option>
+        <option value="Mariage">Mariage</option>
+        <option value="Anniversaire / fête de famille">Anniversaire / fête de famille</option>
+        <option value="Entreprise">Entreprise</option>
+        <option value="Festival / marché">Festival / marché</option>
+        <option value="Autre">Autre</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label for="message" class="font-body text-sm font-semibold text-anthracite">Message</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
+      required
+      class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="mt-2 rounded-full bg-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream transition-colors hover:bg-primary-dark"
+  >
+    Envoyer
+  </button>
+</form>

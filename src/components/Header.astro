@@ -1,0 +1,207 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo.png';
+import Leaf from './icons/Leaf.astro';
+import Wrap from './icons/Wrap.astro';
+
+const navItems = [
+  { href: '/', label: 'Accueil' },
+  { href: '/menu', label: 'Nos créations' },
+  { href: '/localisation', label: 'Où nous trouver' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header id="site-header" class="sticky top-0 z-50 overflow-hidden border-b border-cream/0 bg-primary-dark text-cream transition-[padding,box-shadow,border-color] duration-300">
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <Leaf class="leaf-deco absolute -left-4 -top-6 w-14 opacity-70 md:w-16" style="--rot:-16deg; --float-delay: 0s" />
+    <Leaf class="leaf-deco absolute -bottom-7 right-[6%] w-12 opacity-60 md:right-[16%] md:w-16" style="--rot:14deg; --float-delay: 1.1s" />
+    <Leaf class="leaf-deco hidden md:absolute md:block md:-top-5 md:right-[38%] md:w-20 md:opacity-25" style="--rot:-6deg; --float-delay: 2.2s" />
+    <Wrap class="leaf-deco absolute -bottom-4 left-[42%] hidden w-12 opacity-25 sm:block md:w-14" style="--rot:10deg; --float-delay: 1.6s" />
+  </div>
+
+  <div class="relative z-10 mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 transition-[padding] duration-300 md:grid md:grid-cols-[auto_1fr_auto] md:py-3" id="header-inner">
+    <a href="/" class="group flex items-center justify-self-start">
+      <Image
+        src={logo}
+        alt="Yummy Street Food"
+        width={1500}
+        height={868}
+        class="h-12 w-auto origin-left transition-transform duration-300 ease-out group-hover:-rotate-1 group-hover:scale-105 md:h-14"
+      />
+      <span class="sr-only">Yummy Street Food</span>
+    </a>
+
+    <button
+      id="nav-toggle"
+      class="relative z-50 flex h-9 w-9 flex-col items-center justify-center gap-[5px] justify-self-end md:hidden"
+      aria-label="Ouvrir le menu de navigation"
+      aria-expanded="false"
+      aria-controls="main-nav"
+    >
+      <span class="block h-0.5 w-6 rounded-full bg-cream transition-all duration-300" data-bar="1"></span>
+      <span class="block h-0.5 w-6 rounded-full bg-cream transition-all duration-300" data-bar="2"></span>
+      <span class="block h-0.5 w-6 rounded-full bg-cream transition-all duration-300" data-bar="3"></span>
+    </button>
+
+    <nav
+      id="main-nav"
+      class="fixed inset-x-0 top-[var(--header-h,64px)] bottom-0 z-40 flex translate-y-[-8px] flex-col overflow-y-auto bg-primary-dark opacity-0 shadow-[0_16px_32px_-8px_rgba(0,0,0,0.4)] transition-all duration-300 pointer-events-none md:pointer-events-auto md:static md:inset-auto md:z-auto md:flex md:translate-y-0 md:flex-row md:justify-self-center md:overflow-visible md:bg-transparent md:opacity-100 md:shadow-none"
+    >
+      <ul class="flex flex-col gap-1 px-4 py-6 md:flex-row md:items-center md:gap-1 md:px-0 md:py-0">
+        {
+          navItems.map((item, i) => (
+            <li style={`--i:${i}`} class="nav-item">
+              <a
+                href={item.href}
+                aria-current={currentPath === item.href ? 'page' : undefined}
+                class="group relative flex items-center rounded-full px-4 py-2.5 font-heading text-sm font-semibold tracking-wide text-cream transition-all duration-200 hover:bg-cream/10 aria-[current=page]:bg-cream/15 aria-[current=page]:text-lime aria-[current=page]:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] md:px-3.5 md:py-2 md:text-[0.85rem]"
+              >
+                <span class="transition-transform duration-200 group-hover:-translate-y-0.5">{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+        <li class="nav-item mt-4 md:hidden" style={`--i:${navItems.length}`}>
+          <a
+            href="/contact"
+            class="flex items-center justify-center gap-2 rounded-full bg-lime px-5 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-lime/90 hover:shadow-md"
+          >
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 5h16v13a1 1 0 0 1-1 1H8l-4 3V6a1 1 0 0 1 1-1Z" />
+              <path d="M8 9h8M8 12.5h5" stroke-linecap="round" />
+            </svg>
+            Contact
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <a
+      href="/contact"
+      aria-current={currentPath === '/contact' ? 'page' : undefined}
+      class="group hidden items-center gap-2 justify-self-end rounded-full bg-lime px-5 py-2 font-heading text-[0.85rem] font-bold uppercase tracking-wide text-primary-dark shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-lime/90 hover:shadow-md md:flex"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        class="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M4 5h16v13a1 1 0 0 1-1 1H8l-4 3V6a1 1 0 0 1 1-1Z" />
+        <path d="M8 9h8M8 12.5h5" stroke-linecap="round" />
+      </svg>
+      Contact
+    </a>
+  </div>
+</header>
+
+<div id="nav-backdrop" class="fixed inset-0 z-30 hidden bg-anthracite/50 backdrop-blur-[2px] md:hidden"></div>
+
+<style>
+  #main-nav.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-item {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  #main-nav.is-open .nav-item {
+    animation: nav-item-in 0.35s ease forwards;
+    animation-delay: calc(var(--i) * 45ms);
+  }
+
+  @media (min-width: 768px) {
+    .nav-item {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes nav-item-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #site-header.is-scrolled {
+    box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.35);
+    border-color: rgba(248, 246, 242, 0.08);
+  }
+
+  #site-header.is-scrolled #header-inner {
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+  }
+
+  #nav-toggle[aria-expanded='true'] span[data-bar='1'] {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  #nav-toggle[aria-expanded='true'] span[data-bar='2'] {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  #nav-toggle[aria-expanded='true'] span[data-bar='3'] {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('main-nav');
+  const backdrop = document.getElementById('nav-backdrop');
+
+  const setHeaderHeightVar = () => {
+    if (header) document.documentElement.style.setProperty('--header-h', `${header.offsetHeight}px`);
+  };
+  setHeaderHeightVar();
+  window.addEventListener('resize', setHeaderHeightVar);
+
+  const closeMenu = () => {
+    toggle?.setAttribute('aria-expanded', 'false');
+    nav?.classList.remove('is-open');
+    backdrop?.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  };
+
+  const openMenu = () => {
+    setHeaderHeightVar();
+    toggle?.setAttribute('aria-expanded', 'true');
+    nav?.classList.add('is-open');
+    backdrop?.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  };
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  backdrop?.addEventListener('click', closeMenu);
+  nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+  window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+    if (e.matches) closeMenu();
+  });
+
+  const onScroll = () => {
+    if (!header) return;
+    header.classList.toggle('is-scrolled', window.scrollY > 12);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import contact from '../data/contact.json';
+import Trailer from '../components/icons/Trailer.astro';
+import Leaf from '../components/icons/Leaf.astro';
+---
+
+<Layout
+  title="Contact"
+  description="Contactez Yummy Street Food : coordonnées, réseaux sociaux, demande d'événement sur mesure et formulaire de contact."
+>
+  <div class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+      <Leaf class="leaf-deco absolute left-1 top-4 w-12 opacity-45 sm:w-14 md:left-6 md:w-16 md:opacity-55" style="--rot:14deg; --float-delay: 0.6s" />
+      <Leaf class="leaf-deco absolute bottom-10 right-1 w-12 opacity-40 sm:w-16 md:right-6 md:w-20 md:opacity-55" style="--rot:-9deg; --float-delay: 2s" />
+      <Trailer class="leaf-deco absolute right-1 top-6 w-20 opacity-70 sm:w-24 md:right-8 md:w-28 md:opacity-85" style="--rot:-7deg; --float-delay: 1.2s" />
+    </div>
+
+    <section class="relative z-10 mx-auto max-w-5xl px-4 py-16">
+      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Contact</h1>
+      <p class="reveal mb-12 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">Une question, un événement à organiser ? Contactez-nous directement.</p>
+
+      <div class="mb-14 grid gap-10 md:grid-cols-2">
+        <div class="reveal-scale flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-2xl">
+          <div class="rounded-xl bg-primary/5 p-4 transition-colors hover:bg-primary/10">
+            <h2 class="mb-1 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark">Email</h2>
+            <p class="font-body text-anthracite/80">
+              <a href={`mailto:${contact.email}`} class="hover:text-primary hover:underline">{contact.email}</a>
+            </p>
+          </div>
+          <div class="rounded-xl bg-primary/5 p-4 transition-colors hover:bg-primary/10">
+            <h2 class="mb-1 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark">Téléphone</h2>
+            <p class="font-body text-anthracite/80">
+              <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-primary hover:underline">{contact.telephone}</a>
+            </p>
+          </div>
+          <div class="rounded-xl bg-primary/5 p-4 transition-colors hover:bg-primary/10">
+            <h2 class="mb-1 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark">Zone d'intervention</h2>
+            <p class="font-body text-anthracite/80">{contact.adresse}</p>
+          </div>
+          <div class="rounded-xl bg-primary/5 p-4 transition-colors hover:bg-primary/10">
+            <h2 class="mb-1 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark">Réseaux sociaux</h2>
+            <ul class="flex flex-col gap-1 font-body text-anthracite/80">
+              <li>
+                Instagram :{' '}
+                <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-primary hover:underline">
+                  {contact.reseaux.instagram}
+                </a>
+              </li>
+              <li>
+                Facebook :{' '}
+                <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-primary hover:underline">
+                  {contact.reseaux.facebook}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="reveal-scale flex flex-col gap-3 rounded-2xl border-t-4 border-primary bg-white p-6 shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl" style="--reveal-delay:100ms">
+          <h2 class="font-heading text-lg font-bold text-primary-dark">Une formule sur mesure pour votre événementiel</h2>
+          <p class="font-body text-sm leading-relaxed text-anthracite/80">
+            Mariage, anniversaire, fête de famille, événement d'entreprise — le truck Yummy se déplace et adapte
+            son offre à votre lieu, votre nombre d'invités et votre budget.
+          </p>
+          <p class="font-body text-sm leading-relaxed text-anthracite/80">
+            Décrivez-nous votre projet via le formulaire ci-dessous, nous revenons vers vous rapidement avec une
+            proposition personnalisée.
+          </p>
+          <p class="mt-auto rounded-full bg-mint px-3 py-1 text-center font-heading text-sm font-bold text-primary-dark">
+            Sur devis
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal-scale mx-auto max-w-2xl" style="--reveal-delay:160ms">
+        <ContactForm />
+      </div>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo.png';
+import Leaf from '../components/icons/Leaf.astro';
+import jardinSerreFleurs from '../assets/gallery/jardin-serre-fleurs.jpg';
+import culturePoivrons from '../assets/gallery/culture-poivrons.jpg';
+import recoltePanierLegumes from '../assets/gallery/recolte-panier-legumes.jpg';
+import herbesAromatiques from '../assets/gallery/herbes-aromatiques.jpg';
+import etalLegumesVaries from '../assets/gallery/etal-legumes-varies.jpg';
+import haricotsJaunesVerts from '../assets/gallery/haricots-jaunes-verts.jpg';
+import tomatesAnciennes from '../assets/gallery/tomates-anciennes.jpg';
+import saladesRougeVerte from '../assets/gallery/salades-rouge-verte.jpg';
+import panierTomatesHerbe from '../assets/gallery/panier-tomates-herbe.jpg';
+import caissesTomatesMarche from '../assets/gallery/caisses-tomates-marche.jpg';
+
+const cultivePhotos = [
+  { src: jardinSerreFleurs, alt: 'Notre jardin et sa serre, entourés de fleurs' },
+  { src: culturePoivrons, alt: 'Poivrons cultivés dans notre potager' },
+  { src: recoltePanierLegumes, alt: 'Panier de légumes fraîchement récoltés : salades, fenouil, poireaux, concombres' },
+  { src: herbesAromatiques, alt: 'Bouquet d’herbes aromatiques du jardin : sauge, thym, romarin, origan' },
+  { src: etalLegumesVaries, alt: 'Étal de légumes variés : blettes, aubergines, concombres, salades' },
+  { src: haricotsJaunesVerts, alt: 'Haricots verts et beurre fraîchement récoltés' },
+  { src: tomatesAnciennes, alt: 'Assortiment de tomates anciennes multicolores' },
+  { src: saladesRougeVerte, alt: 'Salades rouges et vertes côte à côte' },
+  { src: panierTomatesHerbe, alt: 'Panier de tomates colorées posé dans l’herbe' },
+  { src: caissesTomatesMarche, alt: 'Caisses de tomates prêtes pour le marché' },
+];
+
+const placeholders = ['Photo de l’équipe à ajouter', 'Photo d’un événement à ajouter'];
+---
+
+<Layout
+  title="Galerie photos"
+  description="Découvrez Yummy en images : notre potager, nos récoltes et le food truck préparés avec des légumes cultivés par la maraîchère."
+>
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <h1 class="mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Galerie photos</h1>
+    <p class="mb-12 text-center font-body text-anthracite/70">
+      Notre potager, nos récoltes, et le truck qui les cuisine.
+    </p>
+
+    <div class="grid auto-rows-[220px] grid-cols-2 gap-4 md:grid-cols-4">
+      <div
+        class="relative col-span-2 row-span-2 flex flex-col items-center justify-center gap-4 overflow-hidden rounded-xl p-6 text-center shadow-sm"
+        style="background: radial-gradient(120% 100% at 50% 0%, #159E7B 0%, #0B4A2C 55%, #083E23 100%);"
+      >
+        <Leaf class="leaf-deco absolute left-4 top-4 w-12 opacity-30" style="--rot:-14deg; --float-delay:0s" />
+        <Leaf class="leaf-deco absolute bottom-5 right-5 w-16 opacity-30" style="--rot:12deg; --float-delay:1.4s" />
+        <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="w-48 max-w-[70%] drop-shadow-xl md:w-64" />
+        <p class="font-body text-sm font-semibold text-mint">La remorque en vrai, bientôt en photo ici.</p>
+      </div>
+
+      {
+        cultivePhotos.map((photo, i) => (
+          <div class={`overflow-hidden rounded-xl shadow-sm ${i % 5 === 0 ? 'row-span-2' : ''}`}>
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              class="h-full w-full object-cover saturate-[1.1] transition-transform duration-300 hover:scale-105"
+              widths={[300, 600, 900]}
+              sizes="(min-width: 768px) 25vw, 50vw"
+            />
+          </div>
+        ))
+      }
+
+      {
+        placeholders.map((label) => (
+          <div class="flex items-center justify-center rounded-xl border-2 border-dashed border-primary/30 bg-mint/50 p-4 text-center">
+            <p class="font-body text-sm font-semibold text-primary-dark/70">[{label}]</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

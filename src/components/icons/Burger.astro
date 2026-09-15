@@ -1,0 +1,32 @@
+---
+// Icône burger en ligne, dans le même esprit graphique que Leaf.astro (trait crème/menthe sur fond foncé).
+interface Props {
+  class?: string;
+  style?: string;
+}
+
+const { class: className = '', style = '' } = Astro.props;
+---
+
+<svg viewBox="0 0 200 200" class={className} style={style} aria-hidden="true" focusable="false" fill="none">
+  <path
+    d="M40 88 C40 58 66 38 100 38 C134 38 160 58 160 88 Z"
+    stroke="#F8F6F2"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="82" cy="60" r="3.5" fill="#F8F6F2" />
+  <circle cx="100" cy="52" r="3.5" fill="#F8F6F2" />
+  <circle cx="118" cy="60" r="3.5" fill="#F8F6F2" />
+  <path d="M34 98 C55 108 145 108 166 98" stroke="#5FB98A" stroke-width="9" stroke-linecap="round" />
+  <path d="M38 116 H162" stroke="#F8F6F2" stroke-width="9" stroke-linecap="round" />
+  <path d="M42 134 H158" stroke="#F8F6F2" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 16" />
+  <path
+    d="M34 148 H166 C166 164 148 174 100 174 C52 174 34 164 34 148 Z"
+    stroke="#F8F6F2"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

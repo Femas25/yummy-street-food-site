@@ -1,0 +1,8 @@
+{
+  "note": "Événements d'exemple — à remplacer par les vrais événements publics déjà confirmés avant mise en ligne. Le champ \"date\" doit être au format AAAA-MM-JJ (ex. 2026-09-14) pour que l'événement apparaisse automatiquement sur le calendrier ci-dessus.",
+  "evenements": [
+    { "date": "[À compléter]", "titre": "[Nom de l'événement à compléter]", "lieu": "[À compléter]", "horaires": "[À compléter]" },
+    { "date": "[À compléter]", "titre": "[Nom de l'événement à compléter]", "lieu": "[À compléter]", "horaires": "[À compléter]" },
+    { "date": "[À compléter]", "titre": "[Nom de l'événement à compléter]", "lieu": "[À compléter]", "horaires": "[À compléter]" }
+  ]
+}

@@ -1,0 +1,25 @@
+---
+// Feuille bicolore décorative, calquée sur la feuille du logo Yummy.
+// Utilisée en décor flottant (classe .leaf-deco) dans le header et les pages.
+interface Props {
+  class?: string;
+  style?: string;
+}
+
+const { class: className = '', style = '' } = Astro.props;
+---
+
+<svg viewBox="0 0 200 200" class={className} style={style} aria-hidden="true" focusable="false">
+  <g transform="translate(100,100) rotate(-20)">
+    <path d="M0 -82 C 54 -54, 54 54, 0 82 C -54 54, -54 -54, 0 -82 Z" fill="#8FD9B4" />
+    <path d="M0 -82 C 54 -54, 54 54, 0 82 C 15 41, 15 -41, 0 -82 Z" fill="#5FB98A" />
+    <path d="M0 82 C -3 27, -3 -27, 0 -82" stroke="#083E23" stroke-width="7" fill="none" stroke-linecap="round" />
+    <g stroke="#083E23" stroke-width="4.5" stroke-linecap="round" fill="none">
+      <path d="M-1 -46 C 13 -49, 24 -43, 31 -29" />
+      <path d="M-1 -7 C 14 -10, 26 -3, 33 12" />
+      <path d="M-1 31 C 12 27, 21 32, 26 44" />
+      <path d="M-1 -46 C -13 -49, -24 -43, -31 -29" />
+      <path d="M-1 -7 C -14 -10, -26 -3, -33 12" />
+    </g>
+  </g>
+</svg>

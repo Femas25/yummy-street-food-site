@@ -1,0 +1,44 @@
+---
+// [À compléter] Nos créations : pour ajouter une vraie photo, importe-la en haut de ce fichier
+// (ex. import monPlat from '../assets/gallery/mon-plat.jpg';) puis remplace une entrée du tableau
+// `creations` ci-dessous par { src: monPlat, alt: 'Description du plat' }.
+import Layout from '../layouts/Layout.astro';
+import Trailer from '../components/icons/Trailer.astro';
+import Leaf from '../components/icons/Leaf.astro';
+
+const creations = Array.from({ length: 8 }, () => null);
+---
+
+<Layout
+  title="Nos créations"
+  description="Découvrez les créations culinaires de Yummy Street Food : des recettes végétales préparées à partir de légumes locaux et de saison."
+>
+  <div class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+      <Leaf class="leaf-deco absolute left-1 top-4 w-12 opacity-45 sm:w-14 md:left-6 md:w-16 md:opacity-60" style="--rot:12deg; --float-delay: 0s" />
+      <Leaf class="leaf-deco absolute bottom-10 right-1 w-12 opacity-40 sm:w-16 md:right-6 md:w-20 md:opacity-55" style="--rot:-10deg; --float-delay: 1.4s" />
+      <Leaf class="leaf-deco absolute bottom-0 left-0 hidden w-28 opacity-20 md:block lg:w-36" style="--rot:4deg; --float-delay: 2.6s" />
+      <Trailer class="leaf-deco absolute right-1 top-6 w-20 opacity-70 sm:w-24 md:right-8 md:w-32 md:opacity-90" style="--rot:-6deg; --float-delay: 0.7s" />
+    </div>
+
+    <section class="relative z-10 mx-auto max-w-6xl px-4 py-16">
+      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Nos créations</h1>
+      <p class="reveal mb-12 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">
+        Un aperçu de ce qui sort du truck — recettes végétales, gourmandes et pleines de couleurs.
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+        {
+          creations.map((_, i) => (
+            <div
+              class="reveal-scale flex aspect-square items-center justify-center rounded-2xl border-2 border-dashed border-primary/30 bg-mint/50 p-4 text-center shadow-inner transition-colors hover:bg-mint"
+              style={`--reveal-delay:${i * 70}ms`}
+            >
+              <p class="font-body text-xs font-semibold text-primary-dark/70 sm:text-sm">[Photo d'une création à ajouter]</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Layout>

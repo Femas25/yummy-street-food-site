@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo.png';
+import Leaf from '../components/icons/Leaf.astro';
+import Burger from '../components/icons/Burger.astro';
+import Wrap from '../components/icons/Wrap.astro';
+import contact from '../data/contact.json';
+import champPhoto from '../assets/gallery/jardin-serre-fleurs.jpg';
+import recoltePanierLegumes from '../assets/gallery/recolte-panier-legumes.jpg';
+import tomatesAnciennes from '../assets/gallery/tomates-anciennes.jpg';
+import saladesRougeVerte from '../assets/gallery/salades-rouge-verte.jpg';
+import herbesAromatiques from '../assets/gallery/herbes-aromatiques.jpg';
+import caissesTomatesMarche from '../assets/gallery/caisses-tomates-marche.jpg';
+import haricotsJaunesVerts from '../assets/gallery/haricots-jaunes-verts.jpg';
+
+const mosaic = [
+  { src: recoltePanierLegumes, alt: 'Panier de légumes fraîchement récoltés', span: 'col-span-2 row-span-2' },
+  { src: tomatesAnciennes, alt: 'Assortiment de tomates anciennes multicolores', span: '' },
+  { src: saladesRougeVerte, alt: 'Salades rouges et vertes côte à côte', span: '' },
+  { src: herbesAromatiques, alt: 'Bouquet d’herbes aromatiques du jardin', span: 'row-span-2' },
+  { src: caissesTomatesMarche, alt: 'Caisses de tomates prêtes pour le marché', span: '' },
+  { src: haricotsJaunesVerts, alt: 'Haricots verts et beurre fraîchement récoltés', span: '' },
+];
+---
+
+<Layout
+  title="Accueil"
+  description="Yummy, la street-food végétale cultivée par la maraîchère. Local, végétal et gourmand — retrouvez notre food truck près de chez vous."
+>
+  <section class="relative isolate overflow-hidden bg-primary-dark text-cream">
+    <div
+      class="pointer-events-none absolute inset-0 -z-10"
+      style="background: radial-gradient(120% 90% at 50% 0%, #159E7B 0%, #0B4A2C 45%, #083E23 100%);"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="pointer-events-none absolute inset-0 -z-10 opacity-90" aria-hidden="true">
+      <Leaf class="leaf-deco absolute left-[6%] top-[18%] w-16 opacity-40 md:w-24" style="--rot:-18deg; --float-delay:0s" />
+      <Leaf class="leaf-deco absolute right-[8%] top-[26%] w-14 opacity-35 md:w-20" style="--rot:16deg; --float-delay:1.3s" />
+      <Leaf class="leaf-deco absolute bottom-[12%] left-[16%] w-12 opacity-30 md:w-16" style="--rot:8deg; --float-delay:2.4s" />
+      <Leaf class="leaf-deco absolute bottom-[18%] right-[18%] w-16 opacity-30 md:w-24" style="--rot:-10deg; --float-delay:0.7s" />
+      <Burger class="leaf-deco absolute left-[8%] bottom-[10%] w-11 opacity-30 sm:left-[12%] sm:bottom-[30%] sm:w-14 md:w-20" style="--rot:-8deg; --float-delay:1.8s" />
+      <Wrap class="leaf-deco absolute right-[10%] top-[8%] w-11 opacity-30 sm:right-[14%] sm:top-[10%] sm:w-14 md:w-20" style="--rot:12deg; --float-delay:0.4s" />
+    </div>
+
+    <div class="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center gap-7 px-4 py-24 text-center md:min-h-[78vh]">
+      <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="reveal-scale w-64 max-w-[80vw] drop-shadow-xl md:w-96" />
+      <h1 class="reveal max-w-2xl font-heading text-3xl font-extrabold uppercase tracking-wide drop-shadow md:text-5xl" style="--reveal-delay:120ms">
+        La street-food cultivée par la maraîchère
+      </h1>
+      <p class="reveal max-w-xl font-body text-base font-semibold text-mint md:text-lg" style="--reveal-delay:220ms">Végétal • Local • Gourmand</p>
+      <div class="reveal flex flex-wrap justify-center gap-4" style="--reveal-delay:320ms">
+        <a
+          href="/menu"
+          class="rounded-full bg-lime px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark shadow-sm transition-all hover:-translate-y-0.5 hover:bg-lime/90 hover:shadow-md"
+        >
+          Voir nos créations
+        </a>
+        <a
+          href="/localisation"
+          class="rounded-full border-2 border-cream px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream transition-all hover:-translate-y-0.5 hover:bg-cream hover:text-primary-dark hover:shadow-md"
+        >
+          Localiser le truck
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-2 md:items-center md:gap-16">
+      <div class="reveal-scale overflow-hidden rounded-2xl shadow-xl transition-shadow duration-300 hover:shadow-2xl">
+        <Image
+          src={champPhoto}
+          alt="Vue d'ensemble de notre jardin et de sa serre, entourés de fleurs"
+          class="aspect-[4/5] w-full object-cover saturate-[1.15] contrast-[1.05] transition-transform duration-500 hover:scale-105 md:aspect-[3/4]"
+          widths={[400, 800, 1200]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+        />
+      </div>
+
+      <div class="reveal text-center md:text-left" style="--reveal-delay:150ms">
+        <h2 class="mb-6 font-heading text-3xl font-bold text-primary-dark md:text-4xl">Du champ à votre assiette.</h2>
+        <p class="font-body text-base leading-relaxed text-anthracite/90 md:text-lg">
+          Chez Yummy Street Food, nous cultivons nous-mêmes la majorité des légumes qui composent nos recettes.
+          Récoltés à maturité, sans traitements inutiles et dans le respect de la nature, ils arrivent directement
+          dans votre assiette. Une cuisine locale, sincère et pleine de goût.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3 font-heading text-sm font-bold uppercase tracking-wide text-primary md:justify-start">
+          <span class="rounded-full bg-primary/10 px-4 py-2 transition-colors hover:bg-primary hover:text-cream">Local</span>
+          <span class="rounded-full bg-primary/10 px-4 py-2 transition-colors hover:bg-primary hover:text-cream">Végétal</span>
+          <span class="rounded-full bg-primary/10 px-4 py-2 transition-colors hover:bg-primary hover:text-cream">Gourmand</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="reveal mb-10 text-center">
+        <h2 class="mb-3 font-heading text-2xl font-bold text-primary-dark md:text-3xl">Notre potager en images</h2>
+        <p class="mx-auto max-w-xl font-body text-anthracite/70">
+          Des légumes cultivés à la main, récoltés au bon moment, du jardin jusqu’à votre assiette.
+        </p>
+      </div>
+
+      <div class="grid auto-rows-[140px] grid-cols-2 gap-4 md:auto-rows-[160px] md:grid-cols-4">
+        {
+          mosaic.map((photo, i) => (
+            <div
+              class={`reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${photo.span}`}
+              style={`--reveal-delay:${i * 90}ms`}
+            >
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                class="h-full w-full object-cover saturate-[1.2] contrast-[1.05] transition-transform duration-500 ease-out group-hover:scale-110"
+                widths={[300, 600, 900]}
+                sizes="(min-width: 768px) 25vw, 50vw"
+              />
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="mt-10 text-center">
+        <a href="/galerie" class="font-heading text-sm font-bold uppercase tracking-wide text-primary transition-colors hover:text-primary-dark">
+          Voir toute la galerie →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-4 py-20 text-center md:py-28">
+    <h2 class="reveal mb-4 font-heading text-2xl font-bold text-primary-dark md:text-3xl">Un événement à organiser ?</h2>
+    <p class="reveal mb-8 font-body text-base text-anthracite/90 md:text-lg" style="--reveal-delay:100ms">
+      Mariages, entreprises, festivals — Yummy se déplace pour régaler vos invités.
+    </p>
+    <a
+      href="/contact"
+      class="reveal inline-block rounded-full bg-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
+      style="--reveal-delay:200ms"
+    >
+      Nous contacter
+    </a>
+  </section>
+
+  <section class="bg-primary-dark py-14 text-cream">
+    <div class="reveal mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center">
+      <h2 class="font-heading text-xl font-bold">Retrouvez-nous aussi ici</h2>
+      <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 font-body text-sm text-mint">
+        <a href={`mailto:${contact.email}`} class="hover:text-lime hover:underline">{contact.email}</a>
+        <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-lime hover:underline">{contact.telephone}</a>
+        <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime hover:underline">Instagram : {contact.reseaux.instagram}</a>
+        <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime hover:underline">Facebook : {contact.reseaux.facebook}</a>
+      </div>
+    </div>
+  </section>
+</Layout>

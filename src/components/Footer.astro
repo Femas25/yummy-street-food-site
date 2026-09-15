@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo.png';
+import contact from '../data/contact.json';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-primary-dark text-cream">
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
+    <div class="flex flex-col items-start gap-3">
+      <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="h-14 w-auto" />
+      <p class="font-body text-sm text-mint">
+        La street-food cultivée par la maraîchère.<br />
+        Végétal • Local • Gourmand.
+      </p>
+    </div>
+
+    <div>
+      <h3 class="mb-3 font-heading text-sm font-bold uppercase tracking-wide text-lime">Navigation</h3>
+      <ul class="flex flex-col gap-2 font-body text-sm">
+        <li><a href="/menu" class="hover:text-lime">Nos créations</a></li>
+        <li><a href="/localisation" class="hover:text-lime">Où nous trouver</a></li>
+        <li><a href="/contact" class="hover:text-lime">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="mb-3 font-heading text-sm font-bold uppercase tracking-wide text-lime">Contact</h3>
+      <ul class="flex flex-col gap-2 font-body text-sm">
+        <li><a href={`mailto:${contact.email}`} class="hover:text-lime">{contact.email}</a></li>
+        <li><a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-lime">{contact.telephone}</a></li>
+        <li>{contact.adresse}</li>
+        <li><a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">Instagram : {contact.reseaux.instagram}</a></li>
+        <li><a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">Facebook : {contact.reseaux.facebook}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-primary/40 px-4 py-4 text-center font-body text-xs text-mint/70">
+    © {year} Yummy Street Food — Tous droits réservés.
+  </div>
+</footer>

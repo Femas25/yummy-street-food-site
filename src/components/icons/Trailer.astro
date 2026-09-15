@@ -1,0 +1,43 @@
+---
+interface Props {
+  class?: string;
+  style?: string;
+}
+
+const { class: className = '', style = '' } = Astro.props;
+---
+
+<svg viewBox="0 0 200 150" class={className} style={style} aria-hidden="true">
+  <ellipse cx="100" cy="137" rx="82" ry="6" fill="#083E23" opacity="0.15" />
+
+  <!-- corps de la remorque, silhouette rétro très arrondie -->
+  <path d="M20 104 L20 70 Q20 26 74 24 L128 24 Q180 26 180 76 L180 104 Q180 112 172 112 L28 112 Q20 112 20 104 Z" fill="#083E23" />
+  <path d="M26 102 L26 71 Q26 32 76 30 L126 30 Q174 32 174 77 L174 102 Q174 106 170 106 L30 106 Q26 106 26 102 Z" fill="#159E7B" />
+  <path d="M32 44 Q40 34 74 33 L120 33 Q150 34 160 46 Q120 40 96 40 Q60 40 32 44 Z" fill="#2FB894" opacity="0.7" />
+
+  <!-- baguettes inox -->
+  <rect x="26" y="66" width="148" height="4" fill="#C9D2D0" />
+  <rect x="30" y="103" width="140" height="3.5" fill="#C9D2D0" />
+
+  <!-- fenêtre de service + bandeau vert citron -->
+  <path d="M46 74 Q46 68 52 68 L120 68 Q126 68 126 74 L126 96 Q126 102 120 102 L52 102 Q46 102 46 96 Z" fill="#F8F6F2" />
+  <rect x="46" y="96" width="80" height="6" fill="#BED70B" />
+  <text x="86" y="90" font-family="Fredoka, sans-serif" font-weight="700" font-size="17" fill="#083E23" text-anchor="middle">Yummy</text>
+
+  <!-- petite fenêtre arrière -->
+  <rect x="138" y="72" width="26" height="30" rx="6" fill="#F8F6F2" opacity="0.92" />
+
+  <!-- timon -->
+  <rect x="8" y="104" width="20" height="8" rx="3" fill="#C9D2D0" />
+  <rect x="2" y="105" width="9" height="5" rx="2" fill="#303030" />
+
+  <!-- roue unique -->
+  <circle cx="72" cy="118" r="15" fill="#303030" />
+  <circle cx="72" cy="118" r="5.5" fill="#C9D2D0" />
+  <circle cx="140" cy="118" r="15" fill="#303030" />
+  <circle cx="140" cy="118" r="5.5" fill="#C9D2D0" />
+
+  <!-- petites feuilles -->
+  <path d="M164 40 Q172 30 166 20" stroke="#5FB98A" stroke-width="3" stroke-linecap="round" fill="none" />
+  <path d="M156 42 Q162 33 158 25" stroke="#5FB98A" stroke-width="3" stroke-linecap="round" fill="none" />
+</svg>
