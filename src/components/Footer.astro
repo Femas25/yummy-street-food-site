@@ -30,7 +30,6 @@ const year = new Date().getFullYear();
       <ul class="flex flex-col gap-2 font-body text-sm">
         <li><a href={`mailto:${contact.email}`} class="hover:text-lime">{contact.email}</a></li>
         <li><a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-lime">{contact.telephone}</a></li>
-        <li>{contact.adresse}</li>
         <li><a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">Instagram : {contact.reseaux.instagram}</a></li>
         <li><a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-lime">Facebook : {contact.reseaux.facebook}</a></li>
       </ul>
