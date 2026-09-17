@@ -30,7 +30,7 @@ const mosaic = [
 
 <Layout
   title="Accueil"
-  description="Yummy, la street-food végétale cultivée par la maraîchère. Local, végétal et gourmand — retrouvez notre food truck près de chez vous."
+  description="Yummy Street Food, food truck végétal, local et gourmand — retrouvez nos prochains passages près de chez vous."
 >
   <section class="relative isolate overflow-hidden bg-primary-dark text-cream">
     <div
@@ -52,9 +52,13 @@ const mosaic = [
 
     <div class="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center gap-7 px-4 py-24 text-center md:min-h-[78vh]">
       <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="reveal-scale w-64 max-w-[80vw] drop-shadow-xl md:w-96" />
-      <h1 class="reveal max-w-2xl font-heading text-3xl font-extrabold uppercase tracking-wide drop-shadow md:text-5xl" style="--reveal-delay:120ms">
-        La street-food cultivée par la maraîchère
-      </h1>
+      <h1 class="sr-only">Yummy Street Food</h1>
+      <span
+        class="reveal inline-block rounded-full border border-cream/30 bg-cream/10 px-4 py-1.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-mint backdrop-blur-sm md:text-sm"
+        style="--reveal-delay:120ms"
+      >
+        Food Truck
+      </span>
       <p class="reveal max-w-xl font-body text-base font-semibold text-mint md:text-lg" style="--reveal-delay:220ms">Végétal • Local • Gourmand</p>
       <div class="reveal flex flex-wrap justify-center gap-4" style="--reveal-delay:320ms">
         <a
