@@ -19,6 +19,7 @@ const eventsForCalendar = evenements
   .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, horaires: e.horaires, dateFormatted: formatDate(e.date) }));
 
 const hasProchainsPassages = planning.prochains_passages.length > 0;
+const hasEvenements = evenements.length > 0;
 ---
 
 <Layout
@@ -55,7 +56,7 @@ const hasProchainsPassages = planning.prochains_passages.length > 0;
           </p>
         </div>
 
-        <div class="grid gap-8 lg:grid-cols-[400px_1fr] lg:items-start lg:gap-12">
+        <div class={`grid gap-8 ${hasEvenements ? 'lg:grid-cols-[400px_1fr] lg:items-start lg:gap-12' : 'mx-auto max-w-md'}`}>
           <div class="reveal-scale rounded-2xl bg-white p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl md:p-7">
             <div class="mb-4 flex items-center justify-between">
               <button
@@ -94,6 +95,7 @@ const hasProchainsPassages = planning.prochains_passages.length > 0;
             </div>
           </div>
 
+          {hasEvenements && (
           <div class="flex flex-col gap-5">
             {
               evenements.map((ev, i) => (
@@ -115,18 +117,17 @@ const hasProchainsPassages = planning.prochains_passages.length > 0;
                 </div>
               ))
             }
-            <p class="reveal font-body text-xs text-anthracite/50" style={`--reveal-delay:${evenements.length * 110}ms`}>
-              {evenementsData.note}
-            </p>
           </div>
+          )}
         </div>
       </div>
     </section>
 
+    {hasProchainsPassages && (
     <section class="relative z-10 mx-auto max-w-5xl px-4 py-16">
-      <div class={`grid gap-10 ${hasProchainsPassages ? 'md:grid-cols-2' : ''}`}>
+      <div class="grid gap-10">
         {
-          hasProchainsPassages && (
+          (
             <div class="flex flex-col gap-4">
               <h2 class="reveal mb-2 font-heading text-xl font-bold text-primary-dark">Nos emplacements réguliers</h2>
               {planning.prochains_passages.map((p, i) => (
@@ -147,18 +148,9 @@ const hasProchainsPassages = planning.prochains_passages.length > 0;
           )
         }
 
-        <!--
-          [À compléter] Carte interactive
-          Une fois les emplacements réels confirmés, remplacer ce bloc par un iframe Google Maps
-          (Google Maps > Partager > Intégrer une carte) pointant vers l'adresse ou les adresses du truck.
-        -->
-        <div class={`reveal-scale flex min-h-[220px] items-center justify-center rounded-2xl border-2 border-dashed border-primary/30 bg-mint/50 p-6 text-center shadow-inner ${hasProchainsPassages ? '' : 'md:mx-auto md:max-w-xl'}`}>
-          <p class="font-body text-sm font-semibold text-primary-dark/70">
-            [Carte à intégrer une fois les emplacements confirmés]
-          </p>
-        </div>
       </div>
     </section>
+    )}
   </div>
 
   <div

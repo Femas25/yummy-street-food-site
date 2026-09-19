@@ -27,7 +27,6 @@ const cultivePhotos = [
   { src: caissesTomatesMarche, alt: 'Caisses de tomates prêtes pour le marché' },
 ];
 
-const placeholders = ['Photo de l’équipe à ajouter', 'Photo d’un événement à ajouter'];
 ---
 
 <Layout
@@ -48,7 +47,7 @@ const placeholders = ['Photo de l’équipe à ajouter', 'Photo d’un événeme
         <Leaf class="leaf-deco absolute left-4 top-4 w-12 opacity-30" style="--rot:-14deg; --float-delay:0s" />
         <Leaf class="leaf-deco absolute bottom-5 right-5 w-16 opacity-30" style="--rot:12deg; --float-delay:1.4s" />
         <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="w-48 max-w-[70%] drop-shadow-xl md:w-64" />
-        <p class="font-body text-sm font-semibold text-mint">La remorque en vrai, bientôt en photo ici.</p>
+        <p class="font-body text-sm font-semibold text-mint">Végétal • Local • Gourmand</p>
       </div>
 
       {
@@ -65,13 +64,6 @@ const placeholders = ['Photo de l’équipe à ajouter', 'Photo d’un événeme
         ))
       }
 
-      {
-        placeholders.map((label) => (
-          <div class="flex items-center justify-center rounded-xl border-2 border-dashed border-primary/30 bg-mint/50 p-4 text-center">
-            <p class="font-body text-sm font-semibold text-primary-dark/70">[{label}]</p>
-          </div>
-        ))
-      }
     </div>
   </section>
 </Layout>

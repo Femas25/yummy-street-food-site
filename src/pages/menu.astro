@@ -1,12 +1,12 @@
 ---
-// [À compléter] Nos créations : pour ajouter une vraie photo, importe-la en haut de ce fichier
-// (ex. import monPlat from '../assets/gallery/mon-plat.jpg';) puis remplace une entrée du tableau
-// `creations` ci-dessous par { src: monPlat, alt: 'Description du plat' }.
+// Nos créations : pour ajouter une photo, l'importer ici (ex. import monPlat from '../assets/gallery/mon-plat.jpg';)
+// puis l'ajouter au tableau `creations` : { src: monPlat, alt: 'Description du plat' }.
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Trailer from '../components/icons/Trailer.astro';
 import Leaf from '../components/icons/Leaf.astro';
 
-const creations = Array.from({ length: 8 }, () => null);
+const creations: { src: ImageMetadata; alt: string }[] = [];
 ---
 
 <Layout
@@ -27,18 +27,27 @@ const creations = Array.from({ length: 8 }, () => null);
         Un aperçu de ce qui sort du truck — recettes végétales, gourmandes et pleines de couleurs.
       </p>
 
-      <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {
-          creations.map((_, i) => (
-            <div
-              class="reveal-scale flex aspect-square items-center justify-center rounded-2xl border-2 border-dashed border-primary/30 bg-mint/50 p-4 text-center shadow-inner transition-colors hover:bg-mint"
-              style={`--reveal-delay:${i * 70}ms`}
-            >
-              <p class="font-body text-xs font-semibold text-primary-dark/70 sm:text-sm">[Photo d'une création à ajouter]</p>
-            </div>
-          ))
-        }
-      </div>
+      {
+        creations.length > 0 ? (
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {creations.map((c, i) => (
+              <div
+                class="reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                style={`--reveal-delay:${i * 70}ms`}
+              >
+                <Image src={c.src} alt={c.alt} class="aspect-square w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110" widths={[300, 600]} sizes="(min-width: 768px) 25vw, 50vw" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="reveal-scale mx-auto max-w-xl rounded-2xl bg-white/80 p-8 text-center shadow-xl">
+            <p class="mb-2 font-heading text-xl font-bold text-primary-dark">Nos créations arrivent bientôt</p>
+            <p class="font-body text-anthracite/80">
+              Les photos de nos recettes seront bientôt ici. En attendant, suivez-nous sur Instagram et Facebook pour ne rien rater.
+            </p>
+          </div>
+        )
+      }
     </section>
   </div>
 </Layout>
