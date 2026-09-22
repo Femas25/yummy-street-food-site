@@ -15,6 +15,7 @@ const formatDate = (iso: string) => {
 };
 
 const mapsUrl = (adresse: string) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(adresse)}`;
+const appleMapsUrl = (adresse: string) => `https://maps.apple.com/?daddr=${encodeURIComponent(adresse)}`;
 
 const eventsForCalendar = evenements
   .filter((e) => isoDateRe.test(e.date))
@@ -116,15 +117,26 @@ const hasEvenements = evenements.length > 0;
                     </span>
                     <span class="font-body text-xs text-anthracite/60">{ev.horaires}</span>
                     {ev.adresse && (
-                      <a
-                        href={mapsUrl(ev.adresse)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="mt-1 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
-                        onclick="event.stopPropagation()"
-                      >
-                        S'y rendre <span aria-hidden="true">→</span>
-                      </a>
+                      <div class="mt-1 flex flex-wrap items-center gap-2 sm:justify-end">
+                        <a
+                          href={mapsUrl(ev.adresse)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
+                          onclick="event.stopPropagation()"
+                        >
+                          S'y rendre <span aria-hidden="true">→</span>
+                        </a>
+                        <a
+                          href={appleMapsUrl(ev.adresse)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="ios-only hidden items-center gap-1.5 rounded-full border-2 border-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
+                          onclick="event.stopPropagation()"
+                        >
+                          Plan
+                        </a>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -202,6 +214,15 @@ const hasEvenements = evenements.length > 0;
         >
           S'y rendre <span aria-hidden="true">→</span>
         </a>
+        <a
+          id="event-modal-maps-ios"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ios-only hidden items-center justify-center gap-2 rounded-full border-2 border-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
+        >
+          Ouvrir dans Plan
+        </a>
       </div>
     </div>
   </div>
@@ -223,6 +244,15 @@ const hasEvenements = evenements.length > 0;
   const modalLieu = document.getElementById('event-modal-lieu');
   const modalHoraires = document.getElementById('event-modal-horaires');
   const modalMaps = document.getElementById('event-modal-maps');
+  const modalMapsIos = document.getElementById('event-modal-maps-ios');
+
+  const isIOS =
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  if (isIOS) {
+    document.querySelectorAll('.ios-only').forEach((el) => el.classList.remove('hidden'));
+  }
 
   function openEventModal(event) {
     modalDate.textContent = event.dateFormatted;
@@ -233,9 +263,16 @@ const hasEvenements = evenements.length > 0;
       modalMaps.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.adresse)}`;
       modalMaps.classList.remove('hidden');
       modalMaps.classList.add('flex');
+      modalMapsIos.href = `https://maps.apple.com/?daddr=${encodeURIComponent(event.adresse)}`;
+      if (isIOS) {
+        modalMapsIos.classList.remove('hidden');
+        modalMapsIos.classList.add('flex');
+      }
     } else {
       modalMaps.classList.add('hidden');
       modalMaps.classList.remove('flex');
+      modalMapsIos.classList.add('hidden');
+      modalMapsIos.classList.remove('flex');
     }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
