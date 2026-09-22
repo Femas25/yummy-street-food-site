@@ -117,23 +117,32 @@ const hasEvenements = evenements.length > 0;
                     </span>
                     <span class="font-body text-xs text-anthracite/60">{ev.horaires}</span>
                     {ev.adresse && (
-                      <div class="mt-1 flex flex-wrap items-center gap-2 sm:justify-end">
-                        <a
-                          href={mapsUrl(ev.adresse)}
-                          rel="noopener"
-                          class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
+                      <div class="maps-dropdown relative mt-1 inline-block">
+                        <button
+                          type="button"
+                          class="maps-toggle inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
                           onclick="event.stopPropagation()"
                         >
-                          Google Maps <span aria-hidden="true">→</span>
-                        </a>
-                        <a
-                          href={appleMapsUrl(ev.adresse)}
-                          rel="noopener"
-                          class="ios-only hidden items-center gap-1.5 rounded-full border-2 border-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-                          onclick="event.stopPropagation()"
-                        >
-                          Plan
-                        </a>
+                          S'y rendre <span aria-hidden="true">→</span>
+                        </button>
+                        <div class="maps-menu absolute right-0 z-20 mt-2 hidden min-w-[9.5rem] flex-col overflow-hidden rounded-xl bg-white p-1 shadow-xl">
+                          <a
+                            href={mapsUrl(ev.adresse)}
+                            rel="noopener"
+                            class="rounded-lg px-3 py-2 text-left font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
+                            onclick="event.stopPropagation()"
+                          >
+                            Google Maps
+                          </a>
+                          <a
+                            href={appleMapsUrl(ev.adresse)}
+                            rel="noopener"
+                            class="ios-only hidden rounded-lg px-3 py-2 text-left font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
+                            onclick="event.stopPropagation()"
+                          >
+                            Plan
+                          </a>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -203,22 +212,33 @@ const hasEvenements = evenements.length > 0;
           <p class="font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70">Horaires</p>
           <p id="event-modal-horaires" class="font-body text-sm text-anthracite/80"></p>
         </div>
-        <a
-          id="event-modal-maps"
-          href="#"
-          rel="noopener"
-          class="hidden items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
-        >
-          Google Maps <span aria-hidden="true">→</span>
-        </a>
-        <a
-          id="event-modal-maps-ios"
-          href="#"
-          rel="noopener"
-          class="ios-only hidden items-center justify-center gap-2 rounded-full border-2 border-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-        >
-          Ouvrir dans Plan
-        </a>
+        <div class="maps-dropdown relative">
+          <button
+            id="event-modal-maps-toggle"
+            type="button"
+            class="hidden w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
+          >
+            S'y rendre <span aria-hidden="true">→</span>
+          </button>
+          <div class="maps-menu absolute left-0 right-0 z-20 mt-2 hidden flex-col overflow-hidden rounded-xl bg-white p-1 shadow-xl">
+            <a
+              id="event-modal-maps-google"
+              href="#"
+              rel="noopener"
+              class="rounded-lg px-4 py-2.5 text-center font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
+            >
+              Google Maps
+            </a>
+            <a
+              id="event-modal-maps-apple"
+              href="#"
+              rel="noopener"
+              class="ios-only hidden rounded-lg px-4 py-2.5 text-center font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
+            >
+              Plan
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -239,17 +259,43 @@ const hasEvenements = evenements.length > 0;
   const modalTitle = document.getElementById('event-modal-title');
   const modalLieu = document.getElementById('event-modal-lieu');
   const modalHoraires = document.getElementById('event-modal-horaires');
-  const modalMaps = document.getElementById('event-modal-maps');
-  const modalMapsIos = document.getElementById('event-modal-maps-ios');
+  const modalMapsToggle = document.getElementById('event-modal-maps-toggle');
+  const modalMapsGoogle = document.getElementById('event-modal-maps-google');
+  const modalMapsApple = document.getElementById('event-modal-maps-apple');
 
   const isIOS =
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  // Sur iPhone/iPad, on propose les deux (Google Maps + Plan) ; ailleurs, Google Maps seul.
+  // Sur iPhone/iPad, le menu propose les deux (Google Maps + Plan) ; ailleurs, Google Maps seul.
   if (isIOS) {
     document.querySelectorAll('.ios-only').forEach((el) => el.classList.remove('hidden'));
   }
+
+  // Ouvre/ferme le petit menu "S'y rendre" (Google Maps / Plan) au clic, et le referme
+  // si on clique ailleurs sur la page.
+  function closeAllMapsMenus() {
+    document.querySelectorAll('.maps-menu').forEach((m) => {
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    });
+  }
+
+  document.querySelectorAll('.maps-toggle, #event-modal-maps-toggle').forEach((toggle) => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const menu = toggle.nextElementSibling;
+      if (!menu) return;
+      const wasOpen = menu.classList.contains('flex');
+      closeAllMapsMenus();
+      if (!wasOpen) {
+        menu.classList.remove('hidden');
+        menu.classList.add('flex');
+      }
+    });
+  });
+
+  document.addEventListener('click', closeAllMapsMenus);
 
   function openEventModal(event) {
     modalDate.textContent = event.dateFormatted;
@@ -257,19 +303,13 @@ const hasEvenements = evenements.length > 0;
     modalLieu.textContent = event.lieu;
     modalHoraires.textContent = event.horaires;
     if (event.adresse) {
-      modalMaps.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.adresse)}`;
-      modalMaps.classList.remove('hidden');
-      modalMaps.classList.add('flex');
-      modalMapsIos.href = `https://maps.apple.com/?daddr=${encodeURIComponent(event.adresse)}`;
-      if (isIOS) {
-        modalMapsIos.classList.remove('hidden');
-        modalMapsIos.classList.add('flex');
-      }
+      modalMapsGoogle.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.adresse)}`;
+      modalMapsApple.href = `https://maps.apple.com/?daddr=${encodeURIComponent(event.adresse)}`;
+      modalMapsToggle.classList.remove('hidden');
+      modalMapsToggle.classList.add('flex');
     } else {
-      modalMaps.classList.add('hidden');
-      modalMaps.classList.remove('flex');
-      modalMapsIos.classList.add('hidden');
-      modalMapsIos.classList.remove('flex');
+      modalMapsToggle.classList.add('hidden');
+      modalMapsToggle.classList.remove('flex');
     }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
