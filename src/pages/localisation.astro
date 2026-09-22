@@ -117,18 +117,24 @@ const hasEvenements = evenements.length > 0;
                     </span>
                     <span class="font-body text-xs text-anthracite/60">{ev.horaires}</span>
                     {ev.adresse && (
-                      <a
-                        href={mapsUrl(ev.adresse)}
-                        data-adresse={ev.adresse}
-                        data-google-href={mapsUrl(ev.adresse)}
-                        data-apple-href={appleMapsUrl(ev.adresse)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="js-maps-link mt-1 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
-                        onclick="event.stopPropagation()"
-                      >
-                        S'y rendre <span aria-hidden="true">→</span>
-                      </a>
+                      <div class="mt-1 flex flex-wrap items-center gap-2 sm:justify-end">
+                        <a
+                          href={mapsUrl(ev.adresse)}
+                          rel="noopener"
+                          class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
+                          onclick="event.stopPropagation()"
+                        >
+                          Google Maps <span aria-hidden="true">→</span>
+                        </a>
+                        <a
+                          href={appleMapsUrl(ev.adresse)}
+                          rel="noopener"
+                          class="ios-only hidden items-center gap-1.5 rounded-full border-2 border-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
+                          onclick="event.stopPropagation()"
+                        >
+                          Plan
+                        </a>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -200,11 +206,18 @@ const hasEvenements = evenements.length > 0;
         <a
           id="event-modal-maps"
           href="#"
-          target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener"
           class="hidden items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
         >
-          S'y rendre <span aria-hidden="true">→</span>
+          Google Maps <span aria-hidden="true">→</span>
+        </a>
+        <a
+          id="event-modal-maps-ios"
+          href="#"
+          rel="noopener"
+          class="ios-only hidden items-center justify-center gap-2 rounded-full border-2 border-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
+        >
+          Ouvrir dans Plan
         </a>
       </div>
     </div>
@@ -227,15 +240,16 @@ const hasEvenements = evenements.length > 0;
   const modalLieu = document.getElementById('event-modal-lieu');
   const modalHoraires = document.getElementById('event-modal-horaires');
   const modalMaps = document.getElementById('event-modal-maps');
+  const modalMapsIos = document.getElementById('event-modal-maps-ios');
 
   const isIOS =
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  // Sur iOS, "S'y rendre" ouvre directement l'app Plan plutôt que Google Maps.
-  document.querySelectorAll('.js-maps-link').forEach((link) => {
-    if (isIOS) link.href = link.dataset.appleHref;
-  });
+  // Sur iPhone/iPad, on propose les deux (Google Maps + Plan) ; ailleurs, Google Maps seul.
+  if (isIOS) {
+    document.querySelectorAll('.ios-only').forEach((el) => el.classList.remove('hidden'));
+  }
 
   function openEventModal(event) {
     modalDate.textContent = event.dateFormatted;
@@ -243,14 +257,19 @@ const hasEvenements = evenements.length > 0;
     modalLieu.textContent = event.lieu;
     modalHoraires.textContent = event.horaires;
     if (event.adresse) {
-      modalMaps.href = isIOS
-        ? `https://maps.apple.com/?daddr=${encodeURIComponent(event.adresse)}`
-        : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.adresse)}`;
+      modalMaps.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.adresse)}`;
       modalMaps.classList.remove('hidden');
       modalMaps.classList.add('flex');
+      modalMapsIos.href = `https://maps.apple.com/?daddr=${encodeURIComponent(event.adresse)}`;
+      if (isIOS) {
+        modalMapsIos.classList.remove('hidden');
+        modalMapsIos.classList.add('flex');
+      }
     } else {
       modalMaps.classList.add('hidden');
       modalMaps.classList.remove('flex');
+      modalMapsIos.classList.add('hidden');
+      modalMapsIos.classList.remove('flex');
     }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
