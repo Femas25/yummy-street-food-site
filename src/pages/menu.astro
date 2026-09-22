@@ -1,5 +1,5 @@
 ---
-// Nos créations : pour ajouter une photo, l'importer ici (ex. import monPlat from '../assets/gallery/mon-plat.jpg';)
+// Nos propositions : pour ajouter une photo, l'importer ici (ex. import monPlat from '../assets/gallery/mon-plat.jpg';)
 // puis l'ajouter au tableau `creations` : { src: monPlat, alt: 'Description du plat' }.
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
@@ -10,8 +10,8 @@ const creations: { src: ImageMetadata; alt: string }[] = [];
 ---
 
 <Layout
-  title="Nos créations"
-  description="Découvrez les créations culinaires de Yummy Street Food : des recettes végétales préparées à partir de légumes locaux et de saison."
+  title="Nos propositions"
+  description="Découvrez nos propositions culinaires de Yummy Street Food : des recettes végétales préparées à partir de légumes locaux et de saison."
 >
   <div class="relative overflow-hidden">
     <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
@@ -22,7 +22,7 @@ const creations: { src: ImageMetadata; alt: string }[] = [];
     </div>
 
     <section class="relative z-10 mx-auto max-w-6xl px-4 py-16">
-      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Nos créations</h1>
+      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Nos propositions</h1>
       <p class="reveal mb-12 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">
         Un aperçu de ce qui sort du truck — recettes végétales, gourmandes et pleines de couleurs.
       </p>
@@ -41,7 +41,7 @@ const creations: { src: ImageMetadata; alt: string }[] = [];
           </div>
         ) : (
           <div class="reveal-scale mx-auto max-w-xl rounded-2xl bg-white/80 p-8 text-center shadow-xl">
-            <p class="mb-2 font-heading text-xl font-bold text-primary-dark">Nos créations arrivent bientôt</p>
+            <p class="mb-2 font-heading text-xl font-bold text-primary-dark">Nos propositions arrivent bientôt</p>
             <p class="font-body text-anthracite/80">
               Les photos de nos recettes seront bientôt ici. En attendant, suivez-nous sur Instagram et Facebook pour ne rien rater.
             </p>
