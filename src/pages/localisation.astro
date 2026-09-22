@@ -137,7 +137,7 @@ const hasEvenements = evenements.length > 0;
                           <a
                             href={appleMapsUrl(ev.adresse)}
                             rel="noopener"
-                            class="ios-only hidden rounded-lg px-3 py-2 text-left font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
+                            class="rounded-lg px-3 py-2 text-left font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
                             onclick="event.stopPropagation()"
                           >
                             Plan
@@ -233,7 +233,7 @@ const hasEvenements = evenements.length > 0;
               id="event-modal-maps-apple"
               href="#"
               rel="noopener"
-              class="ios-only hidden rounded-lg px-4 py-2.5 text-center font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
+              class="rounded-lg px-4 py-2.5 text-center font-body text-sm font-semibold text-anthracite transition-colors hover:bg-mint"
             >
               Plan
             </a>
@@ -262,15 +262,6 @@ const hasEvenements = evenements.length > 0;
   const modalMapsToggle = document.getElementById('event-modal-maps-toggle');
   const modalMapsGoogle = document.getElementById('event-modal-maps-google');
   const modalMapsApple = document.getElementById('event-modal-maps-apple');
-
-  const isIOS =
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-  // Sur iPhone/iPad, le menu propose les deux (Google Maps + Plan) ; ailleurs, Google Maps seul.
-  if (isIOS) {
-    document.querySelectorAll('.ios-only').forEach((el) => el.classList.remove('hidden'));
-  }
 
   // Ouvre/ferme le petit menu "S'y rendre" (Google Maps / Plan) au clic, et le referme
   // si on clique ailleurs sur la page.
