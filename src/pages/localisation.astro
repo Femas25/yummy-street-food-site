@@ -70,7 +70,7 @@ const hasEvenements = evenements.length > 0;
         </div>
 
         <div class={`grid gap-8 ${hasEvenements ? 'lg:grid-cols-[400px_1fr] lg:items-start lg:gap-12' : 'mx-auto max-w-md'}`}>
-          <div class="reveal-scale rounded-2xl bg-white p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl md:p-7">
+          <div class="reveal-scale rounded-2xl bg-white p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl md:p-7 lg:sticky lg:top-24 lg:self-start">
             <div class="mb-4 flex items-center justify-between">
               <button
                 id="cal-prev"
@@ -109,7 +109,7 @@ const hasEvenements = evenements.length > 0;
           </div>
 
           {hasEvenements && (
-          <div class="flex flex-col gap-5">
+          <div class="flex flex-col gap-4">
             {
               evenements.map((ev, i) => (
                 <div
