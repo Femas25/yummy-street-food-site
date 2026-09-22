@@ -1,4 +1,33 @@
 {
   "note": "Le champ \"date\" doit être au format AAAA-MM-JJ (ex. 2026-09-14) pour que l'événement apparaisse sur le calendrier.",
-  "evenements": []
+  "evenements": [
+    {
+      "date": "2026-10-01",
+      "titre": "Marché d'Arlon",
+      "lieu": "Marché d'Arlon — vers Maison Knopes",
+      "adresse": "Grand-Place 24, 6700 Arlon, Belgique",
+      "horaires": "8h - 13h"
+    },
+    {
+      "date": "2026-10-08",
+      "titre": "Marché d'Arlon",
+      "lieu": "Marché d'Arlon — vers Maison Knopes",
+      "adresse": "Grand-Place 24, 6700 Arlon, Belgique",
+      "horaires": "8h - 13h"
+    },
+    {
+      "date": "2026-10-15",
+      "titre": "Marché d'Arlon",
+      "lieu": "Marché d'Arlon — vers Maison Knopes",
+      "adresse": "Grand-Place 24, 6700 Arlon, Belgique",
+      "horaires": "8h - 13h"
+    },
+    {
+      "date": "2026-10-22",
+      "titre": "Marché d'Arlon",
+      "lieu": "Marché d'Arlon — vers Maison Knopes",
+      "adresse": "Grand-Place 24, 6700 Arlon, Belgique",
+      "horaires": "8h - 13h"
+    }
+  ]
 }

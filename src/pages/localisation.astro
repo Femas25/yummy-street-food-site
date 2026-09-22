@@ -14,9 +14,11 @@ const formatDate = (iso: string) => {
   return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 };
 
+const mapsUrl = (adresse: string) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(adresse)}`;
+
 const eventsForCalendar = evenements
   .filter((e) => isoDateRe.test(e.date))
-  .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, horaires: e.horaires, dateFormatted: formatDate(e.date) }));
+  .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, adresse: e.adresse, horaires: e.horaires, dateFormatted: formatDate(e.date) }));
 
 const hasProchainsPassages = planning.prochains_passages.length > 0;
 const hasEvenements = evenements.length > 0;
@@ -113,6 +115,17 @@ const hasEvenements = evenements.length > 0;
                       {ev.lieu}
                     </span>
                     <span class="font-body text-xs text-anthracite/60">{ev.horaires}</span>
+                    {ev.adresse && (
+                      <a
+                        href={mapsUrl(ev.adresse)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="mt-1 inline-flex items-center gap-1 font-heading text-xs font-bold uppercase tracking-wide text-primary transition-colors hover:text-primary-dark hover:underline"
+                        onclick="event.stopPropagation()"
+                      >
+                        📍 Itinéraire
+                      </a>
+                    )}
                   </div>
                 </div>
               ))
@@ -180,6 +193,15 @@ const hasEvenements = evenements.length > 0;
           <p class="font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70">Horaires</p>
           <p id="event-modal-horaires" class="font-body text-sm text-anthracite/80"></p>
         </div>
+        <a
+          id="event-modal-maps"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
+        >
+          📍 Ouvrir l'itinéraire GPS
+        </a>
       </div>
     </div>
   </div>
@@ -200,12 +222,21 @@ const hasEvenements = evenements.length > 0;
   const modalTitle = document.getElementById('event-modal-title');
   const modalLieu = document.getElementById('event-modal-lieu');
   const modalHoraires = document.getElementById('event-modal-horaires');
+  const modalMaps = document.getElementById('event-modal-maps');
 
   function openEventModal(event) {
     modalDate.textContent = event.dateFormatted;
     modalTitle.textContent = event.titre;
     modalLieu.textContent = event.lieu;
     modalHoraires.textContent = event.horaires;
+    if (event.adresse) {
+      modalMaps.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.adresse)}`;
+      modalMaps.classList.remove('hidden');
+      modalMaps.classList.add('flex');
+    } else {
+      modalMaps.classList.add('hidden');
+      modalMaps.classList.remove('flex');
+    }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     requestAnimationFrame(() => {
