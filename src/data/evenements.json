@@ -28,6 +28,34 @@
       "lieu": "Marché d'Arlon — Grand-Place",
       "adresse": "Grand-Place, 6700 Arlon, Belgique",
       "horaires": "8h - 13h"
+    },
+    {
+      "date": "2026-10-02",
+      "titre": "Marché de Virton",
+      "lieu": "Marché de Virton — entrée côté CNDB",
+      "adresse": "Rue Chanoine Crousse 1, 6760 Virton, Belgique",
+      "horaires": "8h - 12h"
+    },
+    {
+      "date": "2026-10-09",
+      "titre": "Marché de Virton",
+      "lieu": "Marché de Virton — entrée côté CNDB",
+      "adresse": "Rue Chanoine Crousse 1, 6760 Virton, Belgique",
+      "horaires": "8h - 12h"
+    },
+    {
+      "date": "2026-10-16",
+      "titre": "Marché de Virton",
+      "lieu": "Marché de Virton — entrée côté CNDB",
+      "adresse": "Rue Chanoine Crousse 1, 6760 Virton, Belgique",
+      "horaires": "8h - 12h"
+    },
+    {
+      "date": "2026-10-23",
+      "titre": "Marché de Virton",
+      "lieu": "Marché de Virton — entrée côté CNDB",
+      "adresse": "Rue Chanoine Crousse 1, 6760 Virton, Belgique",
+      "horaires": "8h - 12h"
     }
   ]
 }
