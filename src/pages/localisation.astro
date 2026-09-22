@@ -113,9 +113,6 @@ const hasEvenements = evenements.length > 0;
                     <p class="font-body text-sm capitalize text-anthracite/70">{formatDate(ev.date)}</p>
                   </div>
                   <div class="flex flex-col gap-1 sm:items-end">
-                    <span class="rounded-full bg-mint px-3 py-1 font-heading text-xs font-bold uppercase tracking-wide text-primary-dark transition-colors group-hover:bg-leaf/40">
-                      {ev.lieu}
-                    </span>
                     <span class="font-body text-xs text-anthracite/60">{ev.horaires}</span>
                     {ev.adresse && (
                       <div class="mt-1 flex flex-wrap items-center gap-2 sm:justify-end">
