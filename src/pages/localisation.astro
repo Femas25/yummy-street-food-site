@@ -5,7 +5,6 @@ import evenementsData from '../data/evenements.json';
 import Trailer from '../components/icons/Trailer.astro';
 import Leaf from '../components/icons/Leaf.astro';
 
-const { evenements } = evenementsData;
 const isoDateRe = /^\d{4}-\d{2}-\d{2}$/;
 
 const formatDate = (iso: string) => {
@@ -18,9 +17,19 @@ const mapsUrl = (adresse: string) => `https://www.google.com/maps/dir/?api=1&des
 const appleMapsUrl = (adresse: string) => `https://maps.apple.com/?daddr=${encodeURIComponent(adresse)}`;
 const wazeUrl = (adresse: string) => `https://www.waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`;
 
+// Palette discrète par marché : un vert de la charte graphique par lieu, pas de rouge criard.
+const eventColors: Record<string, { border: string; dot: string }> = {
+  primary: { border: 'border-primary', dot: 'bg-primary' },
+  leaf: { border: 'border-leaf', dot: 'bg-leaf' },
+};
+const colorFor = (couleur?: string) => eventColors[couleur ?? 'primary'] ?? eventColors.primary;
+
+// Classés par ordre de passage (date la plus proche en premier).
+const evenements = [...evenementsData.evenements].sort((a, b) => a.date.localeCompare(b.date));
+
 const eventsForCalendar = evenements
   .filter((e) => isoDateRe.test(e.date))
-  .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, adresse: e.adresse, horaires: e.horaires, dateFormatted: formatDate(e.date) }));
+  .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, adresse: e.adresse, horaires: e.horaires, couleur: e.couleur, dateFormatted: formatDate(e.date) }));
 
 const hasProchainsPassages = planning.prochains_passages.length > 0;
 const hasEvenements = evenements.length > 0;
@@ -105,7 +114,7 @@ const hasEvenements = evenements.length > 0;
               evenements.map((ev, i) => (
                 <div
                   id={isoDateRe.test(ev.date) ? `event-${ev.date}` : undefined}
-                  class="reveal-scale group flex flex-col gap-2 rounded-2xl border-l-4 border-primary bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                  class={`reveal-scale group flex flex-col gap-2 rounded-2xl border-l-4 ${colorFor(ev.couleur).border} bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4`}
                   style={`--reveal-delay:${i * 110}ms`}
                 >
                   <div>
@@ -348,7 +357,8 @@ const hasEvenements = evenements.length > 0;
         cell.setAttribute('aria-label', `${event.titre} — voir les détails`);
         cell.title = event.titre;
         const dot = document.createElement('span');
-        dot.className = 'absolute bottom-1 h-1.5 w-1.5 rounded-full bg-primary';
+        const dotColor = event.couleur === 'leaf' ? 'bg-leaf' : 'bg-primary';
+        dot.className = `absolute bottom-1 h-1.5 w-1.5 rounded-full ${dotColor}`;
         cell.appendChild(dot);
         cell.addEventListener('click', () => openEventModal(event));
       }
