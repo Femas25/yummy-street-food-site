@@ -120,10 +120,10 @@ const hasEvenements = evenements.length > 0;
                         href={mapsUrl(ev.adresse)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="mt-1 inline-flex items-center gap-1 font-heading text-xs font-bold uppercase tracking-wide text-primary transition-colors hover:text-primary-dark hover:underline"
+                        class="mt-1 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
                         onclick="event.stopPropagation()"
                       >
-                        📍 Itinéraire
+                        S'y rendre <span aria-hidden="true">→</span>
                       </a>
                     )}
                   </div>
@@ -200,7 +200,7 @@ const hasEvenements = evenements.length > 0;
           rel="noopener noreferrer"
           class="hidden items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
         >
-          📍 Ouvrir l'itinéraire GPS
+          S'y rendre <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>
