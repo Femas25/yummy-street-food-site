@@ -31,6 +31,39 @@ const eventsForCalendar = evenements
   .filter((e) => isoDateRe.test(e.date))
   .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, adresse: e.adresse, horaires: e.horaires, couleur: e.couleur, dateFormatted: formatDate(e.date) }));
 
+// Données structurées (schema.org) par événement, pour que Google puisse afficher
+// les dates de marché directement dans les résultats de recherche.
+const parseHoraires = (horaires: string) => {
+  const match = horaires.match(/(\d+)h\s*-\s*(\d+)h/);
+  return match ? { start: match[1].padStart(2, '0'), end: match[2].padStart(2, '0') } : null;
+};
+
+const eventsSchema = evenements
+  .filter((e) => isoDateRe.test(e.date) && e.adresse)
+  .map((e) => {
+    const times = parseHoraires(e.horaires) ?? { start: '08', end: '18' };
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: `${e.titre} — Yummy Street Food`,
+      description: `Retrouvez le food truck Yummy Street Food : ${e.lieu}, ${e.horaires}.`,
+      startDate: `${e.date}T${times.start}:00:00+02:00`,
+      endDate: `${e.date}T${times.end}:00:00+02:00`,
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
+      location: {
+        '@type': 'Place',
+        name: e.lieu,
+        address: e.adresse,
+      },
+      organizer: {
+        '@type': 'Organization',
+        name: 'Yummy Street Food',
+        url: 'https://yummy-streetfood.be',
+      },
+    };
+  });
+
 const hasProchainsPassages = planning.prochains_passages.length > 0;
 const hasEvenements = evenements.length > 0;
 ---
@@ -248,6 +281,8 @@ const hasEvenements = evenements.length > 0;
     </div>
   </div>
 </Layout>
+
+{eventsSchema.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
 
 <script define:vars={{ eventsForCalendar }}>
   const grid = document.getElementById('cal-grid');
