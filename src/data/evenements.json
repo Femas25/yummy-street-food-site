@@ -64,6 +64,13 @@
       "adresse": "Rue Chanoine Crousse 1, 6760 Virton, Belgique",
       "horaires": "8h - 13h",
       "couleur": "leaf"
+    },
+    {
+      "date": "2026-10-11",
+      "titre": "Événement privé",
+      "lieu": "Événement privé",
+      "horaires": "Privé",
+      "couleur": "lime"
     }
   ]
 }

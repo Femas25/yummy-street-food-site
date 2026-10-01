@@ -21,6 +21,7 @@ const wazeUrl = (adresse: string) => `https://www.waze.com/ul?q=${encodeURICompo
 const eventColors: Record<string, { border: string; dot: string }> = {
   primary: { border: 'border-primary', dot: 'bg-primary' },
   leaf: { border: 'border-leaf', dot: 'bg-leaf' },
+  lime: { border: 'border-lime', dot: 'bg-lime' },
 };
 const colorFor = (couleur?: string) => eventColors[couleur ?? 'primary'] ?? eventColors.primary;
 
