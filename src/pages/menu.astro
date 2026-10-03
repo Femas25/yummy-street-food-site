@@ -38,12 +38,14 @@ const creations: { src: ImageMetadata; alt: string }[] = [
         creations.length > 0 ? (
           <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
             {creations.map((c, i) => (
-              <div
-                class="reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              <button
+                type="button"
+                class="creation-thumb reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                 style={`--reveal-delay:${i * 70}ms`}
+                aria-label={`Agrandir la photo : ${c.alt}`}
               >
-                <Image src={c.src} alt={c.alt} class="aspect-square w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110" widths={[300, 600]} sizes="(min-width: 768px) 25vw, 50vw" />
-              </div>
+                <Image src={c.src} alt={c.alt} class="aspect-square w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110" widths={[300, 600, 1200]} sizes="(min-width: 768px) 25vw, 50vw" />
+              </button>
             ))}
           </div>
         ) : (
@@ -57,4 +59,83 @@ const creations: { src: ImageMetadata; alt: string }[] = [
       }
     </section>
   </div>
+
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-[70] hidden items-center justify-center bg-anthracite/90 p-4 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Photo en plein écran"
+  >
+    <button
+      id="lightbox-close"
+      type="button"
+      aria-label="Fermer"
+      class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cream/10 text-cream transition-colors hover:bg-cream/20"
+    >
+      ✕
+    </button>
+    <img
+      id="lightbox-img"
+      src=""
+      alt=""
+      class="max-h-[85vh] max-w-full scale-95 rounded-2xl object-contain opacity-0 shadow-2xl transition-all duration-200"
+    />
+  </div>
 </Layout>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  function largestFromSrcset(img: HTMLImageElement) {
+    const srcset = img.getAttribute('srcset');
+    if (!srcset) return img.currentSrc || img.src;
+    const candidates = srcset.split(',').map((entry) => {
+      const [url, width] = entry.trim().split(/\s+/);
+      return { url, width: parseInt(width, 10) || 0 };
+    });
+    candidates.sort((a, b) => b.width - a.width);
+    return candidates[0]?.url ?? img.currentSrc ?? img.src;
+  }
+
+  function openLightbox(img: HTMLImageElement) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = largestFromSrcset(img);
+    lightboxImg.alt = img.alt;
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    requestAnimationFrame(() => {
+      lightboxImg.classList.remove('scale-95', 'opacity-0');
+      lightboxImg.classList.add('scale-100', 'opacity-100');
+    });
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeLightbox() {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.classList.add('scale-95', 'opacity-0');
+    lightboxImg.classList.remove('scale-100', 'opacity-100');
+    document.body.classList.remove('overflow-hidden');
+    setTimeout(() => {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+    }, 200);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.creation-thumb').forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const img = thumb.querySelector('img');
+      if (img) openLightbox(img);
+    });
+  });
+
+  lightboxClose?.addEventListener('click', closeLightbox);
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
