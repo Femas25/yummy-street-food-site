@@ -14,6 +14,21 @@ const creations: { src: ImageMetadata; alt: string }[] = [
   { src: bowlVegetal, alt: 'Bowl végétal avec tomates cerises, carottes grillées, salade et fleurs comestibles' },
   { src: tacoLegumes, alt: 'Pain garni de légumes épicés, crème et oignons rouges, devant le truck Yummy Street Food' },
 ];
+
+const aManger = [
+  { emoji: '🥙', nom: 'Pita', desc: 'Pain pita généreusement garni' },
+  { emoji: '🍔', nom: 'Burger', desc: 'Le burger version végétale' },
+  { emoji: '🌯', nom: 'Wraps', desc: 'Roulés, frais et gourmands' },
+  { emoji: '🍲', nom: 'Soupes', desc: 'Selon les légumes du moment' },
+  { emoji: '🥗', nom: 'Bowls', desc: 'Un bol plein de bonnes choses' },
+];
+
+const aBoire = [
+  { emoji: '🥛', nom: 'Kéfir', desc: 'Boisson fermentée' },
+  { emoji: '🥤', nom: 'Loumonade cola', desc: 'Limonade brassée à Gouvy' },
+  { emoji: '🥤', nom: 'Loumonade pomme-cerise', desc: 'Limonade brassée à Gouvy' },
+  { emoji: '💧', nom: 'Valvert', desc: 'Eau de source' },
+];
 ---
 
 <Layout
@@ -33,6 +48,43 @@ const creations: { src: ImageMetadata; alt: string }[] = [
       <p class="reveal mb-12 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">
         Un aperçu de ce qui sort du truck — recettes végétales, gourmandes et pleines de couleurs.
       </p>
+
+      <div class="reveal-scale mb-16 rounded-2xl bg-white p-6 shadow-lg md:p-10">
+        <h2 class="mb-8 text-center font-heading text-2xl font-bold text-primary-dark md:text-3xl">Aperçu de nos propositions</h2>
+        <div class="grid gap-10 md:grid-cols-2">
+          <div>
+            <h3 class="mb-4 border-b-2 border-mint pb-2 font-heading text-lg font-bold uppercase tracking-wide text-primary-dark">À manger</h3>
+            <ul class="flex flex-col gap-4">
+              {aManger.map((item) => (
+                <li class="flex items-center gap-4">
+                  <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mint text-2xl">{item.emoji}</span>
+                  <div>
+                    <p class="font-heading text-base font-bold text-primary-dark">{item.nom}</p>
+                    <p class="font-body text-sm text-anthracite/70">{item.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 class="mb-4 border-b-2 border-mint pb-2 font-heading text-lg font-bold uppercase tracking-wide text-primary-dark">À boire</h3>
+            <ul class="flex flex-col gap-4">
+              {aBoire.map((item) => (
+                <li class="flex items-center gap-4">
+                  <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mint text-2xl">{item.emoji}</span>
+                  <div>
+                    <p class="font-heading text-base font-bold text-primary-dark">{item.nom}</p>
+                    <p class="font-body text-sm text-anthracite/70">{item.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div class="mt-6 flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-center font-heading text-sm font-bold text-cream">
+              🌿 Légumes du potager — 100 % local
+            </div>
+          </div>
+        </div>
+      </div>
 
       {
         creations.length > 0 ? (
