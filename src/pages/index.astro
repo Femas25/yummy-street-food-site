@@ -11,6 +11,7 @@ import Phone from '../components/icons/Phone.astro';
 import Instagram from '../components/icons/Instagram.astro';
 import Facebook from '../components/icons/Facebook.astro';
 import contact from '../data/contact.json';
+import remorquePhoto from '../assets/truck/remorque-yummy.jpg';
 import champPhoto from '../assets/gallery/jardin-serre-fleurs.jpg';
 import recoltePanierLegumes from '../assets/gallery/recolte-panier-legumes.jpg';
 import tomatesAnciennes from '../assets/gallery/tomates-anciennes.jpg';
@@ -75,6 +76,28 @@ const mosaic = [
         >
           Localiser le truck
         </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28">
+    <div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-2 md:items-center md:gap-16">
+      <div class="reveal text-center md:order-2 md:text-left">
+        <h2 class="mb-6 font-heading text-3xl font-bold text-primary-dark md:text-4xl">Notre remorque.</h2>
+        <p class="font-body text-base leading-relaxed text-anthracite/90 md:text-lg">
+          Repérez notre remorque verte sur les marchés et événements : cuisine ouverte, menu du jour à l'ardoise
+          et recettes préparées sur place, pour un service convivial et gourmand.
+        </p>
+      </div>
+
+      <div class="reveal-scale overflow-hidden rounded-2xl shadow-xl transition-shadow duration-300 hover:shadow-2xl md:order-1">
+        <Image
+          src={remorquePhoto}
+          alt="La remorque Yummy Street Food, hayon ouvert et menu du jour à l'ardoise"
+          class="aspect-[4/5] w-full object-cover transition-transform duration-500 hover:scale-105 md:aspect-[3/4]"
+          widths={[400, 800, 1200]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+        />
       </div>
     </div>
   </section>
