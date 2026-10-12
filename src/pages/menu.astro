@@ -9,12 +9,18 @@ import sandwichLegumes from '../assets/menu/sandwich-legumes-truck.jpg';
 import bowlVegetal from '../assets/menu/bowl-vegetal-fleurs.jpg';
 import tacoLegumes from '../assets/menu/taco-legumes-truck.jpg';
 import pitaLegumes from '../assets/menu/pita-legumes-jardin.jpg';
+import bowlsVegetauxFleurs from '../assets/menu/bowls-vegetaux-fleurs.jpg';
+import pitaGarniSauceBlanche from '../assets/menu/pita-garni-sauce-blanche.jpg';
+import burgerBetterave from '../assets/menu/burger-betterave.jpg';
 
-const creations: { src: ImageMetadata; alt: string }[] = [
+const creations: { src: ImageMetadata; alt: string; wide?: boolean }[] = [
   { src: sandwichLegumes, alt: 'Sandwich garni de légumes grillés, cornichons et oignons rouges, devant le truck Yummy Street Food' },
   { src: bowlVegetal, alt: 'Bowl végétal avec tomates cerises, carottes grillées, salade et fleurs comestibles' },
   { src: tacoLegumes, alt: 'Pain garni de légumes épicés, crème et oignons rouges, devant le truck Yummy Street Food' },
   { src: pitaLegumes, alt: 'Pitas garnis de légumes, tomates, oignons rouges, salade et sauce blanche' },
+  { src: bowlsVegetauxFleurs, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles', wide: true },
+  { src: pitaGarniSauceBlanche, alt: 'Pita garni de protéines végétales, tomate, oignon rouge, salade et sauce blanche' },
+  { src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce' },
 ];
 
 const aManger = [
@@ -94,11 +100,17 @@ const aBoire = [
             {creations.map((c, i) => (
               <button
                 type="button"
-                class="creation-thumb reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                class={`creation-thumb reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${c.wide ? 'col-span-2' : ''}`}
                 style={`--reveal-delay:${i * 70}ms`}
                 aria-label={`Agrandir la photo : ${c.alt}`}
               >
-                <Image src={c.src} alt={c.alt} class="aspect-square w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110" widths={[300, 600, 1200]} sizes="(min-width: 768px) 25vw, 50vw" />
+                <Image
+                  src={c.src}
+                  alt={c.alt}
+                  class={`w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110 ${c.wide ? 'aspect-video' : 'aspect-square'}`}
+                  widths={[300, 600, 1200]}
+                  sizes={c.wide ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+                />
               </button>
             ))}
           </div>
