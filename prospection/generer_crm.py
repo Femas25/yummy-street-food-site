@@ -127,7 +127,7 @@ MODELES = [
      "Nous serions aussi ravis de participer aux événements organisés par la commune.\n\n"
      f"Nos formules : {PAGE}?src=communes\n\nMerci d'avance et belle journée,\n{SIGNATURE}"),
     ("Gîte de groupe", "Une soirée food truck sur mesure pour vos groupes",
-     "Bonjour,\n\nVos gîtes accueillent des groupes pour des anniversaires, des week-ends entre amis ou des réunions de famille. Pour eux, la question du repas du samedi soir revient souvent.\n\n"
+     "Bonjour,\n\nVos gîtes accueillent des groupes pour des anniversaires, des cousinades, des week-ends entre amis ou des réunions de famille. Pour eux, la question du repas du samedi soir revient souvent.\n\n"
      "Nous sommes Yummy Street Food, un food truck végétal et local basé à Virton, à quelques minutes de chez vous. Nous pouvons venir cuisiner sur place pour vos hôtes (starters à l'apéro, puis burger ou pita, et un dessert).\n\n"
      f"Seriez-vous d'accord de mentionner cette option à vos clients ? Notre plaquette : {PLAQUETTE}\n\n"
      f"Lien direct pour vos clients : {PAGE}?src=gites\n\nBelle journée,\n{SIGNATURE}"),
