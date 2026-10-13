@@ -28,7 +28,7 @@ Le logo et la charte graphique ont été **fournis par l'utilisateur** le 2026-0
 ### Charte graphique — v2 (2026-08-31)
 
 **ADN de la marque**
-- Mission : proposer une street-food végétale locale élaborée à partir des légumes de saison de notre potager, avec des produits bio autant que possible.
+- Mission : proposer une street-food végétale locale élaborée à partir des légumes de saison de notre potager, avec des produits bio et locaux autant que possible.
 - Valeurs : Local • Végétal • Circuit court • Gourmand • Authentique.
 - Promesse : food truck local, végétal, gourmand. Le local, les légumes de saison du potager et la fraîcheur sont les messages principaux.
 - Slogan : « Food truck — Local • Végétal • Gourmand. » (mis à jour le 2026-10-13 : l'ancienne promesse « La street-food cultivée par la maraîchère » est abandonnée et ne doit plus apparaître nulle part ; parler plutôt des légumes de saison de notre potager et de produits bio autant que possible.)
