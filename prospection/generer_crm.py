@@ -20,7 +20,7 @@ HFILL = PatternFill("solid", fgColor=FORET)
 WRAP = Alignment(wrap_text=True, vertical="top")
 STATUTS = ["À contacter", "Brouillon prêt", "Contacté", "Relancé", "Intéressé", "RDV / dégustation",
            "Devis envoyé", "Gagné", "Perdu", "Pas maintenant"]
-SIGNATURE = "Christelle & Thomas\nYummy Street Food — food truck local, végétal et gourmand\n+32 474 60 64 51 · yummy-streetfood.be"
+SIGNATURE = "Christelle Muller\nYummy Street Food — food truck local, végétal et gourmand\n+32 474 60 64 51 · yummy-streetfood.be"
 PAGE = "https://yummy-streetfood.be/evenements-prives"
 PLAQUETTE = "https://yummy-streetfood.be/plaquette-evenements-yummy.pdf"
 
@@ -106,29 +106,29 @@ def prospects(wb):
 
 
 MODELES = [
-    ("Lieu de réception — partenariat", "Prestataire street food végétale pour vos mariages et réceptions ?",
+    ("Lieu de réception — partenariat", "Prestation food truck sur mesure pour vos mariages et réceptions",
      "Bonjour,\n\nNous sommes Yummy Street Food, le food truck vert de Virton : une street-food végétale préparée avec les légumes que nous cultivons nous-mêmes.\n\n"
-     "Nous aimerions faire partie des prestataires que vous recommandez à vos clients. Pour un vin d'honneur ou un cocktail dans votre parc, nos 5 starters à 3 € pièce plaisent beaucoup, et en fin de soirée, un snack street food sorti de la remorque fait toujours son effet.\n\n"
+     "Nous aimerions faire partie des prestataires que vous recommandez à vos clients. Pour un vin d'honneur ou un cocktail, nous proposons une formule de 3 ou 5 starters végétaux, puis nos plats street food (burgers, pitas, wraps, bowls), et même un service en fin de soirée.\n\n"
      f"Notre plaquette : {PLAQUETTE}\n\nLe plus simple est encore de goûter : nous pouvons passer vous déposer un plateau de starters, à vous de nous dire quand.\n\n"
      f"Toutes nos formules : {PAGE}?src=lieux\n\nBelle journée,\n{SIGNATURE}"),
-    ("Wedding planner — partenariat", "Une idée food truck végétal pour vos mariés",
+    ("Wedding planner — partenariat", "Une prestation food truck sur mesure pour vos mariés",
      "Bonjour {prénom},\n\nJ'ai découvert votre travail et votre approche des mariages, et je pense que nous pourrions faire de beaux mariages ensemble.\n\n"
-     "Yummy Street Food, c'est une remorque vert émeraude et une cuisine végétale, locale et colorée : bowls fleuris, pitas, starters à l'apéro, avec les légumes de notre potager en Gaume. Le résultat est aussi joli que bon, ce qui compte pour vos couples.\n\n"
+     "Yummy Street Food, c'est une remorque vert émeraude et une cuisine végétale, locale et colorée : bowls fleuris, pitas, starters en ouverture, avec les légumes de notre potager en Gaume. Le résultat est aussi joli que bon, ce qui compte pour vos couples.\n\n"
      "Seriez-vous partant(e) pour un café et une dégustation ? Et bien sûr, nous recommandons volontiers vos services à nos clients en retour.\n\n"
      f"Notre offre mariage : {PAGE}?src=planners\n\nAu plaisir,\n{SIGNATURE}"),
-    ("Entreprise — RH / comité du personnel", "Fête du personnel ou family day : un food truck local pour vos équipes",
+    ("Entreprise — RH / comité du personnel", "Prestation food truck sur mesure pour vos événements d'entreprise",
      "Bonjour {prénom},\n\nVous préparez peut-être déjà la fête du personnel, un family day ou un séminaire pour 2027 ?\n\n"
      "Yummy Street Food est un food truck basé à Virton. Nous cuisinons une street-food végétale et gourmande avec les légumes de notre propre potager. Concrètement, la remorque s'installe sur votre site et sert vos équipes rapidement, sans qu'il y ait rien à organiser de votre côté.\n\n"
-     "Nous proposons par exemple :\n- un lunch d'équipe ou une pause midi sur le parking ;\n- un apéro avec nos 5 starters à 3 € pièce ;\n- un repas complet pour une fête du personnel ou un family day.\n\n"
+     "Nous proposons par exemple :\n- un lunch d'équipe ou une pause midi sur le parking ;\n- un apéro avec une formule de 3 ou 5 starters végétaux ;\n- un repas complet pour une fête du personnel ou un family day.\n\n"
      f"Notre plaquette : {PLAQUETTE}\nEt pour un devis en deux minutes : {PAGE}?src=entreprises\n\nBonne journée,\n{SIGNATURE}"),
     ("Commune / salles communales", "Proposition pour les locataires de vos salles",
      "Bonjour,\n\nNous sommes Yummy Street Food, food truck de street-food végétale installé à Virton (vous nous avez peut-être vus au marché du vendredi).\n\n"
      "Les personnes qui louent vos salles pour un anniversaire ou une fête de famille cherchent souvent une solution repas simple. Serait-il possible de joindre notre plaquette au dossier de location, ou de nous citer parmi les prestataires locaux ?\n\n"
      "Nous serions aussi ravis de participer aux événements organisés par la commune.\n\n"
      f"Nos formules : {PAGE}?src=communes\n\nMerci d'avance et belle journée,\n{SIGNATURE}"),
-    ("Gîte de groupe", "Une soirée food truck pour vos groupes ?",
+    ("Gîte de groupe", "Une soirée food truck sur mesure pour vos groupes",
      "Bonjour,\n\nVos gîtes accueillent des groupes pour des anniversaires, des week-ends entre amis ou des réunions de famille. Pour eux, la question du repas du samedi soir revient souvent.\n\n"
-     "Nous sommes Yummy Street Food, un food truck végétal et local basé à Virton, à quelques minutes de chez vous. Nous pouvons venir cuisiner sur place pour vos hôtes (starters à l'apéro, pitas, burgers, bowls).\n\n"
+     "Nous sommes Yummy Street Food, un food truck végétal et local basé à Virton, à quelques minutes de chez vous. Nous pouvons venir cuisiner sur place pour vos hôtes (starters à l'apéro, puis burgers, pitas ou bowls).\n\n"
      f"Seriez-vous d'accord de mentionner cette option à vos clients ? Notre plaquette : {PLAQUETTE}\n\n"
      f"Lien direct pour vos clients : {PAGE}?src=gites\n\nBelle journée,\n{SIGNATURE}"),
     ("Réseau d'affaires / association", "Yummy Street Food pour vos événements",
@@ -152,7 +152,7 @@ MODELES = [
      "Si vous voulez goûter avant de décider, venez nous voir au marché (Virton le vendredi, Arlon le jeudi, de 8 h à 13 h).\n\n"
      f"Belle journée,\n{SIGNATURE}"),
     ("Script téléphone (2 minutes)", "—",
-     "« Bonjour, Christelle [ou Thomas] de Yummy Street Food, le food truck végétal de Virton. Je vous ai envoyé un petit mail la semaine dernière. Je vous appelle juste pour savoir à qui je dois m'adresser pour les [fêtes du personnel / mariages chez vous]. »\n"
+     "« Bonjour, Christelle Muller de Yummy Street Food, le food truck végétal de Virton. Je vous ai envoyé un petit mail la semaine dernière. Je vous appelle juste pour savoir à qui je dois m'adresser pour les [fêtes du personnel / mariages chez vous]. »\n"
      "→ Si intéressé : « Le plus simple, c'est que je passe vous faire goûter nos starters. Plutôt mardi ou jeudi ? »\n"
      "→ Si pas le moment : « Aucun souci. Je peux vous rappeler quand ? En janvier pour les événements de printemps ? » (noter la date dans « Prochaine relance »)"),
     ("Message LinkedIn (RH)", "—",
