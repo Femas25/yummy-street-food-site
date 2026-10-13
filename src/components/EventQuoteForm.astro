@@ -5,7 +5,7 @@
 const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
 
 const field =
-  'rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary';
+  'w-full min-w-0 rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary';
 const label = 'font-body text-sm font-semibold text-anthracite';
 ---
 
@@ -21,22 +21,22 @@ const label = 'font-body text-sm font-semibold text-anthracite';
   <input type="checkbox" name="botcheck" class="hidden" style="display: none" />
 
   <div class="grid gap-4 md:grid-cols-2">
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="q-name" class={label}>Nom</label>
       <input id="q-name" name="name" type="text" required autocomplete="name" class={field} />
     </div>
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="q-email" class={label}>Email</label>
       <input id="q-email" name="email" type="email" required autocomplete="email" class={field} />
     </div>
   </div>
 
   <div class="grid gap-4 md:grid-cols-2">
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="q-phone" class={label}>Téléphone</label>
       <input id="q-phone" name="phone" type="tel" autocomplete="tel" class={field} />
     </div>
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="q-type" class={label}>Type d'événement</label>
       <select id="q-type" name="event_type" required class={field}>
         <option value="">Sélectionnez...</option>
@@ -52,37 +52,61 @@ const label = 'font-body text-sm font-semibold text-anthracite';
   </div>
 
   <div class="grid gap-4 md:grid-cols-3">
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="q-date" class={label}>Date (même approximative)</label>
       <input id="q-date" name="date_evenement" type="date" class={field} />
     </div>
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="q-guests" class={label}>Nombre d'invités</label>
       <input id="q-guests" name="nombre_invites" type="number" min="1" inputmode="numeric" class={field} />
     </div>
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="q-place" class={label}>Commune / lieu</label>
       <input id="q-place" name="lieu" type="text" placeholder="ex. Virton, Arlon..." class={field} />
     </div>
   </div>
 
   <fieldset class="flex flex-col gap-2">
-    <legend class={`${label} mb-1`}>Ce qui vous intéresse</legend>
+    <legend class={`${label} mb-1`}>Votre formule</legend>
     <div class="grid gap-2 sm:grid-cols-2">
       {
-        ['La Complète (5 starters + plat)', 'La Gourmande (3 starters + plat)', 'L\'Essentielle (plat, dessert)', 'Avec dessert', 'Starters seuls (vin d\'honneur)', 'Service de fin de soirée', 'Brunch du lendemain (mariage)', 'Repas de cohésion / lunch d\'équipe', 'Je ne sais pas encore'].map(
-          (opt) => (
-            <label class="flex items-center gap-2 rounded-lg bg-mint/50 px-3 py-2 font-body text-sm text-anthracite">
-              <input type="checkbox" name="formules" value={opt} class="accent-primary" />
-              {opt}
-            </label>
-          ),
-        )
+        [
+          ['La Complète', '5 starters + 1 plat street food'],
+          ['La Gourmande', '3 starters + 1 plat street food'],
+          ['L\'Essentielle', '1 plat street food + 1 dessert'],
+          ['Starters seuls', 'pour un vin d\'honneur'],
+        ].map(([nom, detail]) => (
+          <label class="flex items-start gap-2 rounded-lg bg-mint/50 px-3 py-2 font-body text-sm text-anthracite">
+            <input type="radio" name="formule" value={`${nom} (${detail})`} class="mt-1 accent-primary" />
+            <span>
+              <span class="font-semibold">{nom}</span>
+              <span class="block text-xs text-anthracite/70">{detail}</span>
+            </span>
+          </label>
+        ))
+      }
+      <label class="flex items-center gap-2 rounded-lg bg-mint/50 px-3 py-2 font-body text-sm text-anthracite sm:col-span-2">
+        <input type="radio" name="formule" value="Je ne sais pas encore" class="accent-primary" />
+        Je ne sais pas encore, conseillez-moi
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset class="flex flex-col gap-2">
+    <legend class={`${label} mb-1`}>Options <span class="font-normal text-anthracite/60">(plusieurs choix possibles)</span></legend>
+    <div class="grid gap-2 sm:grid-cols-2">
+      {
+        ['Dessert (La Complète / La Gourmande)', 'Service de fin de soirée', 'Brunch du lendemain (mariage)', 'Repas de cohésion / lunch d\'équipe'].map((opt) => (
+          <label class="flex items-center gap-2 rounded-lg bg-mint/50 px-3 py-2 font-body text-sm text-anthracite">
+            <input type="checkbox" name={`Option : ${opt}`} value="Oui" class="accent-primary" />
+            {opt}
+          </label>
+        ))
       }
     </div>
   </fieldset>
 
-  <div class="flex flex-col gap-1">
+  <div class="flex min-w-0 flex-col gap-1">
     <label for="q-heard" class={label}>Comment nous avez-vous connus ?</label>
     <select id="q-heard" name="connu_par" class={field}>
       <option value="">Sélectionnez...</option>
@@ -97,7 +121,7 @@ const label = 'font-body text-sm font-semibold text-anthracite';
     </select>
   </div>
 
-  <div class="flex flex-col gap-1">
+  <div class="flex min-w-0 flex-col gap-1">
     <label for="q-message" class={label}>Votre projet en quelques mots</label>
     <textarea
       id="q-message"
