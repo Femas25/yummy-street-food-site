@@ -20,7 +20,7 @@ HFILL = PatternFill("solid", fgColor=FORET)
 WRAP = Alignment(wrap_text=True, vertical="top")
 STATUTS = ["À contacter", "Brouillon prêt", "Contacté", "Relancé", "Intéressé", "RDV / dégustation",
            "Devis envoyé", "Gagné", "Perdu", "Pas maintenant"]
-SIGNATURE = "Christelle & Thomas\nYummy Street Food — la street-food cultivée par la maraîchère\n+32 474 60 64 51 · yummy-streetfood.be"
+SIGNATURE = "Christelle & Thomas\nYummy Street Food — food truck local, végétal et gourmand\n+32 474 60 64 51 · yummy-streetfood.be"
 PAGE = "https://yummy-streetfood.be/evenements-prives"
 PLAQUETTE = "https://yummy-streetfood.be/plaquette-evenements-yummy.pdf"
 

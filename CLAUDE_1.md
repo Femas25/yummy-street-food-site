@@ -28,10 +28,10 @@ Le logo et la charte graphique ont été **fournis par l'utilisateur** le 2026-0
 ### Charte graphique — v2 (2026-08-31)
 
 **ADN de la marque**
-- Mission : proposer une street-food végétale locale élaborée à partir de légumes cultivés par la maraîchère.
+- Mission : proposer une street-food végétale locale élaborée à partir des légumes de saison de notre potager, avec des produits bio autant que possible.
 - Valeurs : Local • Végétal • Circuit court • Gourmand • Authentique.
-- Promesse : « La street-food cultivée par la maraîchère ». Le local et la fraîcheur sont les messages principaux.
-- Slogan : « La street-food cultivée par la maraîchère. Végétal • Local • Gourmand. » (mis à jour le 2026-09-15 — remplace "Healthy", jugé moins pertinent qu'un mot français pour ce concept végétal)
+- Promesse : food truck local, végétal, gourmand. Le local, les légumes de saison du potager et la fraîcheur sont les messages principaux.
+- Slogan : « Food truck — Local • Végétal • Gourmand. » (mis à jour le 2026-10-13 : l'ancienne promesse « La street-food cultivée par la maraîchère » est abandonnée et ne doit plus apparaître nulle part ; parler plutôt des légumes de saison de notre potager et de produits bio autant que possible.)
 
 **Couleurs** (tokens Tailwind correspondants entre parenthèses)
 - Vert émeraude : `#0C7C5E` (`primary`) — couleur de la remorque, légèrement foncée vs la photo pour rester lisible en petit texte ; à réajuster sur une photo en lumière du jour
@@ -54,7 +54,7 @@ Le logo et la charte graphique ont été **fournis par l'utilisateur** le 2026-0
 **Logo :** `src/assets/brand/logo.png` — badge « sticker » : corps vert forêt, « Yummy » blanc, « Street Food » vert citron, feuille bicolore, cerne blanche de découpe. Utilisé tel quel sur fond clair et sur fond vert foncé.
 - Conserver les proportions, ne pas déformer le logo
 - Respecter une zone de protection autour du logo
-- Ne plus faire figurer « Par la maraîchère » dans le logo (reste dans les textes/slogan)
+- Ne plus faire figurer « Par la maraîchère » dans le logo ni dans les textes
 
 ## 4. Structure du site (pages principales)
 
