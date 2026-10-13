@@ -41,7 +41,7 @@ const label = 'font-body text-sm font-semibold text-anthracite';
       <select id="q-type" name="event_type" required class={field}>
         <option value="">Sélectionnez...</option>
         <option>Mariage</option>
-        <option>Séminaire / événement d'entreprise</option>
+        <option>Séminaire / repas de cohésion / événement d'entreprise</option>
         <option>Fête du personnel / family day</option>
         <option>Anniversaire</option>
         <option>Communion / baptême / fête de famille</option>
@@ -70,7 +70,7 @@ const label = 'font-body text-sm font-semibold text-anthracite';
     <legend class={`${label} mb-1`}>Ce qui vous intéresse</legend>
     <div class="grid gap-2 sm:grid-cols-2">
       {
-        ['La Complète (5 starters + plat)', 'La Gourmande (3 starters + plat)', 'L\'Essentielle (plat, dessert)', 'Avec dessert', 'Starters seuls (vin d\'honneur)', 'Service de fin de soirée', 'Lunch d\'équipe', 'Je ne sais pas encore'].map(
+        ['La Complète (5 starters + plat)', 'La Gourmande (3 starters + plat)', 'L\'Essentielle (plat, dessert)', 'Avec dessert', 'Starters seuls (vin d\'honneur)', 'Service de fin de soirée', 'Brunch du lendemain (mariage)', 'Repas de cohésion / lunch d\'équipe', 'Je ne sais pas encore'].map(
           (opt) => (
             <label class="flex items-center gap-2 rounded-lg bg-mint/50 px-3 py-2 font-body text-sm text-anthracite">
               <input type="checkbox" name="formules" value={opt} class="accent-primary" />

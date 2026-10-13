@@ -108,18 +108,18 @@ def prospects(wb):
 MODELES = [
     ("Lieu de réception — partenariat", "Prestation food truck sur mesure pour vos mariages et réceptions",
      "Bonjour,\n\nNous sommes Yummy Street Food, le food truck vert de Virton : une street-food végétale préparée avec les légumes que nous cultivons nous-mêmes.\n\n"
-     "Nous aimerions faire partie des prestataires que vous recommandez à vos clients. Pour un vin d'honneur ou un cocktail, nous proposons une formule de 3 ou 5 starters végétaux, puis un plat street food (burger ou pita) et un dessert si vous le souhaitez. Nous pouvons aussi assurer un service en fin de soirée.\n\n"
+     "Nous aimerions faire partie des prestataires que vous recommandez à vos clients. Pour un vin d'honneur ou un cocktail, nous proposons une formule de 3 ou 5 starters végétaux, puis un plat street food (burger ou pita) et un dessert si vous le souhaitez. Nous pouvons aussi assurer un service en fin de soirée, et même le brunch du lendemain.\n\n"
      f"Notre plaquette : {PLAQUETTE}\n\nLe plus simple est encore de goûter : nous pouvons passer vous déposer un plateau de starters, à vous de nous dire quand.\n\n"
      f"Toutes nos formules : {PAGE}?src=lieux\n\nBelle journée,\n{SIGNATURE}"),
     ("Wedding planner — partenariat", "Une prestation food truck sur mesure pour vos mariés",
      "Bonjour {prénom},\n\nJ'ai découvert votre travail et votre approche des mariages, et je pense que nous pourrions faire de beaux mariages ensemble.\n\n"
-     "Yummy Street Food, c'est une remorque vert émeraude et une cuisine végétale, locale et colorée : starters en ouverture, puis burgers et pitas, avec les légumes de notre potager en Gaume. Le résultat est aussi joli que bon, ce qui compte pour vos couples.\n\n"
+     "Yummy Street Food, c'est une remorque vert émeraude et une cuisine végétale, locale et colorée : starters en ouverture, puis burgers et pitas, avec les légumes de notre potager en Gaume, et même le brunch du lendemain. Le résultat est aussi joli que bon, ce qui compte pour vos couples.\n\n"
      "Seriez-vous partant(e) pour un café et une dégustation ? Et bien sûr, nous recommandons volontiers vos services à nos clients en retour.\n\n"
      f"Notre offre mariage : {PAGE}?src=planners\n\nAu plaisir,\n{SIGNATURE}"),
     ("Entreprise — RH / comité du personnel", "Prestation food truck sur mesure pour vos événements d'entreprise",
-     "Bonjour {prénom},\n\nVous préparez peut-être déjà la fête du personnel, un family day ou un séminaire pour 2027 ?\n\n"
+     "Bonjour {prénom},\n\nVous préparez peut-être déjà la fête du personnel, un repas de cohésion, un family day ou un séminaire pour 2027 ?\n\n"
      "Yummy Street Food est un food truck basé à Virton. Nous cuisinons une street-food végétale et gourmande avec les légumes de notre propre potager. Concrètement, la remorque s'installe sur votre site et sert vos équipes rapidement, sans qu'il y ait rien à organiser de votre côté.\n\n"
-     "Nous proposons par exemple :\n- un lunch d'équipe ou une pause midi sur le parking ;\n- un apéro avec une formule de 3 ou 5 starters végétaux ;\n- un repas complet pour une fête du personnel ou un family day.\n\n"
+     "Nous proposons par exemple :\n- un repas de cohésion ou un lunch d'équipe, servi sur votre site ;\n- un apéro avec une formule de 3 ou 5 starters végétaux ;\n- un repas complet pour une fête du personnel ou un family day.\n\n"
      f"Notre plaquette : {PLAQUETTE}\nEt pour un devis en deux minutes : {PAGE}?src=entreprises\n\nBonne journée,\n{SIGNATURE}"),
     ("Commune / salles communales", "Proposition pour les locataires de vos salles",
      "Bonjour,\n\nNous sommes Yummy Street Food, food truck de street-food végétale installé à Virton (vous nous avez peut-être vus au marché du vendredi).\n\n"
