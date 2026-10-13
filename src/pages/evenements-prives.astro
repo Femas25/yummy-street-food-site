@@ -9,7 +9,7 @@ import Trailer from '../components/icons/Trailer.astro';
 import contact from '../data/contact.json';
 import remorquePhoto from '../assets/truck/remorque-yummy.jpg';
 import boulettesSauceYaourt from '../assets/menu/boulettes-sauce-yaourt.jpg';
-import bowlsVegetauxFleurs from '../assets/menu/bowls-vegetaux-fleurs.jpg';
+import burgerBetterave from '../assets/menu/burger-betterave.jpg';
 import pitaGarniSauceBlanche from '../assets/menu/pita-garni-sauce-blanche.jpg';
 
 const occasions = [
@@ -21,25 +21,25 @@ const occasions = [
 
 const formules = [
   {
-    titre: 'Apéro & vin d’honneur',
-    prix: 'Formule 3 ou 5 starters',
-    desc: "Nos bouchées végétales en ouverture, avant nos plats street food : vos invités piochent, discutent, reviennent.",
+    titre: 'La Complète',
+    contenu: ['5 starters végétaux', '1 plat street food', '+ Dessert en option'],
+    desc: 'Le grand jeu : on ouvre avec cinq starters, puis un burger ou une pita. Un dessert pour finir en douceur, si vous le souhaitez.',
+    image: burgerBetterave,
+    alt: 'Burger à la betterave, salade et sauce',
+  },
+  {
+    titre: 'La Gourmande',
+    contenu: ['3 starters végétaux', '1 plat street food', '+ Dessert en option'],
+    desc: 'Le bon équilibre : un apéro qui donne envie et un vrai repas, avec ou sans dessert.',
     image: boulettesSauceYaourt,
     alt: 'Boulettes végétales en bouchées apéritives avec sauce au yaourt et aux herbes',
   },
   {
-    titre: 'Repas street food',
-    prix: 'Sur devis',
-    desc: 'Pita, burger, wrap, bowl ou soupe du potager : un service rapide et généreux, directement au truck.',
+    titre: 'L’Essentielle',
+    contenu: ['1 plat street food', '1 dessert'],
+    desc: 'Un burger ou une pita, et un dessert : simple, généreux, efficace.',
     image: pitaGarniSauceBlanche,
     alt: 'Pita garni de protéines végétales, tomate, oignon rouge, salade et sauce blanche',
-  },
-  {
-    titre: 'Formule complète',
-    prix: 'Sur devis',
-    desc: 'Starters à l’apéro, plat street food et boissons locales : on s’occupe de tout le repas.',
-    image: bowlsVegetauxFleurs,
-    alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles',
   },
 ];
 
@@ -60,7 +60,7 @@ const atouts = [
 
 <Layout
   title="Événements privés : mariages, entreprises, anniversaires"
-  description="Food truck végétal pour vos événements privés en Gaume et autour de Virton et Arlon : mariages, séminaires, fêtes du personnel, anniversaires. Formules starters et plats street food sur mesure."
+  description="Food truck végétal pour vos événements privés en Gaume et autour de Virton et Arlon : mariages, séminaires, fêtes du personnel, anniversaires. Prestation sur mesure : starters, plats street food et desserts."
 >
   <div class="relative overflow-hidden">
     <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
@@ -119,24 +119,36 @@ const atouts = [
     </section>
 
     <section class="relative z-10 mx-auto max-w-6xl px-4 py-16">
-      <h2 class="reveal mb-2 text-center font-heading text-2xl font-bold text-primary-dark md:text-3xl">Nos formules</h2>
-      <p class="reveal mb-10 text-center font-body text-anthracite/70">Toutes adaptables à votre nombre d'invités et à la saison.</p>
+      <h2 class="reveal mb-2 text-center font-heading text-2xl font-bold text-primary-dark md:text-3xl">Une prestation sur mesure</h2>
+      <p class="reveal mb-10 text-center font-body text-anthracite/70">Trois formules pour démarrer, à adapter à votre nombre d'invités, à la saison et à votre budget. Tarifs sur devis.</p>
       <div class="grid gap-6 md:grid-cols-3">
         {
           formules.map((f, i) => (
             <article class="reveal-scale flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg" style={`--reveal-delay:${i * 80}ms`}>
               <Image src={f.image} alt={f.alt} class="aspect-[4/3] w-full object-cover" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
               <div class="flex flex-1 flex-col gap-2 p-5">
-                <h3 class="font-heading text-xl font-bold text-primary-dark">{f.titre}</h3>
+                <h3 class="font-heading text-2xl font-bold text-primary-dark">{f.titre}</h3>
+                <ul class="flex flex-col gap-2 border-y border-mint py-3">
+                  {f.contenu.map((c) => (
+                    <li class="flex items-center gap-2 font-body text-base text-anthracite">
+                      <span
+                        class={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-bold ${c.startsWith('+') ? 'border-2 border-dashed border-primary/50 text-primary' : 'bg-primary text-cream'}`}
+                        aria-hidden="true"
+                      >
+                        {c.startsWith('+') ? '+' : '✓'}
+                      </span>
+                      <span class={c.startsWith('+') ? 'italic text-anthracite/70' : 'font-semibold'}>{c.replace(/^\+ /, '')}</span>
+                    </li>
+                  ))}
+                </ul>
                 <p class="font-body text-sm text-anthracite/80">{f.desc}</p>
-                <p class="mt-auto self-start rounded-full bg-lime px-3 py-1 font-heading text-sm font-bold text-primary-dark">{f.prix}</p>
               </div>
             </article>
           ))
         }
       </div>
       <p class="reveal mt-6 text-center font-body text-sm text-anthracite/70">
-        Envie d'un service en fin de soirée, ou d'un lunch pour vos équipes ? On adapte : dites-le-nous dans le formulaire.
+        Starters seuls pour un vin d'honneur, service en fin de soirée, lunch pour vos équipes ? Tout est possible : dites-le-nous dans le formulaire.
       </p>
     </section>
 

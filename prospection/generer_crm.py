@@ -61,7 +61,7 @@ def mode_emploi(wb):
         ("• Claude peut refaire toute la boucle chaque semaine (trouver de nouveaux prospects, les ajouter ici, préparer les brouillons Gmail). Rien n'est jamais envoyé sans vous.", None),
         ("", None),
         ("À COMPLÉTER PAR VOUS", Font(bold=True, size=12, color="C0392B")),
-        ("• Onglet « Devis » : vos prix (plat, boissons, déplacement, minimum de prestation). Seul le prix des starters (3 €) est connu à ce jour.", None),
+        ("• Onglet « Devis » : vos prix (plat, dessert, boissons, déplacement, minimum de prestation). Seul le prix des starters (3 €) est connu à ce jour.", None),
     ]
     for texte, font in lignes:
         ws.append([texte])
@@ -108,12 +108,12 @@ def prospects(wb):
 MODELES = [
     ("Lieu de réception — partenariat", "Prestation food truck sur mesure pour vos mariages et réceptions",
      "Bonjour,\n\nNous sommes Yummy Street Food, le food truck vert de Virton : une street-food végétale préparée avec les légumes que nous cultivons nous-mêmes.\n\n"
-     "Nous aimerions faire partie des prestataires que vous recommandez à vos clients. Pour un vin d'honneur ou un cocktail, nous proposons une formule de 3 ou 5 starters végétaux, puis nos plats street food (burgers, pitas, wraps, bowls), et même un service en fin de soirée.\n\n"
+     "Nous aimerions faire partie des prestataires que vous recommandez à vos clients. Pour un vin d'honneur ou un cocktail, nous proposons une formule de 3 ou 5 starters végétaux, puis un plat street food (burger ou pita) et un dessert si vous le souhaitez. Nous pouvons aussi assurer un service en fin de soirée.\n\n"
      f"Notre plaquette : {PLAQUETTE}\n\nLe plus simple est encore de goûter : nous pouvons passer vous déposer un plateau de starters, à vous de nous dire quand.\n\n"
      f"Toutes nos formules : {PAGE}?src=lieux\n\nBelle journée,\n{SIGNATURE}"),
     ("Wedding planner — partenariat", "Une prestation food truck sur mesure pour vos mariés",
      "Bonjour {prénom},\n\nJ'ai découvert votre travail et votre approche des mariages, et je pense que nous pourrions faire de beaux mariages ensemble.\n\n"
-     "Yummy Street Food, c'est une remorque vert émeraude et une cuisine végétale, locale et colorée : bowls fleuris, pitas, starters en ouverture, avec les légumes de notre potager en Gaume. Le résultat est aussi joli que bon, ce qui compte pour vos couples.\n\n"
+     "Yummy Street Food, c'est une remorque vert émeraude et une cuisine végétale, locale et colorée : starters en ouverture, puis burgers et pitas, avec les légumes de notre potager en Gaume. Le résultat est aussi joli que bon, ce qui compte pour vos couples.\n\n"
      "Seriez-vous partant(e) pour un café et une dégustation ? Et bien sûr, nous recommandons volontiers vos services à nos clients en retour.\n\n"
      f"Notre offre mariage : {PAGE}?src=planners\n\nAu plaisir,\n{SIGNATURE}"),
     ("Entreprise — RH / comité du personnel", "Prestation food truck sur mesure pour vos événements d'entreprise",
@@ -128,7 +128,7 @@ MODELES = [
      f"Nos formules : {PAGE}?src=communes\n\nMerci d'avance et belle journée,\n{SIGNATURE}"),
     ("Gîte de groupe", "Une soirée food truck sur mesure pour vos groupes",
      "Bonjour,\n\nVos gîtes accueillent des groupes pour des anniversaires, des week-ends entre amis ou des réunions de famille. Pour eux, la question du repas du samedi soir revient souvent.\n\n"
-     "Nous sommes Yummy Street Food, un food truck végétal et local basé à Virton, à quelques minutes de chez vous. Nous pouvons venir cuisiner sur place pour vos hôtes (starters à l'apéro, puis burgers, pitas ou bowls).\n\n"
+     "Nous sommes Yummy Street Food, un food truck végétal et local basé à Virton, à quelques minutes de chez vous. Nous pouvons venir cuisiner sur place pour vos hôtes (starters à l'apéro, puis burger ou pita, et un dessert).\n\n"
      f"Seriez-vous d'accord de mentionner cette option à vos clients ? Notre plaquette : {PLAQUETTE}\n\n"
      f"Lien direct pour vos clients : {PAGE}?src=gites\n\nBelle journée,\n{SIGNATURE}"),
     ("Réseau d'affaires / association", "Yummy Street Food pour vos événements",
@@ -218,26 +218,29 @@ def devis(wb):
     rows = [
         ("CALCULATEUR DE DEVIS", None, "Cases jaunes = à remplir"),
         ("Nombre d'invités", 80, ""),
-        ("Starters par invité", 3, "Apéro / vin d'honneur"),
-        ("Prix d'un starter (€)", 3, "Connu : 3 € pièce"),
-        ("Plat principal ? (1 = oui, 0 = non)", 1, ""),
+        ("Starters par invité (0, 3 ou 5)", 5, "La Complète = 5 · La Gourmande = 3 · L'Essentielle = 0"),
+        ("Prix d'un starter (€)", 3, ""),
+        ("Plat street food ? (1 = oui, 0 = non)", 1, "Burger ou pita"),
         ("Prix du plat par invité (€)", None, "À FIXER par vous"),
+        ("Dessert ? (1 = oui, 0 = non)", 0, "En option sur La Complète et La Gourmande, inclus dans L'Essentielle"),
+        ("Prix du dessert par invité (€)", None, "À FIXER par vous"),
         ("Boissons par invité (€)", None, "À FIXER (0 si pas de boissons)"),
         ("Forfait déplacement (€)", None, "À FIXER (ex. selon la distance depuis Virton)"),
         ("Minimum de prestation (€)", None, "À FIXER (repère du marché : 250 à 800 €)"),
         ("", None, ""),
         ("Sous-total starters", "=B2*B3*B4", ""),
         ("Sous-total plats", "=B2*B5*B6", ""),
-        ("Sous-total boissons", "=B2*B7", ""),
-        ("TOTAL PROPOSÉ (€)", "=MAX(B9,B11+B12+B13+B8)", "Le minimum de prestation s'applique si le total est inférieur"),
-        ("Prix par invité (€)", "=IF(B2>0,B14/B2,0)", ""),
+        ("Sous-total desserts", "=B2*B7*B8", ""),
+        ("Sous-total boissons", "=B2*B9", ""),
+        ("TOTAL PROPOSÉ (€)", "=MAX(B11,B13+B14+B15+B16+B10)", "Le minimum de prestation s'applique si le total est inférieur"),
+        ("Prix par invité (€)", "=IF(B2>0,B17/B2,0)", ""),
     ]
     for r in rows:
         ws.append(list(r))
     ws["A1"].font = Font(bold=True, size=14, color=FORET)
-    for r in range(2, 10):
+    for r in range(2, 12):
         ws.cell(r, 2).fill = PatternFill("solid", fgColor="FFF3B0")
-    for r in (14, 15):
+    for r in (17, 18):
         ws.cell(r, 1).font = Font(bold=True, color=VERT, size=12)
         ws.cell(r, 2).font = Font(bold=True, size=12)
         ws.cell(r, 2).number_format = '#,##0.00 "€"'

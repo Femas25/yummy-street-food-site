@@ -70,7 +70,7 @@ const label = 'font-body text-sm font-semibold text-anthracite';
     <legend class={`${label} mb-1`}>Ce qui vous intéresse</legend>
     <div class="grid gap-2 sm:grid-cols-2">
       {
-        ['Apéro / vin d\'honneur (starters)', 'Repas street food', 'Formule complète', 'Service de fin de soirée', 'Pause midi / lunch d\'équipe', 'Je ne sais pas encore'].map(
+        ['La Complète (5 starters + plat)', 'La Gourmande (3 starters + plat)', 'L\'Essentielle (plat, dessert)', 'Avec dessert', 'Starters seuls (vin d\'honneur)', 'Service de fin de soirée', 'Lunch d\'équipe', 'Je ne sais pas encore'].map(
           (opt) => (
             <label class="flex items-center gap-2 rounded-lg bg-mint/50 px-3 py-2 font-body text-sm text-anthracite">
               <input type="checkbox" name="formules" value={opt} class="accent-primary" />
