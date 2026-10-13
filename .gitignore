@@ -30,3 +30,4 @@ npm-debug.log*
 /*.xlsx
 /*.exe
 /Yummy_Evenements_Referencement_2026*.md
+__pycache__/
