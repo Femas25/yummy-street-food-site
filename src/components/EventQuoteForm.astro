@@ -1,7 +1,6 @@
 ---
 // Demande de devis pour un événement privé, envoyée via Web3Forms (même compte que ContactForm).
-// Les champs « Comment nous avez-vous connus ? » et « source » servent à mesurer quels canaux
-// de prospection rapportent des demandes (à reporter dans le Google Sheet de prospection).
+// Le champ caché « source » indique quelle campagne a amené la demande (lien ?src=… dans les e-mails).
 const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
 
 const field =
@@ -64,21 +63,6 @@ const label = 'font-body text-sm font-semibold text-anthracite';
       <label for="q-place" class={label}>Commune / lieu</label>
       <input id="q-place" name="lieu" type="text" placeholder="ex. Virton, Arlon..." class={field} />
     </div>
-  </div>
-
-  <div class="flex min-w-0 flex-col gap-1">
-    <label for="q-heard" class={label}>Comment nous avez-vous connus ?</label>
-    <select id="q-heard" name="connu_par" class={field}>
-      <option value="">Sélectionnez...</option>
-      <option>Marché (Virton / Arlon)</option>
-      <option>Un événement où nous étions présents</option>
-      <option>Bouche à oreille</option>
-      <option>Facebook / Instagram</option>
-      <option>Google</option>
-      <option>Un lieu de réception ou un organisateur</option>
-      <option>Email ou flyer reçu</option>
-      <option>Autre</option>
-    </select>
   </div>
 
   <div class="flex min-w-0 flex-col gap-1">
