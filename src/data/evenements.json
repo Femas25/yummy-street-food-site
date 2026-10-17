@@ -71,6 +71,14 @@
       "lieu": "Événement privé",
       "horaires": "Privé",
       "couleur": "lime"
+    },
+    {
+      "date": "2026-10-17",
+      "titre": "Virton — Place de l'Église",
+      "lieu": "Le long de l'église, Place de Virton",
+      "adresse": "Place de l'Église, 6760 Virton, Belgique",
+      "horaires": "16h30 - 21h",
+      "couleur": "red"
     }
   ]
 }

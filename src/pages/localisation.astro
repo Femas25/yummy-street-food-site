@@ -17,11 +17,13 @@ const mapsUrl = (adresse: string) => `https://www.google.com/maps/dir/?api=1&des
 const appleMapsUrl = (adresse: string) => `https://maps.apple.com/?daddr=${encodeURIComponent(adresse)}`;
 const wazeUrl = (adresse: string) => `https://www.waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`;
 
-// Palette discrète par marché : un vert de la charte graphique par lieu, pas de rouge criard.
+// Palette discrète par marché : un vert de la charte graphique par lieu. Le rouge est réservé
+// aux événements ponctuels/exceptionnels à mettre en évidence.
 const eventColors: Record<string, { border: string; dot: string }> = {
   primary: { border: 'border-primary', dot: 'bg-primary' },
   leaf: { border: 'border-leaf', dot: 'bg-leaf' },
   lime: { border: 'border-lime', dot: 'bg-lime' },
+  red: { border: 'border-red-500', dot: 'bg-red-500' },
 };
 const colorFor = (couleur?: string) => eventColors[couleur ?? 'primary'] ?? eventColors.primary;
 
@@ -35,21 +37,25 @@ const eventsForCalendar = evenements
 // Données structurées (schema.org) par événement, pour que Google puisse afficher
 // les dates de marché directement dans les résultats de recherche.
 const parseHoraires = (horaires: string) => {
-  const match = horaires.match(/(\d+)h\s*-\s*(\d+)h/);
-  return match ? { start: match[1].padStart(2, '0'), end: match[2].padStart(2, '0') } : null;
+  const match = horaires.match(/(\d+)h(\d{2})?\s*-\s*(\d+)h(\d{2})?/);
+  if (!match) return null;
+  return {
+    start: `${match[1].padStart(2, '0')}:${match[2] ?? '00'}`,
+    end: `${match[3].padStart(2, '0')}:${match[4] ?? '00'}`,
+  };
 };
 
 const eventsSchema = evenements
   .filter((e) => isoDateRe.test(e.date) && e.adresse)
   .map((e) => {
-    const times = parseHoraires(e.horaires) ?? { start: '08', end: '18' };
+    const times = parseHoraires(e.horaires) ?? { start: '08:00', end: '18:00' };
     return {
       '@context': 'https://schema.org',
       '@type': 'Event',
       name: `${e.titre} — Yummy Street Food`,
       description: `Retrouvez le food truck Yummy Street Food : ${e.lieu}, ${e.horaires}.`,
-      startDate: `${e.date}T${times.start}:00:00+02:00`,
-      endDate: `${e.date}T${times.end}:00:00+02:00`,
+      startDate: `${e.date}T${times.start}:00+02:00`,
+      endDate: `${e.date}T${times.end}:00+02:00`,
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       eventStatus: 'https://schema.org/EventScheduled',
       location: {
@@ -285,7 +291,7 @@ const hasEvenements = evenements.length > 0;
 
 {eventsSchema.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
 
-<script define:vars={{ eventsForCalendar }}>
+<script define:vars={{ eventsForCalendar, eventDotColors: Object.fromEntries(Object.entries(eventColors).map(([k, v]) => [k, v.dot])) }}>
   const grid = document.getElementById('cal-grid');
   const label = document.getElementById('cal-label');
   const prevBtn = document.getElementById('cal-prev');
@@ -393,7 +399,7 @@ const hasEvenements = evenements.length > 0;
         cell.setAttribute('aria-label', `${event.titre} — voir les détails`);
         cell.title = event.titre;
         const dot = document.createElement('span');
-        const dotColor = event.couleur === 'leaf' ? 'bg-leaf' : 'bg-primary';
+        const dotColor = eventDotColors[event.couleur] ?? eventDotColors.primary;
         dot.className = `absolute bottom-1 h-1.5 w-1.5 rounded-full ${dotColor}`;
         cell.appendChild(dot);
         cell.addEventListener('click', () => openEventModal(event));
