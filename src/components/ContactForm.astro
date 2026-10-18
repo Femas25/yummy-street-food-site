@@ -57,11 +57,13 @@ const inputClass =
 
   <div class="grid gap-4 md:grid-cols-2">
     <div class="flex flex-col gap-1">
-      <label for="phone" class="font-body text-sm font-semibold text-anthracite">Téléphone (facultatif)</label>
+      <label for="phone" class="font-body text-sm font-semibold text-anthracite">Téléphone</label>
       <input
         id="phone"
         name="phone"
         type="tel"
+        required
+        autocomplete="tel"
         class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
@@ -123,7 +125,7 @@ const inputClass =
         <input id="heure" name="heure" type="time" required class={inputClass} />
       </div>
     </div>
-    <p class="font-body text-xs text-anthracite/70">Nous vous recontacterons pour valider la commande. Pensez à indiquer votre téléphone.</p>
+    <p class="font-body text-xs text-anthracite/70">Nous vous recontacterons par téléphone pour valider la commande.</p>
   </fieldset>
 
   <div class="flex flex-col gap-1">
