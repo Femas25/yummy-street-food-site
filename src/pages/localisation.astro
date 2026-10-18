@@ -28,9 +28,14 @@ const eventColors: Record<string, { border: string; dot: string }> = {
 const colorFor = (couleur?: string) => eventColors[couleur ?? 'primary'] ?? eventColors.primary;
 
 // Classés par ordre de passage (date la plus proche en premier).
-const evenements = [...evenementsData.evenements].sort((a, b) => a.date.localeCompare(b.date));
+const evenementsTous = [...evenementsData.evenements].sort((a, b) => a.date.localeCompare(b.date));
 
-const eventsForCalendar = evenements
+// Seuls les événements à venir (heure belge) sont listés et décrits pour Google ; le calendrier garde tout
+// l'historique. Le site étant statique, un script masque aussi dans le navigateur ceux passés depuis le build.
+const aujourdhui = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Brussels' }).format(new Date());
+const evenements = evenementsTous.filter((e) => !isoDateRe.test(e.date) || e.date >= aujourdhui);
+
+const eventsForCalendar = evenementsTous
   .filter((e) => isoDateRe.test(e.date))
   .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, adresse: e.adresse, horaires: e.horaires, couleur: e.couleur, dateFormatted: formatDate(e.date) }));
 
@@ -154,6 +159,7 @@ const hasEvenements = evenements.length > 0;
               evenements.map((ev, i) => (
                 <div
                   id={isoDateRe.test(ev.date) ? `event-${ev.date}` : undefined}
+                  data-event-date={isoDateRe.test(ev.date) ? ev.date : undefined}
                   class={`reveal-scale group flex flex-col gap-2 rounded-2xl border-l-4 ${colorFor(ev.couleur).border} bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4`}
                   style={`--reveal-delay:${i * 110}ms`}
                 >
@@ -290,6 +296,14 @@ const hasEvenements = evenements.length > 0;
 </Layout>
 
 {eventsSchema.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
+
+<script>
+  // Masque les événements passés depuis la dernière mise en ligne (comparaison en heure belge).
+  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Brussels' }).format(new Date());
+  document.querySelectorAll<HTMLElement>('[data-event-date]').forEach((card) => {
+    if ((card.dataset.eventDate ?? '') < today) card.style.display = 'none';
+  });
+</script>
 
 <script define:vars={{ eventsForCalendar, eventDotColors: Object.fromEntries(Object.entries(eventColors).map(([k, v]) => [k, v.dot])) }}>
   const grid = document.getElementById('cal-grid');
