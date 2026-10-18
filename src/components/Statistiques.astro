@@ -2,7 +2,8 @@
 // Statistiques anonymes du site (pages vues, clics sur les liens, formulaires envoyés), stockées dans le
 // projet Supabase « yummy-statistiques ». Aucune donnée personnelle : ni IP, ni cookie, ni identifiant.
 // La clé publique ne permet que d'ajouter des lignes (lecture, modification et suppression refusées).
-// Le propriétaire peut exclure ses propres visites avec ?stats=off (et les réactiver avec ?stats=on).
+// Rien n'est lu ni écrit sur l'appareil du visiteur (pas de cookie, ni de stockage local), sauf s'il demande
+// lui-même à être exclu avec ?stats=off (et réactivé avec ?stats=on), lien proposé dans la politique de confidentialité.
 ---
 
 <script>
@@ -51,8 +52,8 @@
   } catch {
     referent = null;
   }
-  const nouvelleVisite = stockage(sessionStorage, 'yummy-visite') === null;
-  stockage(sessionStorage, 'yummy-visite', '1');
+  // Nouvelle visite = arrivée depuis un autre site, un lien direct ou un QR code (pas depuis une page du site).
+  const nouvelleVisite = !document.referrer || referent !== null;
   envoyer('vue', {
     source: coupe(params.get('src') || params.get('utm_source'), 100),
     referent,
