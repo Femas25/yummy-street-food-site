@@ -170,7 +170,7 @@ const animAt = T => { let r = 0; for (let i=0;i<SPEEDS.length;i++) { const [s,v]
   const d=(e-s)/v; if (T <= r+d) return s + (T-r)*v; r += d; } return ANIM_END; };
 const DUR = realAt(ANIM_END) + HOLD;
 const PHONE = '0470 12 34 56';
-const ADDRESS = 'Rue de la Gare 12, Virton';
+const ADDRESS = 'Rue des Radis 7, Virton';
 // Quantités tapées : [instant du tap, index du produit]
 const TAPS_QTY = [[6.55,0],[6.8,0],[7.05,1],[7.3,2],[7.6,3]];
 
