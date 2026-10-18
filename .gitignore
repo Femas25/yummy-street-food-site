@@ -15,8 +15,12 @@ npm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# local tooling config (not part of the site)
-.claude/
+# local tooling config (not part of the site).
+# The agent team (agents/, skills/, equipe/) is versioned; personal settings stay local.
+.claude/*
+!.claude/agents/
+!.claude/skills/
+!.claude/equipe/
 
 .vercel
 .env*
