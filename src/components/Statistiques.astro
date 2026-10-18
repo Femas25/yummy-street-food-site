@@ -1,0 +1,93 @@
+---
+// Statistiques anonymes du site (pages vues, clics sur les liens, formulaires envoyés), stockées dans le
+// projet Supabase « yummy-statistiques ». Aucune donnée personnelle : ni IP, ni cookie, ni identifiant.
+// La clé publique ne permet que d'ajouter des lignes (lecture, modification et suppression refusées).
+// Le propriétaire peut exclure ses propres visites avec ?stats=off (et les réactiver avec ?stats=on).
+---
+
+<script>
+  const STATS_URL = 'https://ozimitxiimuidszpbgqv.supabase.co/rest/v1/evenements_site';
+  const STATS_KEY = 'sb_publishable_yalAKia8EADio99mDGib3A_Sui39hGY';
+
+  const params = new URLSearchParams(window.location.search);
+  const stockage = (store: Storage, cle: string, valeur?: string | null) => {
+    try {
+      if (valeur === undefined) return store.getItem(cle);
+      if (valeur === null) store.removeItem(cle);
+      else store.setItem(cle, valeur);
+    } catch {
+      // Stockage indisponible (navigation privée…) : on continue sans.
+    }
+    return null;
+  };
+
+  if (params.get('stats') === 'off') stockage(localStorage, 'yummy-stats-off', '1');
+  if (params.get('stats') === 'on') stockage(localStorage, 'yummy-stats-off', null);
+
+  const actif =
+    window.location.hostname.endsWith('yummy-streetfood.be') &&
+    stockage(localStorage, 'yummy-stats-off') !== '1' &&
+    !navigator.webdriver;
+
+  const coupe = (texte: string | null | undefined, max: number) => (texte ? texte.trim().slice(0, max) : null);
+  const ua = navigator.userAgent;
+  const appareil = /iPad|Tablet/i.test(ua) ? 'tablette' : /Mobi|Android/i.test(ua) ? 'mobile' : 'ordinateur';
+
+  const envoyer = (type: 'vue' | 'clic' | 'formulaire', extra: Record<string, unknown> = {}) => {
+    if (!actif) return;
+    fetch(STATS_URL, {
+      method: 'POST',
+      keepalive: true,
+      headers: { apikey: STATS_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ type, page: coupe(window.location.pathname, 200), appareil, ...extra }),
+    }).catch(() => {});
+  };
+
+  // Page vue : source de campagne (?src= du QR code de la plaquette, des e-mails…) et site d'origine.
+  let referent: string | null = null;
+  try {
+    const origine = document.referrer ? new URL(document.referrer).hostname : '';
+    if (origine && origine !== window.location.hostname) referent = coupe(origine, 200);
+  } catch {
+    referent = null;
+  }
+  const nouvelleVisite = stockage(sessionStorage, 'yummy-visite') === null;
+  stockage(sessionStorage, 'yummy-visite', '1');
+  envoyer('vue', {
+    source: coupe(params.get('src') || params.get('utm_source'), 100),
+    referent,
+    nouvelle_visite: nouvelleVisite,
+  });
+
+  // Clics sur les liens et boutons-liens (réseaux sociaux, téléphone, e-mail, plaquette, navigation…).
+  document.addEventListener(
+    'click',
+    (e) => {
+      const lien = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
+      if (!lien) return;
+      const href = lien.getAttribute('href') ?? '';
+      let cible = href;
+      if (/^https?:/i.test(href)) {
+        try {
+          const url = new URL(href);
+          cible = url.hostname === window.location.hostname ? url.pathname : url.hostname + url.pathname;
+        } catch {
+          cible = href;
+        }
+      }
+      envoyer('clic', {
+        cible: coupe(cible, 300),
+        libelle: coupe(lien.getAttribute('aria-label') || lien.textContent?.replace(/\s+/g, ' '), 120),
+      });
+    },
+    { capture: true }
+  );
+
+  // Formulaires envoyés : formulaire de contact (événement émis après succès) et formulaire de devis.
+  document.addEventListener('yummy:formulaire', (e) => {
+    envoyer('formulaire', { cible: coupe((e as CustomEvent<string>).detail, 300) });
+  });
+  document.querySelectorAll<HTMLFormElement>('form[data-stats]').forEach((form) => {
+    form.addEventListener('submit', () => envoyer('formulaire', { cible: form.dataset.stats }));
+  });
+</script>

@@ -227,6 +227,7 @@ const inputClass =
       form.hidden = true;
       const success = document.getElementById('form-success')!;
       success.hidden = false;
+      document.dispatchEvent(new CustomEvent('yummy:formulaire', { detail: isOrder() ? 'commande' : 'contact' }));
       success.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch {
       document.getElementById('form-error')!.hidden = false;

@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import OrderBanner from '../components/OrderBanner.astro';
 import Footer from '../components/Footer.astro';
+import Statistiques from '../components/Statistiques.astro';
 import contact from '../data/contact.json';
 import '../styles/global.css';
 
@@ -71,6 +72,7 @@ const businessSchema = {
       <slot />
     </main>
     <Footer />
+    <Statistiques />
 
     <script>
       const io = new IntersectionObserver(
