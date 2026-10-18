@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Yummy — Commande à emporter (vidéo)</title>
+<title>Yummy — Commande à livrer (vidéo)</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root { --forest:#083E23; --emerald:#0C7C5E; --lime:#BED70B; --leaf:#5FB98A; --mint:#E4EFE2; --cream:#F8F6F2; }
@@ -10,26 +10,27 @@
   html, body { width:540px; height:960px; overflow:hidden; background:var(--forest); }
   #stage { position:relative; width:540px; height:960px; overflow:hidden; font-family:Fredoka, sans-serif; color:var(--cream);
     background: radial-gradient(120% 70% at 50% 18%, #129e78 0%, #0C7C5E 30%, #083E23 75%); }
-  .abs { position:absolute; }
   .leaf { position:absolute; width:70px; filter:drop-shadow(0 8px 12px rgba(0,0,0,.25)); }
   #rays { position:absolute; left:50%; top:30%; width:1400px; height:1400px; margin:-700px 0 0 -700px; opacity:.10;
     background: repeating-conic-gradient(from 0deg, #BED70B 0 8deg, transparent 8deg 22deg); border-radius:50%; }
 
   /* Intro */
-  #intro { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; padding-top:120px; }
-  #introLogo { width:230px; }
-  .kicker { margin-top:26px; font-weight:700; font-size:30px; letter-spacing:.32em; text-transform:uppercase; }
-  .big { font-weight:700; font-size:82px; line-height:.95; color:var(--lime); text-transform:uppercase;
+  #intro { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; padding-top:96px; }
+  #introLogo { width:210px; }
+  .kicker { margin-top:22px; font-weight:700; font-size:28px; letter-spacing:.3em; text-transform:uppercase; }
+  .big { font-weight:700; font-size:80px; line-height:.95; color:var(--lime); text-transform:uppercase; text-align:center;
     text-shadow: 0 6px 0 #083E23, 0 14px 30px rgba(0,0,0,.35); }
-  #cards { margin-top:46px; display:flex; gap:16px; }
+  #cards { margin-top:40px; display:flex; gap:16px; }
   .card { width:150px; background:var(--cream); border-radius:26px; padding:10px 10px 14px; color:var(--forest);
     box-shadow:0 18px 30px -10px rgba(0,0,0,.45); text-align:center; }
   .card .ph { width:130px; height:130px; border-radius:18px; background-size:cover; background-position:center; }
   .card .nm { margin-top:10px; font-weight:700; font-size:28px; }
-  .card .tag { display:inline-block; margin-top:2px; font-family:Lato; font-weight:900; font-size:11px; letter-spacing:.12em;
-    background:var(--lime); border-radius:99px; padding:3px 9px; text-transform:uppercase; }
-  #dispo { margin-top:34px; font-family:Lato; font-weight:900; font-size:19px; letter-spacing:.18em; text-transform:uppercase;
+  #drinks { margin-top:22px; font-weight:700; font-size:24px; background:var(--cream); color:var(--forest); border-radius:99px; padding:8px 22px;
+    box-shadow:0 12px 24px -10px rgba(0,0,0,.45); }
+  #drinks i { font-style:normal; color:var(--emerald); }
+  #dispo { margin-top:26px; font-family:Lato; font-weight:900; font-size:22px; letter-spacing:.04em;
     border:2px solid rgba(248,246,242,.5); border-radius:99px; padding:9px 22px; }
+  #dispo b { color:var(--lime); }
 
   /* Caption */
   #caption { position:absolute; left:0; right:0; top:42px; display:flex; justify-content:center; z-index:20; }
@@ -51,7 +52,7 @@
     background:rgba(255,255,255,.55); border:3px solid #fff; box-shadow:0 0 0 2px rgba(8,62,35,.6), 0 8px 18px rgba(0,0,0,.35); }
   #ripple { position:absolute; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%; z-index:39;
     border:4px solid var(--lime); }
-  #dropdown { position:absolute; z-index:38; width:300px; background:#fff; border-radius:14px; overflow:hidden;
+  #dropdown { position:absolute; z-index:38; width:320px; background:#fff; border-radius:14px; overflow:hidden;
     box-shadow:0 20px 40px -10px rgba(0,0,0,.45); font-family:Lato; font-size:16px; color:#303030; transform-origin:50% 0; }
   #dropdown div { padding:11px 16px; border-bottom:1px solid #eee; }
   #dropdown div.hl { background:var(--lime); color:var(--forest); font-weight:900; }
@@ -59,18 +60,21 @@
   /* Bottom bar */
   #bar { position:absolute; left:0; right:0; bottom:44px; display:flex; justify-content:center; z-index:20; }
   #bar span { font-family:Lato; font-weight:900; font-size:18px; background:var(--forest); border:2px solid var(--lime);
-    border-radius:99px; padding:9px 20px; letter-spacing:.04em; box-shadow:0 10px 20px -8px rgba(0,0,0,.5); }
+    border-radius:99px; padding:9px 20px; letter-spacing:.03em; box-shadow:0 10px 20px -8px rgba(0,0,0,.5); white-space:nowrap; }
   #bar i { font-style:normal; color:var(--lime); }
 
   /* Outro */
   #outro { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:25; }
   #outro .big { font-size:66px; }
-  #outro .menu { margin-top:22px; font-size:40px; font-weight:700; }
+  #outro .menu { margin-top:20px; font-size:34px; font-weight:700; line-height:1.25; }
   #outro .menu i { font-style:normal; color:var(--lime); }
-  #outro .how { margin-top:36px; background:var(--lime); color:var(--forest); font-weight:700; font-size:26px; border-radius:99px; padding:14px 30px;
+  #outro .how { margin-top:28px; background:var(--cream); color:var(--forest); font-weight:700; font-size:24px; border-radius:99px; padding:12px 26px;
     box-shadow:0 14px 26px -10px rgba(0,0,0,.5); }
-  #outro .url { margin-top:20px; font-family:Lato; font-weight:900; font-size:24px; letter-spacing:.03em; }
-  #outroLogo { width:200px; margin-bottom:26px; }
+  #outro .tel { margin-top:26px; font-family:Lato; font-weight:900; font-size:21px; letter-spacing:.06em; text-transform:uppercase; opacity:.9; }
+  #outro .num { margin-top:8px; background:var(--lime); color:var(--forest); font-weight:700; font-size:40px; border-radius:22px; padding:8px 26px;
+    box-shadow:0 6px 0 #083E23, 0 18px 30px -10px rgba(0,0,0,.5); }
+  #outro .url { margin-top:22px; font-family:Lato; font-weight:900; font-size:22px; letter-spacing:.03em; }
+  #outroLogo { width:180px; margin-bottom:22px; }
 </style>
 </head>
 <body>
@@ -81,30 +85,34 @@
   <div id="intro">
     <img id="introLogo" src="img/logo.png" alt="">
     <div class="kicker" id="k1">Aujourd'hui</div>
-    <div class="big" id="k2">À emporter</div>
+    <div class="big" id="k2">On vous<br>livre !</div>
     <div id="cards">
       <div class="card"><div class="ph" style="background-image:url(img/pita.jpg)"></div><div class="nm">Pita</div></div>
       <div class="card"><div class="ph" style="background-image:url(img/burger.jpg)"></div><div class="nm">Burger</div></div>
       <div class="card"><div class="ph" style="background-image:url(img/potage.jpg)"></div><div class="nm">Potage</div></div>
     </div>
-    <div id="dispo">Disponibles aujourd'hui</div>
+    <div id="drinks">+ Loumonades <i>cola</i> &amp; <i>pomme-cerise</i></div>
+    <div id="dispo">📞 <b>+32 474 60 64 51</b></div>
   </div>
 
   <div id="caption">
     <div class="cap" id="c1"><b>1</b>Clique sur <em>CONTACT</em></div>
     <div class="cap" id="c2"><b>2</b>Descends au formulaire</div>
-    <div class="cap" id="c3"><b>3</b>Ta commande + ton heure</div>
+    <div class="cap" id="c3"><b>3</b>Choisis <em>Commande à livrer</em></div>
+    <div class="cap" id="c4"><b>4</b>Tes quantités</div>
+    <div class="cap" id="c5"><b>5</b>Ton adresse + ton heure</div>
+    <div class="cap" id="c6"><b>✓</b>On te rappelle pour valider</div>
   </div>
 
   <div id="phoneWrap">
     <div class="phone"><div class="screen">
       <div class="notch"></div>
       <div class="inner" id="inner">
-        <iframe id="fHome" src="/"></iframe>
-        <iframe id="fContact" src="/contact"></iframe>
+        <iframe id="fHome" src="/?commande=test"></iframe>
+        <iframe id="fContact" src="/contact?commande=test"></iframe>
         <div id="dropdown">
           <div>Sélectionnez...</div>
-          <div class="hl">Commande à emporter</div>
+          <div class="hl">🛵 Commande à livrer (aujourd'hui)</div>
           <div>Mariage</div>
           <div>Anniversaire / fête de famille</div>
           <div>Entreprise</div>
@@ -115,13 +123,15 @@
     </div></div>
   </div>
 
-  <div id="bar"><span>Aujourd'hui : <i>Pita</i> · <i>Burger</i> · <i>Potage</i></span></div>
+  <div id="bar"><span>📞 +32 474 60 64 51 · <i>Pita</i> · <i>Burger</i> · <i>Potage</i></span></div>
 
   <div id="outro">
     <img id="outroLogo" src="img/logo.png" alt="">
-    <div class="big">Commande<br>à emporter</div>
-    <div class="menu"><i>Pita</i> · <i>Burger</i> · <i>Potage</i></div>
-    <div class="how">Site → Contact → Commande</div>
+    <div class="big">Commande<br>à livrer</div>
+    <div class="menu"><i>Pita</i> · <i>Burger</i> · <i>Potage</i><br>+ Loumonades</div>
+    <div class="how">Site → Contact → Commande à livrer</div>
+    <div class="tel">Ou contactez-nous au</div>
+    <div class="num">+32 474 60 64 51</div>
     <div class="url">yummy-streetfood.be</div>
   </div>
 </div>
@@ -150,38 +160,45 @@ const back = p => { const c1=1.70158, c3=c1+1; return 1+c3*Math.pow(p-1,3)+c1*Ma
 const elastic = p => p===0?0:p===1?1:Math.pow(2,-10*p)*Math.sin((p*10-.75)*(2*Math.PI)/3)+1;
 const set = (el, o, tr) => { el.style.opacity = o; if (tr!==undefined) el.style.transform = tr; };
 
-const DUR = 10.0;
-const MSG = "Bonjour ! À emporter aujourd'hui : 1 pita, 1 burger et 1 potage pour 12h30. Merci !";
+const DUR = 11.4;
+const ADDRESS = 'Rue de la Gare 12, Virton';
+// Quantités tapées : [instant du tap, index du produit]
+const TAPS_QTY = [[6.55,0],[6.8,0],[7.05,1],[7.3,2],[7.6,3]];
 
-let H, C, rects = {};
+let H, C, W, el = {};
 function setup() {
-  H = $('fHome').contentDocument; C = $('fContact').contentDocument;
+  H = $('fHome').contentDocument; C = $('fContact').contentDocument; W = $('fContact').contentWindow;
   const css = `.reveal,.reveal-scale{opacity:1!important;transform:none!important;transition:none!important}
     html{scroll-behavior:auto!important} *{caret-color:transparent}`;
   for (const d of [H, C]) { const s=d.createElement('style'); s.textContent=css; d.head.appendChild(s); }
-  const r = el => { const b = el.getBoundingClientRect(); return {x:b.left+b.width/2, y:b.top+b.height/2, w:b.width, h:b.height, top:b.top, left:b.left}; };
-  rects.homeContact = r(H.querySelector('header a[href="/contact"]'));
-  const form = C.querySelector('form');
-  const formTop = form.getBoundingClientRect().top + $('fContact').contentWindow.scrollY;
-  rects.scrollTarget = formTop - 150;
-  $('fContact').contentWindow.scrollTo(0, rects.scrollTarget);
-  rects.name = r(C.getElementById('name')); rects.select = r(C.getElementById('event_type'));
-  rects.msg = r(C.getElementById('message')); rects.send = r(form.querySelector('button[type=submit]'));
-  $('fContact').contentWindow.scrollTo(0, 0);
-  rects.submitBtn = form.querySelector('button[type=submit]');
+  el.homeContact = H.querySelector('header a[href="/contact"]');
+  el.form = C.getElementById('contact-form');
+  el.name = C.getElementById('name'); el.select = C.getElementById('event_type'); el.panel = C.getElementById('order-panel');
+  el.plus = [...el.panel.querySelectorAll('button[data-step="1"]')];
+  el.qty = [...el.panel.querySelectorAll('input[type=number]')];
+  el.addr = C.getElementById('adresse'); el.time = C.getElementById('heure');
+  el.send = el.form.querySelector('button[type=submit]'); el.success = C.getElementById('form-success');
+  el.header = C.getElementById('site-header');
+  el.select.value = ''; el.select.dispatchEvent(new Event('change'));
 }
+
+// Position (en px de la page iframe) du centre d'un élément, à l'instant présent.
+const ctr = (e, doc) => { const b = e.getBoundingClientRect(); return [b.left+b.width/2, b.top+b.height/2]; };
+// Défilement nécessaire pour placer un élément juste sous le header collant (+ marge).
+const yFor = (e, margin=24) => e.getBoundingClientRect().top + W.scrollY - el.header.offsetHeight - margin;
 
 function cursorAt(x,y,o,press=0) { const c=$('cursor'); c.style.left=x+'px'; c.style.top=y+'px';
   set(c, o, `scale(${1-0.25*press})`); }
 function rippleAt(x,y,p) { const r=$('ripple'); r.style.left=x+'px'; r.style.top=y+'px';
   set(r, p>0&&p<1 ? 1-p : 0, `scale(${1+p*2.2})`); }
-function path(pts, t) { // pts: [time,x,y]
-  if (t<=pts[0][0]) return pts[0].slice(1);
+function path(pts, t) { // pts: [time, () => [x,y]]
+  if (t<=pts[0][0]) return pts[0][1]();
   for (let i=1;i<pts.length;i++) if (t<=pts[i][0]) { const p=easeInOut(prog(t,pts[i-1][0],pts[i][0]));
-    return [lerp(pts[i-1][1],pts[i][1],p), lerp(pts[i-1][2],pts[i][2],p)]; }
-  return pts[pts.length-1].slice(1);
+    const a=pts[i-1][1](), b=pts[i][1](); return [lerp(a[0],b[0],p), lerp(a[1],b[1],p)]; }
+  return pts[pts.length-1][1]();
 }
 
+let scrollFrom = 0, lastSeg = -1;
 window.render = function(t) {
   // background
   $('rays').style.transform = `rotate(${t*12}deg) scale(${1+0.05*Math.sin(t*2)})`;
@@ -189,99 +206,109 @@ window.render = function(t) {
     L.d.style.left=L.x-35+'px'; L.d.style.top=L.y-35+dy+'px'; L.d.style.transform=`rotate(${a}deg) scale(${L.s*back(prog(t,0.05*L.i,0.05*L.i+0.6))})`; });
 
   // ---------- intro 0 → 2.1 ----------
-  const out = easeIn(prog(t,1.75,2.15));
+  const out = easeIn(prog(t,1.8,2.15));
   $('intro').style.opacity = 1-out;
   $('intro').style.transform = `translateY(${-90*out}px) scale(${1+0.15*out})`;
   set($('introLogo'), prog(t,0,.25), `scale(${elastic(prog(t,0,.8))}) rotate(${lerp(-12,0,easeOut(prog(t,0,.6)))}deg)`);
   set($('k1'), prog(t,.2,.4), `translateX(${lerp(-300,0,easeOut(prog(t,.2,.55)))}px)`);
   set($('k2'), prog(t,.3,.45), `scale(${back(prog(t,.3,.7))}) rotate(${lerp(8,-3,easeOut(prog(t,.3,.8)))}deg)`);
-  document.querySelectorAll('.card').forEach((c,i) => { const a=.55+i*.15;
+  document.querySelectorAll('.card').forEach((c,i) => { const a=.55+i*.13;
     set(c, prog(t,a,a+.15), `translateY(${lerp(260,0,back(prog(t,a,a+.45)))}px) rotate(${lerp(i*10-10,(i-1)*4,easeOut(prog(t,a,a+.5)))}deg)`); });
-  set($('dispo'), prog(t,1.1,1.3), `scale(${back(prog(t,1.1,1.45))})`);
+  set($('drinks'), prog(t,1.0,1.15), `scale(${back(prog(t,1.0,1.35))})`);
+  set($('dispo'), prog(t,1.2,1.35), `translateY(${lerp(40,0,back(prog(t,1.2,1.5)))}px)`);
 
   // ---------- phone ----------
-  const pin = prog(t,1.9,2.55), pout = easeIn(prog(t,8.55,8.95));
+  const pin = prog(t,1.95,2.6), pout = easeIn(prog(t,9.85,10.2));
   let zoom = 1, ox = 50, oy = 50;
-  const zA = easeInOut(prog(t,2.55,3.1)) - easeInOut(prog(t,3.45,3.85));      // zoom on Contact
-  const zB = easeInOut(prog(t,4.65,5.0)) - easeInOut(prog(t,8.1,8.45));       // zoom on form
-  if (t < 4.2) { zoom = 1 + 0.4*zA; ox = 72; oy = 6; } else { zoom = 1 + 0.18*zB; ox = 50; oy = 62; }
+  const zA = easeInOut(prog(t,2.6,3.1)) - easeInOut(prog(t,3.45,3.85));      // zoom sur Contact
+  const zB = easeInOut(prog(t,4.75,5.1)) - easeInOut(prog(t,9.4,9.75));       // zoom sur le formulaire
+  if (t < 4.2) { zoom = 1 + 0.4*zA; ox = 72; oy = 6; } else { zoom = 1 + 0.16*zB; ox = 50; oy = 55; }
   const pw = $('phoneWrap');
-  pw.style.opacity = t<1.9 ? 0 : 1 - pout;
+  pw.style.opacity = t<1.95 ? 0 : 1 - pout;
   pw.style.transformOrigin = `${ox}% ${oy}%`;
   pw.style.transform = `translateY(${lerp(900,0,back(pin)) + 60*pout}px) rotate(${lerp(14,0,easeOut(pin)) - 6*pout}deg) scale(${zoom*(1-0.35*pout)})`;
 
-  // screens: Contact page reveals as a circle from the button
-  const hc = rects.homeContact, rev = easeInOut(prog(t,3.4,3.85));
+  // Contact s'ouvre en cercle depuis le bouton
+  const hc = ctr(el.homeContact), rev = easeInOut(prog(t,3.4,3.85));
   const fc = $('fContact');
-  fc.style.clipPath = `circle(${rev*1100}px at ${hc.x}px ${hc.y}px)`;
+  fc.style.clipPath = `circle(${rev*1100}px at ${hc[0]}px ${hc[1]}px)`;
   fc.style.visibility = rev>0 ? 'visible':'hidden';
-  // home button press feedback
-  const hb = H.querySelector('header a[href="/contact"]');
   const press1 = prog(t,3.15,3.25) - prog(t,3.3,3.45);
-  hb.style.transform = `scale(${1-0.1*press1})`;
   const pulse = prog(t,2.6,2.8) * (1-prog(t,3.4,3.5)) * (0.5+0.5*Math.sin(t*14));
-  hb.style.boxShadow = `0 0 0 ${3+6*pulse+8*press1}px rgba(190,215,11,${0.35+0.4*pulse}), 0 0 ${18*pulse}px 4px rgba(190,215,11,.6)`;
+  el.homeContact.style.transform = `scale(${1-0.1*press1})`;
+  el.homeContact.style.boxShadow = `0 0 0 ${3+6*pulse+8*press1}px rgba(190,215,11,${0.35+0.4*pulse}), 0 0 ${18*pulse}px 4px rgba(190,215,11,.6)`;
 
-  // scroll contact page
-  const sp = easeInOut(prog(t,4.15,4.95));
-  fc.contentWindow.scrollTo(0, Math.round(rects.scrollTarget*sp));
+  // ---------- état du formulaire (fonction de t) ----------
+  el.name.value = 'Julie'.slice(0, Math.floor(prog(t,4.95,5.25)*5.999));
+  const wantOrder = t >= 5.9;
+  if ((el.select.value !== '') !== wantOrder) { el.select.value = wantOrder ? el.select.querySelector('[data-commande]').value : '';
+    el.select.dispatchEvent(new Event('change')); }
+  const selGlow = prog(t,5.9,6.0) - prog(t,6.4,6.7);
+  el.select.style.boxShadow = selGlow>0 ? `0 0 0 ${5*selGlow}px #BED70B` : '';
+  el.qty.forEach((q,i) => { q.value = TAPS_QTY.filter(([a,k]) => k===i && t>=a).length; });
+  el.addr.value = ADDRESS.slice(0, Math.round(prog(t,8.2,8.75)*ADDRESS.length));
+  el.time.value = t >= 8.95 ? '12:30' : '';
+  el.addr.style.borderColor = t>8.1 && t<8.85 ? '#0C7C5E' : '';
+  el.time.style.borderColor = t>8.85 && t<9.1 ? '#0C7C5E' : '';
+  const sent = t >= 9.4;
+  el.form.hidden = sent; el.success.hidden = !sent;
+  C.getElementById('success-commande').hidden = !sent; C.getElementById('success-contact').hidden = sent;
+  const press2 = prog(t,9.15,9.25) - prog(t,9.3,9.4);
+  el.send.style.transform = `scale(${1-0.08*press2})`;
+  el.plus.forEach((b,i) => { let p=0; TAPS_QTY.forEach(([a,k]) => { if (k===i) p=Math.max(p, prog(t,a-.06,a)-prog(t,a,a+.12)); });
+    b.style.transform = `scale(${1+0.25*p})`; b.style.background = p>0 ? '#BED70B' : ''; });
 
-  // form filling
-  const nameEl = C.getElementById('name'), selEl = C.getElementById('event_type'), msgEl = C.getElementById('message');
-  nameEl.value = 'Julie'.slice(0, Math.floor(prog(t,5.05,5.35)*5.999));
-  selEl.value = t >= 6.05 ? 'Commande à emporter' : '';
-  const selGlow = prog(t,6.05,6.15) - prog(t,6.6,6.9);
-  selEl.style.boxShadow = selGlow>0 ? `0 0 0 ${5*selGlow}px #BED70B` : '';
-  selEl.style.fontWeight = t>=6.05 ? '700' : '';
-  msgEl.value = MSG.slice(0, Math.round(prog(t,6.25,7.95)*MSG.length));
-  [nameEl, msgEl].forEach(e => e.style.borderColor = '');
-  if (t>5.0 && t<5.5) nameEl.style.borderColor = '#0C7C5E';
-  if (t>6.2 && t<8.0) msgEl.style.borderColor = '#0C7C5E';
-  const sb = rects.submitBtn, sent = t >= 8.25;
-  sb.textContent = sent ? 'Envoyé ✓' : 'Envoyer';
-  sb.style.background = sent ? '#BED70B' : ''; sb.style.color = sent ? '#083E23' : '';
-  const press2 = prog(t,8.1,8.2) - prog(t,8.25,8.4);
-  sb.style.transform = `scale(${1-0.08*press2})`;
+  // ---------- défilement (segments vers des cibles mesurées en direct) ----------
+  const segs = [[4.05,4.75,() => yFor(el.name.parentElement.parentElement)],
+                [5.95,6.35,() => yFor(el.panel, 10)],
+                [7.85,8.15,() => yFor(el.addr.parentElement.parentElement, 60)],
+                [9.4,9.7,() => yFor(el.success, 120)]];
+  let y = null;
+  for (let k=segs.length-1; k>=0; k--) { const [a,b,f] = segs[k]; if (t >= a) {
+      if (lastSeg !== k) { scrollFrom = W.scrollY; lastSeg = k; }
+      y = lerp(scrollFrom, f(), easeInOut(prog(t,a,b))); break; } }
+  W.scrollTo(0, y === null ? 0 : Math.round(y));
 
   // dropdown
-  const dd = $('dropdown'), ddp = prog(t,5.62,5.8) - prog(t,5.98,6.08);
-  const scrollNow = rects.scrollTarget; // after scroll, positions relative to scrolled viewport
-  const sel = {x:rects.select.x, y:rects.select.y - scrollNow, w:rects.select.w};
-  const nm = {x:rects.name.x, y:rects.name.y - scrollNow};
-  const ms = {x:rects.msg.x, y:rects.msg.y - scrollNow};
-  const sd = {x:rects.send.x, y:rects.send.y - scrollNow};
-  dd.style.left = (sel.x-150)+'px'; dd.style.top = (sel.y+22)+'px';
+  const dd = $('dropdown'), ddp = prog(t,5.5,5.68) - prog(t,5.85,5.95);
+  const sel = ctr(el.select);
+  dd.style.left = (sel[0]-160)+'px'; dd.style.top = (sel[1]+22)+'px';
   set(dd, ddp>0?1:0, `scaleY(${easeOut(clamp(ddp))})`);
 
-  // cursor path
-  const pts = [[2.6,195,640],[3.1,hc.x,hc.y],
-               [4.3,hc.x,hc.y],[4.9,200,600],[5.0,nm.x,nm.y],[5.45,nm.x,nm.y],[5.6,sel.x,sel.y],[5.9,sel.x,sel.y],
-               [6.0,sel.x,sel.y+70],[6.15,ms.x,ms.y],[7.9,ms.x+40,ms.y+30],[8.1,sd.x,sd.y]];
+  // ---------- curseur ----------
+  const at = e => () => ctr(e);
+  const off = (f,dx,dy) => () => { const [x,y]=f(); return [x+dx,y+dy]; };
+  const pts = [[2.6,()=>[195,640]],[3.1,at(el.homeContact)],[4.3,at(el.homeContact)],
+    [4.8,()=>[200,560]],[4.9,at(el.name)],[5.3,at(el.name)],[5.48,at(el.select)],[5.75,at(el.select)],[5.88,off(at(el.select),0,62)],
+    [6.35,off(at(el.select),0,62)],[6.5,at(el.plus[0])],[6.85,at(el.plus[0])],[7.0,at(el.plus[1])],[7.25,at(el.plus[2])],[7.55,at(el.plus[3])],
+    [7.85,at(el.plus[3])],[8.15,at(el.addr)],[8.75,at(el.addr)],[8.9,at(el.time)],[9.0,at(el.time)],[9.12,at(el.send)]];
   const [cx,cy] = path(pts,t);
-  const taps = [3.2,5.0,5.62,6.02,6.2,8.15];
+  const taps = [3.2,4.95,5.5,5.9,8.2,8.95,9.2, ...TAPS_QTY.map(x=>x[0])];
   let press=0; taps.forEach(a=>{ press=Math.max(press, prog(t,a-.08,a)-prog(t,a,a+.1)); });
-  cursorAt(cx,cy, (prog(t,2.55,2.7) - prog(t,3.55,3.75)) + (prog(t,4.6,4.75) - prog(t,8.35,8.5)), press);
+  cursorAt(cx,cy, (prog(t,2.55,2.7) - prog(t,3.55,3.75)) + (prog(t,4.6,4.75) - prog(t,9.35,9.5)), press);
   let rp = -1; taps.forEach(a=>{ if (t>=a && t<a+.45) rp = prog(t,a,a+.45); });
   rippleAt(cx,cy, rp<0?0:rp);
 
   // captions
-  const capIn = (el,a,b) => { const pi=prog(t,a,a+.35), po=prog(t,b-.2,b);
-    set(el, Math.min(pi>0?1:0, 1-po), `translateY(${lerp(-80,0,back(pi)) - 40*po}px) scale(${1-0.2*po})`); };
-  capIn($('c1'),2.45,3.75); capIn($('c2'),3.9,4.85); capIn($('c3'),4.95,8.5);
+  const capIn = (e,a,b) => { const pi=prog(t,a,a+.35), po=prog(t,b-.2,b);
+    set(e, Math.min(pi>0?1:0, 1-po), `translateY(${lerp(-80,0,back(pi)) - 40*po}px) scale(${1-0.2*po})`); };
+  capIn($('c1'),2.45,3.75); capIn($('c2'),3.9,4.85); capIn($('c3'),4.95,6.35); capIn($('c4'),6.4,7.85);
+  capIn($('c5'),7.9,9.35); capIn($('c6'),9.4,10.0);
 
   // bottom bar
-  const bp = prog(t,2.3,2.7), bo = prog(t,8.4,8.6);
+  const bp = prog(t,2.3,2.7), bo = prog(t,9.7,9.9);
   set($('bar'), Math.min(bp,1-bo), `translateY(${lerp(120,0,back(bp))}px)`);
 
   // outro
-  const op = prog(t,8.75,9.0);
+  const op = prog(t,10.05,10.3), q = s => $('outro').querySelector(s);
   $('outro').style.opacity = op;
-  set($('outroLogo'), op, `scale(${elastic(prog(t,8.75,9.5))})`);
-  $('outro').querySelector('.big').style.transform = `scale(${back(prog(t,8.8,9.2))}) rotate(-3deg)`;
-  $('outro').querySelector('.menu').style.transform = `translateY(${lerp(60,0,back(prog(t,8.95,9.3)))}px)`;
-  $('outro').querySelector('.menu').style.opacity = prog(t,8.95,9.1);
-  set($('outro').querySelector('.how'), prog(t,9.1,9.25), `scale(${back(prog(t,9.1,9.45)) * (1+0.04*Math.sin(t*8)*prog(t,9.45,9.6))})`);
-  set($('outro').querySelector('.url'), prog(t,9.25,9.45));
+  set($('outroLogo'), op, `scale(${elastic(prog(t,10.05,10.8))})`);
+  q('.big').style.transform = `scale(${back(prog(t,10.1,10.5))}) rotate(-3deg)`;
+  set(q('.menu'), prog(t,10.25,10.4), `translateY(${lerp(60,0,back(prog(t,10.25,10.6)))}px)`);
+  set(q('.how'), prog(t,10.4,10.55), `scale(${back(prog(t,10.4,10.75))})`);
+  set(q('.tel'), prog(t,10.55,10.7));
+  set(q('.num'), prog(t,10.6,10.75), `scale(${back(prog(t,10.6,10.95)) * (1+0.04*Math.sin(t*9)*prog(t,10.95,11.1))}) rotate(2deg)`);
+  set(q('.url'), prog(t,10.8,10.95));
 };
 
 window.ready = Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => i.onload = i.onerror = r)))

@@ -3,15 +3,32 @@
 // La clé pointe vers le compte Web3Forms de yummyfoodtrailer@gmail.com — si l'adresse
 // de réception doit changer, se reconnecter sur web3forms.com et ajuster dans le dashboard.
 const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
+
+// Module « commande à livrer » : masqué par défaut, affiché par le script uniquement
+// les jours activés dans src/data/commande.json.
+import commande from '../data/commande.json';
+import contact from '../data/contact.json';
+
+const SUBJECT_CONTACT = 'Nouveau message depuis le site Yummy';
+const SUBJECT_COMMANDE = `🛵 NOUVELLE ${commande.libelle.toUpperCase()}`;
+const inputClass =
+  'rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary';
 ---
 
+<div id="formulaire" class="scroll-mt-24">
+
 <form
+  id="contact-form"
   action="https://api.web3forms.com/submit"
   method="POST"
+  data-subject-contact={SUBJECT_CONTACT}
+  data-subject-commande={SUBJECT_COMMANDE}
+  data-libelle={commande.libelle}
   class="flex flex-col gap-4 rounded-xl border border-primary/20 bg-white p-6 shadow-sm md:p-8"
 >
   <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
-  <input type="hidden" name="subject" value="Nouveau message depuis le site Yummy" />
+  <input type="hidden" name="subject" value={SUBJECT_CONTACT} />
+  <input type="hidden" name="commande" value="" disabled />
   <input type="checkbox" name="botcheck" class="hidden" style="display: none" />
 
   <div class="grid gap-4 md:grid-cols-2">
@@ -57,7 +74,7 @@ const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
         class="rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       >
         <option value="">Sélectionnez...</option>
-        <option value="Commande à emporter">Commande à emporter</option>
+        <option value={commande.libelle} data-commande hidden disabled>🛵 {commande.libelle} (aujourd'hui)</option>
         <option value="Mariage">Mariage</option>
         <option value="Anniversaire / fête de famille">Anniversaire / fête de famille</option>
         <option value="Entreprise">Entreprise</option>
@@ -67,8 +84,50 @@ const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
     </div>
   </div>
 
+  <fieldset id="order-panel" hidden disabled class="flex flex-col gap-4 rounded-xl border-2 border-lime bg-mint/60 p-4 md:p-5">
+    <legend class="rounded-full bg-lime px-3 py-1 font-heading text-sm font-bold text-primary-dark">🛵 {commande.libelle}</legend>
+    <p class="font-body text-sm text-anthracite/80">Choisissez vos quantités :</p>
+    <ul class="flex flex-col gap-2">
+      {
+        commande.produits.map((p) => (
+          <li class="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2 shadow-sm">
+            <span class="font-heading font-semibold text-primary-dark">
+              <span aria-hidden="true">{p.emoji}</span> {p.nom}
+            </span>
+            <span class="flex items-center gap-2">
+              <button type="button" data-step="-1" class="h-8 w-8 rounded-full bg-mint font-heading text-lg font-bold text-primary-dark hover:bg-lime" aria-label={`Retirer un ${p.nom}`}>−</button>
+              <input
+                type="number"
+                data-nom={p.nom}
+                min="0"
+                max="50"
+                value="0"
+                inputmode="numeric"
+                aria-label={`Quantité ${p.nom}`}
+                class="w-12 rounded-lg border border-anthracite/20 py-1 text-center font-body text-sm font-bold"
+              />
+              <button type="button" data-step="1" class="h-8 w-8 rounded-full bg-primary font-heading text-lg font-bold text-cream hover:bg-primary-dark" aria-label={`Ajouter un ${p.nom}`}>+</button>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <p id="order-error" hidden class="font-body text-sm font-bold text-red-700">Ajoutez au moins un produit à votre commande.</p>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="flex flex-col gap-1 md:col-span-2">
+        <label for="adresse" class="font-body text-sm font-semibold text-anthracite">Adresse de livraison</label>
+        <input id="adresse" name="adresse" type="text" required autocomplete="street-address" class={inputClass} />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="heure" class="font-body text-sm font-semibold text-anthracite">Heure souhaitée</label>
+        <input id="heure" name="heure" type="time" required class={inputClass} />
+      </div>
+    </div>
+    <p class="font-body text-xs text-anthracite/70">Nous vous recontacterons pour valider la commande. Pensez à indiquer votre téléphone.</p>
+  </fieldset>
+
   <div class="flex flex-col gap-1">
-    <label for="message" class="font-body text-sm font-semibold text-anthracite">Message</label>
+    <label for="message" class="font-body text-sm font-semibold text-anthracite">Message<span id="message-optional" hidden> (facultatif)</span></label>
     <textarea
       id="message"
       name="message"
@@ -78,6 +137,10 @@ const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
     ></textarea>
   </div>
 
+  <p id="form-error" hidden class="font-body text-sm font-bold text-red-700">
+    L'envoi a échoué. Réessayez ou appelez-nous au {contact.telephone}.
+  </p>
+
   <button
     type="submit"
     class="mt-2 rounded-full bg-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream transition-colors hover:bg-primary-dark"
@@ -85,3 +148,86 @@ const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
     Envoyer
   </button>
 </form>
+
+<div id="form-success" hidden class="flex flex-col items-center gap-3 rounded-xl border-2 border-lime bg-white p-8 text-center shadow-sm">
+  <span class="text-4xl" aria-hidden="true">✅</span>
+  <h2 class="font-heading text-2xl font-bold text-primary-dark">Demande bien prise en compte !</h2>
+  <p id="success-commande" hidden class="font-body text-anthracite/80">
+    Nous vous recontacterons pour valider la commande.
+  </p>
+  <p id="success-contact" class="font-body text-anthracite/80">Merci, nous revenons vers vous rapidement.</p>
+  <p class="font-body text-sm text-anthracite/70">
+    Une question ? Appelez-nous au
+    <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="font-bold text-primary hover:underline">{contact.telephone}</a>
+  </p>
+</div>
+</div>
+
+<script>
+  import { ordersOpen } from '../scripts/commande';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const select = form.querySelector<HTMLSelectElement>('#event_type')!;
+  const option = select.querySelector<HTMLOptionElement>('option[data-commande]')!;
+  const panel = document.getElementById('order-panel') as HTMLFieldSetElement;
+  const message = form.querySelector<HTMLTextAreaElement>('#message')!;
+  const summary = form.querySelector<HTMLInputElement>('input[name="commande"]')!;
+  const subject = form.querySelector<HTMLInputElement>('input[name="subject"]')!;
+  const qtyInputs = [...panel.querySelectorAll<HTMLInputElement>('input[type="number"]')];
+
+  const isOrder = () => !panel.disabled;
+
+  const syncOrder = () => {
+    const on = select.value === form.dataset.libelle;
+    panel.hidden = panel.disabled = !on;
+    summary.disabled = !on;
+    message.required = !on;
+    document.getElementById('message-optional')!.hidden = !on;
+    subject.value = (on ? form.dataset.subjectCommande : form.dataset.subjectContact) ?? '';
+  };
+
+  if (ordersOpen()) {
+    option.hidden = option.disabled = false;
+    if (new URLSearchParams(location.search).has('commande')) select.value = option.value;
+    syncOrder();
+  }
+  select.addEventListener('change', syncOrder);
+
+  panel.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-step]');
+    if (!btn) return;
+    const input = btn.parentElement!.querySelector<HTMLInputElement>('input')!;
+    input.value = String(Math.min(50, Math.max(0, (Number(input.value) || 0) + Number(btn.dataset.step))));
+    document.getElementById('order-error')!.hidden = true;
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (isOrder()) {
+      const lignes = qtyInputs.filter((i) => Number(i.value) > 0).map((i) => `${i.value} × ${i.dataset.nom}`);
+      if (!lignes.length) {
+        document.getElementById('order-error')!.hidden = false;
+        return;
+      }
+      summary.value = lignes.join(', ');
+    }
+
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    button.disabled = true;
+    document.getElementById('form-error')!.hidden = true;
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      document.getElementById('success-commande')!.hidden = !isOrder();
+      document.getElementById('success-contact')!.hidden = isOrder();
+      form.hidden = true;
+      const success = document.getElementById('form-success')!;
+      success.hidden = false;
+      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch {
+      document.getElementById('form-error')!.hidden = false;
+      button.disabled = false;
+    }
+  });
+</script>

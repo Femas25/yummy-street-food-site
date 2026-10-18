@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro';
+import OrderBanner from '../components/OrderBanner.astro';
 import Footer from '../components/Footer.astro';
 import contact from '../data/contact.json';
 import '../styles/global.css';
@@ -65,6 +66,7 @@ const businessSchema = {
   </head>
   <body>
     <Header />
+    <OrderBanner />
     <main>
       <slot />
     </main>

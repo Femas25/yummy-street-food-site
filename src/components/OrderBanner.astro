@@ -1,0 +1,24 @@
+---
+// Bandeau « commandes ouvertes » sous le header. Masqué par défaut : le script ne
+// l'affiche que les jours activés dans src/data/commande.json.
+import commande from '../data/commande.json';
+
+const plats = commande.produits.map((p) => p.nom.replace(/^Loumonade .*/, 'Loumonades'));
+const resume = [...new Set(plats)].join(' · ');
+---
+
+<div id="order-banner" hidden class="relative z-40 bg-lime text-primary-dark">
+  <a
+    href="/contact?commande#formulaire"
+    class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 py-2 text-center font-heading text-sm font-bold"
+  >
+    <span>🛵 {commande.libelle} aujourd'hui : {resume}</span>
+    <span class="rounded-full bg-primary-dark px-3 py-0.5 text-xs uppercase tracking-wide text-lime">Commander →</span>
+  </a>
+</div>
+
+<script>
+  import { ordersOpen } from '../scripts/commande';
+
+  if (ordersOpen()) document.getElementById('order-banner')?.removeAttribute('hidden');
+</script>

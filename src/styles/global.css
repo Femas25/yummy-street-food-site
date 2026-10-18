@@ -13,6 +13,11 @@
   h4 {
     @apply font-heading;
   }
+
+  /* L'attribut hidden doit l'emporter sur les classes d'affichage (flex, grid…). */
+  [hidden] {
+    display: none !important;
+  }
 }
 
 @layer utilities {
