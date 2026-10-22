@@ -32,11 +32,11 @@
 
   /* 2. Produits */
   #menuK { margin-bottom:26px; font-size:24px; letter-spacing:.16em; white-space:nowrap; }
-  #cards { display:grid; grid-template-columns:repeat(2, 210px); gap:20px; }
+  #cards { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; width:440px; }
   .card { background:var(--cream); border-radius:26px; padding:10px 10px 12px; color:var(--forest);
     box-shadow:0 18px 30px -10px rgba(0,0,0,.45); text-align:center; }
   .card .ph { width:190px; height:170px; border-radius:18px; background-size:cover; background-position:center; }
-  .card .nm { margin-top:8px; font-weight:700; font-size:27px; line-height:1.05; min-height:56px; display:grid; place-items:center; }
+  .card .nm { margin-top:8px; font-weight:700; font-size:27px; line-height:1.05; display:grid; place-items:center; }
 
   /* 3. Créneaux */
   #slotsK { margin-bottom:6px; }
@@ -93,9 +93,8 @@
     <div class="kicker" id="menuK">Vendredi 23/10 · au menu</div>
     <div id="cards">
       <div class="card"><div class="ph" style="background-image:url(img/pita.jpg)"></div><div class="nm">Pita</div></div>
-      <div class="card"><div class="ph" style="background-image:url(img/bowl.jpg)"></div><div class="nm">Bowl</div></div>
       <div class="card"><div class="ph" style="background-image:url(img/burger.jpg)"></div><div class="nm">Burger</div></div>
-      <div class="card"><div class="ph" style="background-image:url(img/potage-cerfeuil.jpg)"></div><div class="nm">Potage<br>au cerfeuil</div></div>
+      <div class="card"><div class="ph" style="background-image:url(img/bowl.jpg)"></div><div class="nm">Bowl</div></div>
     </div>
   </div>
 
@@ -193,7 +192,7 @@ window.render = function(t) {
   a = scene('menu');
   slideX($('menuK'), a+.1, -320);
   document.querySelectorAll('.card').forEach((c,i) => { const s = a+.45+i*.3;
-    set(c, prog(t,s,s+.2), `translateY(${lerp(300,0,back(prog(t,s,s+.65)))}px) rotate(${lerp((i%2?12:-12),(i%2?2:-2),easeOut(prog(t,s,s+.7)))}deg)`); });
+    set(c, prog(t,s,s+.2), `translateY(${lerp(300,0,back(prog(t,s,s+.65)))}px) rotate(${lerp([-12,12,0][i],[-2,2,0][i],easeOut(prog(t,s,s+.7)))}deg)`); });
 
   // 3. Créneaux
   a = scene('slots');

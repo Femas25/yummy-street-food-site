@@ -17,7 +17,6 @@ cpSync(path.join(root, 'src/assets/brand/logo.png'), path.join(out, 'img/logo.pn
 cpSync(path.join(root, 'src/assets/menu/pita-garni-sauce-blanche.jpg'), path.join(out, 'img/pita.jpg'));
 cpSync(path.join(root, 'src/assets/menu/burger-betterave.jpg'), path.join(out, 'img/burger.jpg'));
 cpSync(path.join(here, 'img/bowl.jpg'), path.join(out, 'img/bowl.jpg'));
-cpSync(path.join(here, 'img/potage-cerfeuil.jpg'), path.join(out, 'img/potage-cerfeuil.jpg'));
 
 const FPS = 30;
 const frames = path.join(here, '.frames-23-10');
