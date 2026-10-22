@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Yummy — Commandes du vendredi 23/10 (vidéo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  /* Même style que promo/commande-a-livrer.html (vidéo « Commande à livrer »). */
+  :root { --forest:#083E23; --emerald:#0C7C5E; --lime:#BED70B; --leaf:#5FB98A; --mint:#E4EFE2; --cream:#F8F6F2; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:540px; height:960px; overflow:hidden; background:var(--forest); }
+  #stage { position:relative; width:540px; height:960px; overflow:hidden; font-family:Fredoka, sans-serif; color:var(--cream);
+    background: radial-gradient(120% 70% at 50% 18%, #129e78 0%, #0C7C5E 30%, #083E23 75%); }
+  .leaf { position:absolute; width:70px; filter:drop-shadow(0 8px 12px rgba(0,0,0,.25)); }
+  #rays { position:absolute; left:50%; top:30%; width:1400px; height:1400px; margin:-700px 0 0 -700px; opacity:.10;
+    background: repeating-conic-gradient(from 0deg, #BED70B 0 8deg, transparent 8deg 22deg); border-radius:50%; }
+  .scene { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; text-align:center; }
+
+  /* Intro */
+  #intro { padding-top:92px; }
+  #introLogo { width:200px; }
+  .kicker { margin-top:20px; font-weight:700; font-size:28px; letter-spacing:.3em; text-transform:uppercase; }
+  .big { font-weight:700; font-size:72px; line-height:.95; color:var(--lime); text-transform:uppercase; text-align:center;
+    text-shadow: 0 6px 0 #083E23, 0 14px 30px rgba(0,0,0,.35); }
+  #k2 { margin-top:6px; font-size:66px; }
+  #cards { margin-top:34px; display:flex; gap:16px; }
+  .card { width:150px; background:var(--cream); border-radius:26px; padding:10px 10px 14px; color:var(--forest);
+    box-shadow:0 18px 30px -10px rgba(0,0,0,.45); text-align:center; }
+  .card .ph { width:130px; height:130px; border-radius:18px; background-size:cover; background-position:center; }
+  .card .nm { margin-top:10px; font-weight:700; font-size:28px; }
+  #drinks { margin-top:22px; font-weight:700; font-size:24px; background:var(--cream); color:var(--forest); border-radius:99px; padding:8px 22px;
+    box-shadow:0 12px 24px -10px rgba(0,0,0,.45); }
+  #drinks i { font-style:normal; color:var(--emerald); }
+
+  /* Créneaux */
+  #slots { justify-content:center; padding-bottom:30px; }
+  #slots .kicker { margin:0 0 10px; }
+  #slots .big { font-size:76px; }
+  .slot { margin-top:18px; background:var(--lime); color:var(--forest); font-weight:700; font-size:58px; border-radius:26px; padding:6px 30px;
+    box-shadow:0 7px 0 #062f1a, 0 20px 34px -12px rgba(0,0,0,.5); }
+  .slotSep { margin-top:14px; font-family:Lato; font-weight:900; font-size:22px; letter-spacing:.2em; text-transform:uppercase; opacity:.85; }
+  #pickup { margin-top:44px; background:var(--cream); color:var(--forest); font-weight:700; font-size:32px; border-radius:99px; padding:12px 30px;
+    box-shadow:0 14px 26px -10px rgba(0,0,0,.5); }
+  #pickup i { font-style:normal; color:var(--emerald); }
+  #pickNote { margin-top:14px; font-family:Lato; font-weight:700; font-size:19px; opacity:.9; }
+
+  /* Où commander */
+  #where { justify-content:center; padding-bottom:20px; }
+  #where .big { font-size:62px; }
+  #pills { margin-top:36px; display:flex; flex-direction:column; gap:18px; align-items:stretch; width:430px; }
+  .pill { display:flex; align-items:center; gap:18px; background:var(--cream); color:var(--forest); border-radius:99px; padding:10px 26px 10px 10px;
+    font-weight:700; font-size:30px; text-align:left; box-shadow:0 14px 26px -10px rgba(0,0,0,.5); white-space:nowrap; }
+  .pill small { display:block; font-family:Lato; font-weight:900; font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--emerald); }
+  .pill .ic { flex:none; display:grid; place-items:center; width:64px; height:64px; border-radius:50%; background:var(--forest); }
+  .pill .ic svg { width:36px; height:36px; }
+  .pill.tel .ic { background:var(--lime); }
+
+  /* Caption */
+  #caption { position:absolute; left:0; right:0; top:42px; display:flex; justify-content:center; z-index:20; }
+  .cap { position:absolute; display:flex; align-items:center; gap:14px; background:var(--cream); color:var(--forest);
+    border-radius:99px; padding:10px 24px 10px 10px; font-weight:700; font-size:25px; white-space:nowrap;
+    box-shadow:0 14px 26px -10px rgba(0,0,0,.5); }
+  .cap b { display:grid; place-items:center; width:46px; height:46px; border-radius:50%; background:var(--lime); font-size:26px; }
+  .cap em { font-style:normal; background:var(--lime); border-radius:10px; padding:0 8px; }
+
+  /* Phone */
+  #phoneWrap { position:absolute; left:50%; top:140px; width:340px; height:712px; margin-left:-170px; z-index:10; }
+  .phone { position:absolute; inset:0; border-radius:52px; background:#111; padding:9px;
+    box-shadow: 0 0 0 3px #2b2b2b, 0 40px 80px -20px rgba(0,0,0,.7); }
+  .screen { position:relative; width:322px; height:694px; border-radius:44px; overflow:hidden; background:#fff; }
+  .notch { position:absolute; left:50%; top:9px; width:96px; height:26px; margin-left:-48px; background:#111; border-radius:20px; z-index:30; }
+  .inner { position:absolute; left:0; top:0; width:390px; height:841px; transform-origin:0 0; transform:scale(0.8256); }
+  iframe { position:absolute; inset:0; width:390px; height:841px; border:0; background:#F8F6F2; }
+  #cursor { position:absolute; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%; z-index:40;
+    background:rgba(255,255,255,.55); border:3px solid #fff; box-shadow:0 0 0 2px rgba(8,62,35,.6), 0 8px 18px rgba(0,0,0,.35); }
+  #ripple { position:absolute; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%; z-index:39;
+    border:4px solid var(--lime); }
+  #dropdown { position:absolute; z-index:38; width:350px; background:#fff; border-radius:14px; overflow:hidden;
+    box-shadow:0 20px 40px -10px rgba(0,0,0,.45); font-family:Lato; font-size:15px; color:#303030; transform-origin:50% 0; }
+  #dropdown div { padding:11px 14px; border-bottom:1px solid #eee; white-space:nowrap; }
+  #dropdown div.hl { background:var(--lime); color:var(--forest); font-weight:900; }
+
+  /* Bottom bar */
+  #bar { position:absolute; left:0; right:0; bottom:44px; display:flex; justify-content:center; z-index:20; }
+  #bar span { font-family:Lato; font-weight:900; font-size:17px; background:var(--forest); border:2px solid var(--lime);
+    border-radius:99px; padding:9px 20px; letter-spacing:.02em; box-shadow:0 10px 20px -8px rgba(0,0,0,.5); white-space:nowrap; }
+  #bar i { font-style:normal; color:var(--lime); }
+
+  /* Outro */
+  #outro { justify-content:center; z-index:25; }
+  #outroLogo { width:170px; margin-bottom:16px; }
+  #outro .big { font-size:64px; }
+  #outro .menu { margin-top:16px; font-size:32px; font-weight:700; line-height:1.25; }
+  #outro .menu i { font-style:normal; color:var(--lime); }
+  #outro .tel { margin-top:22px; font-family:Lato; font-weight:900; font-size:20px; letter-spacing:.06em; text-transform:uppercase; opacity:.9; }
+  #outro .num { margin-top:8px; background:var(--lime); color:var(--forest); font-weight:700; font-size:40px; border-radius:22px; padding:8px 26px;
+    box-shadow:0 6px 0 #083E23, 0 18px 30px -10px rgba(0,0,0,.5); }
+  #outro .how { margin-top:28px; background:var(--cream); color:var(--forest); font-weight:700; font-size:22px; border-radius:99px; padding:11px 24px;
+    box-shadow:0 14px 26px -10px rgba(0,0,0,.5); line-height:1.25; }
+  #outro .how i { font-style:normal; color:var(--emerald); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="rays"></div>
+  <div id="leaves"></div>
+
+  <div class="scene" id="intro">
+    <img id="introLogo" src="img/logo.png" alt="">
+    <div class="kicker" id="k1">Vendredi 23/10</div>
+    <div class="big" id="k2">À emporter<br>ou à livrer !</div>
+    <div id="cards">
+      <div class="card"><div class="ph" style="background-image:url(img/pita.jpg)"></div><div class="nm">Pita</div></div>
+      <div class="card"><div class="ph" style="background-image:url(img/burger.jpg)"></div><div class="nm">Burger</div></div>
+      <div class="card"><div class="ph" style="background-image:url(img/potage.jpg)"></div><div class="nm">Potage</div></div>
+    </div>
+    <div id="drinks">+ Loumonades <i>cola</i> &amp; <i>pomme-cerise</i></div>
+  </div>
+
+  <div class="scene" id="slots">
+    <div class="kicker">Vendredi 23/10</div>
+    <div class="big" id="sTitle">Livraison</div>
+    <div class="slot" id="s1">11h30 – 14h</div>
+    <div class="slotSep" id="sSep">et</div>
+    <div class="slot" id="s2">18h – 21h</div>
+    <div id="pickup">🛍️ À emporter : <i>venez retirer</i></div>
+    <div id="pickNote">Lieu de retrait confirmé lors de notre appel</div>
+  </div>
+
+  <div class="scene" id="where">
+    <div class="big" id="wTitle">Commandez<br>où vous voulez</div>
+    <div id="pills">
+      <div class="pill"><span class="ic"><svg viewBox="0 0 36 36" fill="none" stroke="#BED70B" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M18 5C10.3 5 4.5 10.5 4.5 17.4c0 3.9 1.9 7.3 4.9 9.5V32l4.6-2.6c1.3.4 2.6.5 4 .5 7.7 0 13.5-5.5 13.5-12.5S25.7 5 18 5z"/>
+        <path d="M10.5 20.5l5-5 3.6 3 6.4-4.5-5 5.5-3.6-3z" fill="#BED70B"/></svg></span>
+        <span><small>Message</small>Messenger</span></div>
+      <div class="pill"><span class="ic"><svg viewBox="0 0 36 36" fill="none" stroke="#BED70B" stroke-width="3">
+        <rect x="6" y="6" width="24" height="24" rx="7"/><circle cx="18" cy="18" r="5.5"/><circle cx="25" cy="11" r="1.2" fill="#BED70B" stroke="none"/></svg></span>
+        <span><small>Message</small>Instagram</span></div>
+      <div class="pill"><span class="ic"><svg viewBox="0 0 36 36" fill="none" stroke="#BED70B" stroke-width="2.8">
+        <circle cx="18" cy="18" r="12.5"/><ellipse cx="18" cy="18" rx="5.5" ry="12.5"/><path d="M5.5 18h25M8 11h20M8 25h20"/></svg></span>
+        <span><small>Formulaire</small>yummy-streetfood.be</span></div>
+      <div class="pill tel"><span class="ic"><svg viewBox="0 0 36 36" fill="#083E23">
+        <path d="M12.2 6.5c.8-.2 1.6.2 2 .9l2.3 4.6c.4.7.2 1.6-.4 2.1l-2.2 1.8c1.4 3 3.8 5.4 6.8 6.8l1.8-2.2c.5-.6 1.4-.8 2.1-.4l4.6 2.3c.7.4 1.1 1.2.9 2l-.7 3c-.2.9-1 1.5-1.9 1.5C15.6 28.9 7.1 20.4 7 8.6c0-.9.6-1.7 1.5-1.9z"/></svg></span>
+        <span><small>Par téléphone</small>+32 474 60 64 51</span></div>
+    </div>
+  </div>
+
+  <div id="caption">
+    <div class="cap" id="c1"><b>1</b>Clique sur <em>CONTACT</em></div>
+    <div class="cap" id="c2"><b>2</b>Descends au formulaire</div>
+    <div class="cap" id="c3"><b>3</b>Choisis <em>la commande</em></div>
+    <div class="cap" id="c4"><b>4</b>Tes quantités</div>
+    <div class="cap" id="c5"><b>5</b><em>À livrer</em> ou <em>À emporter</em></div>
+    <div class="cap" id="c6"><b>6</b>Ton adresse + ton heure</div>
+    <div class="cap" id="c7"><b>✓</b>On te rappelle pour valider</div>
+  </div>
+
+  <div id="phoneWrap">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="inner" id="inner">
+        <iframe id="fHome" src="/?commande=test"></iframe>
+        <iframe id="fContact" src="/contact?commande=test"></iframe>
+        <div id="dropdown">
+          <div>Sélectionnez...</div>
+          <div class="hl">🛵 Commande à emporter ou à livrer (aujourd'hui)</div>
+          <div>Mariage</div>
+          <div>Anniversaire / fête de famille</div>
+          <div>Entreprise</div>
+        </div>
+        <div id="ripple"></div>
+        <div id="cursor"></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="bar"><span>🛵 Livraison <i>11h30 – 14h</i> · <i>18h – 21h</i> · 🛍️ <i>À emporter</i></span></div>
+
+  <div class="scene" id="outro">
+    <img id="outroLogo" src="img/logo.png" alt="">
+    <div class="big">Commandez !</div>
+    <div class="menu">sur <i>Messenger</i> · <i>Instagram</i><br><i>yummy-streetfood.be</i></div>
+    <div class="tel">Ou par téléphone</div>
+    <div class="num">+32 474 60 64 51</div>
+    <div class="how">Vendredi 23/10 · À emporter ou à livrer<br>Livraison <i>11h30 – 14h</i> · <i>18h – 21h</i></div>
+  </div>
+</div>
+
+<script>
+const LEAF = `<svg viewBox="0 0 200 200"><g transform="translate(100,100) rotate(-20)">
+<path d="M0 -82 C 54 -54, 54 54, 0 82 C -54 54, -54 -54, 0 -82 Z" fill="#8FD9B4"/>
+<path d="M0 -82 C 54 -54, 54 54, 0 82 C 15 41, 15 -41, 0 -82 Z" fill="#5FB98A"/>
+<path d="M0 82 C -3 27, -3 -27, 0 -82" stroke="#083E23" stroke-width="7" fill="none" stroke-linecap="round"/>
+<g stroke="#083E23" stroke-width="4.5" stroke-linecap="round" fill="none">
+<path d="M-1 -46 C 13 -49, 24 -43, 31 -29"/><path d="M-1 -7 C 14 -10, 26 -3, 33 12"/><path d="M-1 31 C 12 27, 21 32, 26 44"/>
+<path d="M-1 -46 C -13 -49, -24 -43, -31 -29"/><path d="M-1 -7 C -14 -10, -26 -3, -33 12"/></g></g></svg>`;
+const leafSpec = [[30,90,1.1,-20,0],[470,60,.9,25,1],[15,520,1.3,10,2],[480,430,1.0,-30,3],[60,800,.8,40,4],[440,840,1.2,-15,5],[250,20,.6,60,6]];
+const leaves = leafSpec.map(([x,y,s,r,i]) => { const d=document.createElement('div'); d.className='leaf'; d.innerHTML=LEAF;
+  document.getElementById('leaves').appendChild(d); return {d,x,y,s,r,i}; });
+
+// ---------- helpers ----------
+const $ = id => document.getElementById(id);
+const clamp = (v,a=0,b=1) => Math.min(b, Math.max(a, v));
+const prog = (t,a,b) => clamp((t-a)/(b-a));
+const lerp = (a,b,p) => a+(b-a)*p;
+const easeOut = p => 1-Math.pow(1-p,3);
+const easeInOut = p => p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
+const easeIn = p => p*p*p;
+const back = p => { const c1=1.70158, c3=c1+1; return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2); };
+const elastic = p => p===0?0:p===1?1:Math.pow(2,-10*p)*Math.sin((p*10-.75)*(2*Math.PI)/3)+1;
+const set = (el, o, tr) => { el.style.opacity = o; if (tr!==undefined) el.style.transform = tr; };
+
+// ---------- timeline (s) ----------
+const S1 = 2.55;   // écran créneaux
+const S2 = 5.0;    // écran « où commander »
+const P  = 7.6;    // entrée du téléphone (démo du site)
+const O  = P + 10.25; // outro
+const DUR = O + 3.15;
+const NAME = 'Brian', PHONE = '0470 12 34 56';
+const ADDRESS = 'Rue des Radis 7, Virton';  // adresse fictive
+const HOUR = '12:30';                        // dans le créneau 11h30 – 14h
+// Quantités tapées : [instant du tap, index du produit]
+const TAPS_QTY = [[P+5.15,0],[P+5.4,0],[P+5.65,1],[P+5.9,2],[P+6.15,3]];
+
+let H, C, W, el = {};
+function setup() {
+  H = $('fHome').contentDocument; C = $('fContact').contentDocument; W = $('fContact').contentWindow;
+  const css = `.reveal,.reveal-scale{opacity:1!important;transform:none!important;transition:none!important}
+    html{scroll-behavior:auto!important} *{caret-color:transparent}`;
+  for (const d of [H, C]) { const s=d.createElement('style'); s.textContent=css; d.head.appendChild(s); }
+  el.homeContact = H.querySelector('header a[href="/contact"]');
+  el.form = C.getElementById('contact-form');
+  el.name = C.getElementById('name'); el.phone = C.getElementById('phone');
+  el.select = C.getElementById('event_type'); el.panel = C.getElementById('order-panel');
+  el.plus = [...el.panel.querySelectorAll('button[data-step="1"]')];
+  el.qty = [...el.panel.querySelectorAll('input[type=number]')];
+  el.livrer = el.panel.querySelector('input[name=mode][value="À livrer"]');
+  el.livrerLbl = el.livrer.closest('label');
+  el.modeGroup = el.panel.querySelector('[role=radiogroup]');
+  el.addr = C.getElementById('adresse'); el.time = C.getElementById('heure'); el.aide = C.getElementById('heure-aide');
+  el.send = el.form.querySelector('button[type=submit]'); el.success = C.getElementById('form-success');
+  el.header = C.getElementById('site-header');
+  el.select.value = ''; el.select.dispatchEvent(new Event('change'));
+}
+
+const ctr = e => { const b = e.getBoundingClientRect(); return [b.left+b.width/2, b.top+b.height/2]; };
+const yFor = (e, margin=24) => e.getBoundingClientRect().top + W.scrollY - el.header.offsetHeight - margin;
+
+function cursorAt(x,y,o,press=0) { const c=$('cursor'); c.style.left=x+'px'; c.style.top=y+'px';
+  set(c, o, `scale(${1-0.25*press})`); }
+function rippleAt(x,y,p) { const r=$('ripple'); r.style.left=x+'px'; r.style.top=y+'px';
+  set(r, p>0&&p<1 ? 1-p : 0, `scale(${1+p*2.2})`); }
+function path(pts, t) {
+  if (t<=pts[0][0]) return pts[0][1]();
+  for (let i=1;i<pts.length;i++) if (t<=pts[i][0]) { const p=easeInOut(prog(t,pts[i-1][0],pts[i][0]));
+    const a=pts[i-1][1](), b=pts[i][1](); return [lerp(a[0],b[0],p), lerp(a[1],b[1],p)]; }
+  return pts[pts.length-1][1]();
+}
+// Entrée/sortie d'une scène plein écran
+function scene(id, a, b) { const pi = prog(t_,a,a+.3), po = easeIn(prog(t_,b-.3,b));
+  const s = $(id); s.style.opacity = Math.min(pi>0?1:0, 1-po); s.style.visibility = (t_>=a && t_<=b) ? 'visible' : 'hidden';
+  s.style.transform = `translateY(${-90*po}px) scale(${1+0.15*po})`; }
+let t_ = 0;
+
+let scrollFrom = 0, lastSeg = -1;
+window.render = function(t) {
+  t_ = t;
+  $('rays').style.transform = `rotate(${t*12}deg) scale(${1+0.05*Math.sin(t*2)})`;
+  leaves.forEach(L => { const a = L.r + 12*Math.sin(t*1.3+L.i); const dy = 14*Math.sin(t*1.7+L.i*1.3);
+    L.d.style.left=L.x-35+'px'; L.d.style.top=L.y-35+dy+'px'; L.d.style.transform=`rotate(${a}deg) scale(${L.s*back(prog(t,0.05*L.i,0.05*L.i+0.6))})`; });
+
+  // ---------- intro 0 → S1 ----------
+  const out = easeIn(prog(t,S1-.35,S1));
+  $('intro').style.opacity = 1-out; $('intro').style.visibility = t<S1 ? 'visible':'hidden';
+  $('intro').style.transform = `translateY(${-90*out}px) scale(${1+0.15*out})`;
+  set($('introLogo'), prog(t,0,.25), `scale(${elastic(prog(t,0,.8))}) rotate(${lerp(-12,0,easeOut(prog(t,0,.6)))}deg)`);
+  set($('k1'), prog(t,.2,.4), `translateX(${lerp(-300,0,easeOut(prog(t,.2,.55)))}px)`);
+  set($('k2'), prog(t,.3,.45), `scale(${back(prog(t,.3,.7))}) rotate(${lerp(8,-3,easeOut(prog(t,.3,.8)))}deg)`);
+  document.querySelectorAll('.card').forEach((c,i) => { const a=.6+i*.13;
+    set(c, prog(t,a,a+.15), `translateY(${lerp(260,0,back(prog(t,a,a+.45)))}px) rotate(${lerp(i*10-10,(i-1)*4,easeOut(prog(t,a,a+.5)))}deg)`); });
+  set($('drinks'), prog(t,1.1,1.25), `scale(${back(prog(t,1.1,1.45))})`);
+
+  // ---------- créneaux S1 → S2 ----------
+  scene('slots', S1, S2);
+  set($('sTitle'), prog(t,S1+.05,S1+.2), `scale(${back(prog(t,S1+.05,S1+.45))}) rotate(-3deg)`);
+  set($('s1'), prog(t,S1+.3,S1+.45), `translateX(${lerp(-420,0,back(prog(t,S1+.3,S1+.7)))}px) rotate(-2deg)`);
+  set($('sSep'), prog(t,S1+.55,S1+.7));
+  set($('s2'), prog(t,S1+.6,S1+.75), `translateX(${lerp(420,0,back(prog(t,S1+.6,S1+1.0)))}px) rotate(2deg)`);
+  set($('pickup'), prog(t,S1+1.05,S1+1.2), `scale(${back(prog(t,S1+1.05,S1+1.45))})`);
+  set($('pickNote'), prog(t,S1+1.35,S1+1.5));
+
+  // ---------- où commander S2 → P ----------
+  scene('where', S2, P+.15);
+  set($('wTitle'), prog(t,S2+.05,S2+.2), `scale(${back(prog(t,S2+.05,S2+.45))}) rotate(-3deg)`);
+  document.querySelectorAll('.pill').forEach((c,i) => { const a=S2+.45+i*.22;
+    set(c, prog(t,a,a+.15), `translateX(${lerp(i%2?480:-480,0,back(prog(t,a,a+.45)))}px) scale(${1+0.05*Math.sin(t*6+i)*prog(t,S2+1.6,S2+1.8)})`); });
+
+  // ---------- phone ----------
+  const pin = prog(t,P-.05,P+.6), pout = easeIn(prog(t,P+9.9,P+10.25));
+  let zoom = 1, ox = 50, oy = 50;
+  const zA = easeInOut(prog(t,P+.65,P+1.15)) - easeInOut(prog(t,P+1.5,P+1.9));
+  const zB = easeInOut(prog(t,P+2.5,P+2.85)) - easeInOut(prog(t,P+9.45,P+9.8));
+  if (t < P+2.25) { zoom = 1 + 0.4*zA; ox = 72; oy = 6; } else { zoom = 1 + 0.16*zB; ox = 50; oy = 55; }
+  const pw = $('phoneWrap');
+  pw.style.opacity = t<P-.05 ? 0 : 1 - pout;
+  pw.style.transformOrigin = `${ox}% ${oy}%`;
+  pw.style.transform = `translateY(${lerp(900,0,back(pin)) + 60*pout}px) rotate(${lerp(14,0,easeOut(pin)) - 6*pout}deg) scale(${zoom*(1-0.35*pout)})`;
+
+  const hc = ctr(el.homeContact), rev = easeInOut(prog(t,P+1.45,P+1.9));
+  const fc = $('fContact');
+  fc.style.clipPath = `circle(${rev*1100}px at ${hc[0]}px ${hc[1]}px)`;
+  fc.style.visibility = rev>0 ? 'visible':'hidden';
+  const press1 = prog(t,P+1.2,P+1.3) - prog(t,P+1.35,P+1.5);
+  const pulse = prog(t,P+.65,P+.85) * (1-prog(t,P+1.45,P+1.55)) * (0.5+0.5*Math.sin(t*14));
+  el.homeContact.style.transform = `scale(${1-0.1*press1})`;
+  el.homeContact.style.boxShadow = `0 0 0 ${3+6*pulse+8*press1}px rgba(190,215,11,${0.35+0.4*pulse}), 0 0 ${18*pulse}px 4px rgba(190,215,11,.6)`;
+
+  // ---------- état du formulaire ----------
+  el.name.value = NAME.slice(0, Math.floor(prog(t,P+2.95,P+3.25)*(NAME.length+.999)));
+  el.phone.value = PHONE.slice(0, Math.floor(prog(t,P+3.4,P+3.8)*(PHONE.length+.999)));
+  const wantOrder = t >= P+4.35;
+  if ((el.select.value !== '') !== wantOrder) { el.select.value = wantOrder ? el.select.querySelector('[data-commande]').value : '';
+    el.select.dispatchEvent(new Event('change')); }
+  const selGlow = prog(t,P+4.35,P+4.45) - prog(t,P+4.85,P+5.1);
+  el.select.style.boxShadow = selGlow>0 ? `0 0 0 ${5*selGlow}px #BED70B` : '';
+  el.qty.forEach((q,i) => { q.value = TAPS_QTY.filter(([a,k]) => k===i && t>=a).length; });
+  const wantLivrer = t >= P+7.15;
+  if (el.livrer.checked !== wantLivrer) { el.livrer.checked = wantLivrer;
+    if (!wantLivrer) el.panel.querySelectorAll('input[name=mode]').forEach(m => m.checked = false);
+    el.livrer.dispatchEvent(new Event('change')); }
+  const lv = prog(t,P+7.05,P+7.15) - prog(t,P+7.2,P+7.35);
+  el.livrerLbl.style.transform = `scale(${1+0.08*lv})`;
+  el.addr.value = ADDRESS.slice(0, Math.round(prog(t,P+7.95,P+8.5)*ADDRESS.length));
+  el.time.value = t >= P+8.7 ? HOUR : '';
+  el.addr.style.borderColor = t>P+7.85 && t<P+8.6 ? '#0C7C5E' : '';
+  el.time.style.borderColor = t>P+8.6 && t<P+9.1 ? '#0C7C5E' : '';
+  const aideGlow = prog(t,P+8.7,P+8.8) - prog(t,P+9.05,P+9.2);
+  el.aide.style.background = aideGlow>0 ? `rgba(190,215,11,${aideGlow})` : '';
+  el.aide.style.fontWeight = aideGlow>0 ? '700' : '';
+  el.aide.style.color = aideGlow>0 ? '#083E23' : '';
+  el.aide.style.borderRadius = '6px';
+  const sent = t >= P+9.35;
+  el.form.hidden = sent; el.success.hidden = !sent;
+  C.getElementById('success-commande').hidden = !sent; C.getElementById('success-contact').hidden = sent;
+  C.getElementById('success-mode').textContent = sent ? " et l'heure de livraison" : '';
+  const press2 = prog(t,P+9.1,P+9.2) - prog(t,P+9.25,P+9.35);
+  el.send.style.transform = `scale(${1-0.08*press2})`;
+  el.plus.forEach((b,i) => { let p=0; TAPS_QTY.forEach(([a,k]) => { if (k===i) p=Math.max(p, prog(t,a-.06,a)-prog(t,a,a+.12)); });
+    b.style.transform = `scale(${1+0.25*p})`; b.style.background = p>0 ? '#BED70B' : ''; });
+
+  // ---------- défilement ----------
+  const segs = [[P+2.1,P+2.8,() => yFor(el.name.parentElement.parentElement)],
+                [P+4.45,P+4.85,() => yFor(el.panel, 10)],
+                [P+6.5,P+6.85,() => yFor(el.modeGroup, 90)],
+                [P+7.6,P+7.9,() => yFor(el.addr.parentElement.parentElement, 70)],
+                [P+9.35,P+9.65,() => yFor(el.success, 120)]];
+  let y = null;
+  for (let k=segs.length-1; k>=0; k--) { const [a,b,f] = segs[k]; if (t >= a) {
+      if (lastSeg !== k) { scrollFrom = W.scrollY; lastSeg = k; }
+      y = lerp(scrollFrom, f(), easeInOut(prog(t,a,b))); break; } }
+  if (y === null) lastSeg = -1;
+  W.scrollTo(0, y === null ? 0 : Math.round(y));
+
+  // dropdown
+  const dd = $('dropdown'), ddp = prog(t,P+3.95,P+4.13) - prog(t,P+4.3,P+4.4);
+  const sel = ctr(el.select);
+  dd.style.left = (sel[0]-175)+'px'; dd.style.top = (sel[1]+22)+'px';
+  set(dd, ddp>0?1:0, `scaleY(${easeOut(clamp(ddp))})`);
+
+  // ---------- curseur ----------
+  const at = e => () => ctr(e);
+  const off = (f,dx,dy) => () => { const [x,y]=f(); return [x+dx,y+dy]; };
+  const pts = [[P+.65,()=>[195,640]],[P+1.15,at(el.homeContact)],[P+2.3,at(el.homeContact)],
+    [P+2.75,()=>[200,560]],[P+2.9,at(el.name)],[P+3.25,at(el.name)],[P+3.38,at(el.phone)],[P+3.8,at(el.phone)],
+    [P+3.93,at(el.select)],[P+4.2,at(el.select)],[P+4.33,off(at(el.select),0,62)],
+    [P+4.85,off(at(el.select),0,62)],[P+5.1,at(el.plus[0])],[P+5.45,at(el.plus[0])],[P+5.6,at(el.plus[1])],[P+5.85,at(el.plus[2])],[P+6.1,at(el.plus[3])],
+    [P+6.5,at(el.plus[3])],[P+6.95,at(el.livrerLbl)],[P+7.6,at(el.livrerLbl)],[P+7.9,at(el.addr)],[P+8.5,at(el.addr)],[P+8.65,at(el.time)],[P+8.95,at(el.time)],[P+9.07,at(el.send)]];
+  const [cx,cy] = path(pts,t);
+  const taps = [P+1.25,P+2.95,P+3.4,P+3.95,P+4.35,P+7.1,P+7.95,P+8.7,P+9.15, ...TAPS_QTY.map(x=>x[0])];
+  let press=0; taps.forEach(a=>{ press=Math.max(press, prog(t,a-.08,a)-prog(t,a,a+.1)); });
+  cursorAt(cx,cy, (prog(t,P+.6,P+.75) - prog(t,P+1.6,P+1.8)) + (prog(t,P+2.6,P+2.75) - prog(t,P+9.3,P+9.45)), press);
+  let rp = -1; taps.forEach(a=>{ if (t>=a && t<a+.45) rp = prog(t,a,a+.45); });
+  rippleAt(cx,cy, rp<0?0:rp);
+
+  // captions
+  const capIn = (e,a,b) => { const pi=prog(t,a,a+.35), po=prog(t,b-.2,b);
+    set(e, Math.min(pi>0?1:0, 1-po), `translateY(${lerp(-80,0,back(pi)) - 40*po}px) scale(${1-0.2*po})`); };
+  capIn($('c1'),P+.5,P+1.8); capIn($('c2'),P+1.95,P+3.85); capIn($('c3'),P+3.9,P+4.95); capIn($('c4'),P+5.0,P+6.45);
+  capIn($('c5'),P+6.5,P+7.55); capIn($('c6'),P+7.6,P+9.3); capIn($('c7'),P+9.35,P+10.1);
+
+  // bottom bar
+  const bp = prog(t,P+.35,P+.75), bo = prog(t,P+9.7,P+9.9);
+  set($('bar'), Math.min(bp,1-bo), `translateY(${lerp(120,0,back(bp))}px)`);
+
+  // outro
+  const op = prog(t,O-.2,O+.05), q = s => $('outro').querySelector(s);
+  $('outro').style.opacity = op; $('outro').style.visibility = op>0 ? 'visible':'hidden';
+  set($('outroLogo'), op, `scale(${elastic(prog(t,O-.2,O+.55))})`);
+  q('.big').style.transform = `scale(${back(prog(t,O-.15,O+.25))}) rotate(-3deg)`;
+  set(q('.menu'), prog(t,O,O+.15), `translateY(${lerp(60,0,back(prog(t,O,O+.35)))}px)`);
+  set(q('.tel'), prog(t,O+.3,O+.45));
+  set(q('.num'), prog(t,O+.35,O+.5), `scale(${back(prog(t,O+.35,O+.7)) * (1+0.04*Math.sin(t*9)*prog(t,O+.7,O+.85))}) rotate(2deg)`);
+  set(q('.how'), prog(t,O+.6,O+.75), `scale(${back(prog(t,O+.6,O+.95))})`);
+};
+
+window.ready = Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => i.onload = i.onerror = r)))
+  .then(() => Promise.all(['fHome','fContact'].map(id => new Promise(r => {
+    const f = $(id); if (f.contentDocument && f.contentDocument.readyState === 'complete' && f.contentDocument.querySelector('header')) r(); else f.onload = r; }))))
+  .then(() => document.fonts.ready)
+  .then(() => new Promise(r => setTimeout(r, 800)))
+  .then(() => { setup(); render(0); window.DURATION = DUR; });
+</script>
+</body>
+</html>
