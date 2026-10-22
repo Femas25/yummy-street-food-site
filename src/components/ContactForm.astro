@@ -39,32 +39,32 @@ const inputClass =
   <input type="hidden" name="commande" value="" disabled />
   <input type="checkbox" name="botcheck" class="hidden" style="display: none" />
 
-  <div class="grid gap-4 md:grid-cols-2">
-    <div class="flex flex-col gap-1">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="name" class="font-body text-sm font-semibold text-anthracite">Nom</label>
       <input
         id="name"
         name="name"
         type="text"
         required
-        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
 
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="email" class="font-body text-sm font-semibold text-anthracite">Email</label>
       <input
         id="email"
         name="email"
         type="email"
         required
-        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
   </div>
 
-  <div class="grid gap-4 md:grid-cols-2">
-    <div class="flex flex-col gap-1">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="phone" class="font-body text-sm font-semibold text-anthracite">Téléphone</label>
       <input
         id="phone"
@@ -72,16 +72,16 @@ const inputClass =
         type="tel"
         autocomplete="tel"
         required
-        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
 
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="event_type" class="font-body text-sm font-semibold text-anthracite">Type d'événement (facultatif)</label>
       <select
         id="event_type"
         name="event_type"
-        class="rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       >
         <option value="">Sélectionnez...</option>
         <option value={commande.libelle} data-commande hidden disabled>🛵 {commande.libelle} (aujourd'hui)</option>
@@ -142,7 +142,7 @@ const inputClass =
         <label for="adresse" class="font-body text-sm font-semibold text-anthracite">Adresse de livraison</label>
         <input id="adresse" name="adresse" type="text" autocomplete="street-address" class={inputClass} />
       </div>
-      <div class="flex flex-col gap-1">
+      <div class="flex min-w-0 flex-col gap-1">
         <label for="heure" class="font-body text-sm font-semibold text-anthracite">Heure souhaitée</label>
         <input id="heure" name="heure" type="time" required min={creneaux[0]?.[0]} max={creneaux.at(-1)?.[1]} step="300" aria-describedby="heure-aide" class={inputClass} />
         <p id="heure-aide" class="font-body text-xs text-anthracite/70">Créneaux : {creneauxTexte}</p>
@@ -157,14 +157,14 @@ const inputClass =
     </p>
   </fieldset>
 
-  <div class="flex flex-col gap-1">
+  <div class="flex min-w-0 flex-col gap-1">
     <label for="message" class="font-body text-sm font-semibold text-anthracite">Message<span id="message-optional" hidden> (facultatif)</span></label>
     <textarea
       id="message"
       name="message"
       rows="5"
       required
-      class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
     ></textarea>
   </div>
 
