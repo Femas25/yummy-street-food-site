@@ -264,11 +264,12 @@ function scene(id, a, b) { const pi = prog(t_,a,a+.3), po = easeIn(prog(t_,b-.3,
 let t_ = 0;
 
 let scrollFrom = 0, lastSeg = -1;
-window.render = function(t) {
+function draw(t, T) {
   t_ = t;
-  $('rays').style.transform = `rotate(${t*12}deg) scale(${1+0.05*Math.sin(t*2)})`;
-  leaves.forEach(L => { const a = L.r + 12*Math.sin(t*1.3+L.i); const dy = 14*Math.sin(t*1.7+L.i*1.3);
-    L.d.style.left=L.x-35+'px'; L.d.style.top=L.y-35+dy+'px'; L.d.style.transform=`rotate(${a}deg) scale(${L.s*back(prog(t,0.05*L.i,0.05*L.i+0.6))})`; });
+  // Fond (rayons, feuilles) en temps réel T : il continue de bouger pendant les pauses de lecture.
+  $('rays').style.transform = `rotate(${T*12}deg) scale(${1+0.05*Math.sin(T*2)})`;
+  leaves.forEach(L => { const a = L.r + 12*Math.sin(T*1.3+L.i); const dy = 14*Math.sin(T*1.7+L.i*1.3);
+    L.d.style.left=L.x-35+'px'; L.d.style.top=L.y-35+dy+'px'; L.d.style.transform=`rotate(${a}deg) scale(${L.s*back(prog(T,0.05*L.i,0.05*L.i+0.6))})`; });
 
   // ---------- intro 0 → S1 ----------
   const out = easeIn(prog(t,S1-.35,S1));
@@ -402,14 +403,32 @@ window.render = function(t) {
   set(q('.tel'), prog(t,O+.3,O+.45));
   set(q('.num'), prog(t,O+.35,O+.5), `scale(${back(prog(t,O+.35,O+.7)) * (1+0.04*Math.sin(t*9)*prog(t,O+.7,O+.85))}) rotate(2deg)`);
   set(q('.how'), prog(t,O+.6,O+.75), `scale(${back(prog(t,O+.6,O+.95))})`);
-};
+}
+
+// ---------- rythme (retour du patron 22/10 : « ça va trop vite ») ----------
+// Toute la timeline ci-dessus est ralentie de SLOW, et des pauses de lecture (HOLDS)
+// figent l'action à des moments calmes pour que chaque texte reste lisible ≥ 2,5 s.
+// HOLDS : [instant de la timeline (s), durée de la pause en temps réel (s)]
+const SLOW = 1.3;
+const HOLDS = [[1.5,.6],[S1+1.6,.8],[S2+1.65,.5],[P+1.15,.9],[P+3.8,.2],[P+4.2,1.3],
+               [P+5.05,.8],[P+6.95,1.3],[P+8.5,.4],[P+9.68,1.7],[O+1.0,.2]];
+const toReal = t => SLOW*t + HOLDS.filter(([h]) => h < t).reduce((s,[,d]) => s+d, 0);
+function toTimeline(T) {
+  let t0 = 0, T0 = 0;
+  for (const [h,d] of HOLDS) { const Th = T0 + (h-t0)*SLOW;
+    if (T < Th) return t0 + (T-T0)/SLOW;
+    if (T < Th+d) return h;
+    t0 = h; T0 = Th+d; }
+  return t0 + (T-T0)/SLOW;
+}
+window.render = T => draw(toTimeline(T), T);
 
 window.ready = Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => i.onload = i.onerror = r)))
   .then(() => Promise.all(['fHome','fContact'].map(id => new Promise(r => {
     const f = $(id); if (f.contentDocument && f.contentDocument.readyState === 'complete' && f.contentDocument.querySelector('header')) r(); else f.onload = r; }))))
   .then(() => document.fonts.ready)
   .then(() => new Promise(r => setTimeout(r, 800)))
-  .then(() => { setup(); render(0); window.DURATION = DUR; });
+  .then(() => { setup(); render(0); window.DURATION = toReal(DUR); });
 </script>
 </body>
 </html>
