@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   /* Même style que promo/commande-a-livrer.html. Commandes UNIQUEMENT par message privé
-     Messenger ou par téléphone (pas d'Instagram, pas de commande sur le site). */
+     Messenger ou par téléphone (pas d'Instagram, pas de commande sur le site). Livraison uniquement. */
   :root { --forest:#083E23; --emerald:#0C7C5E; --lime:#BED70B; --leaf:#5FB98A; --mint:#E4EFE2; --cream:#F8F6F2; }
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { width:540px; height:960px; overflow:hidden; background:var(--forest); }
@@ -86,7 +86,7 @@
     <img id="hookLogo" src="img/logo.png" alt="">
     <div id="h1"><span class="cloud">🌧️</span>Ce vendredi, pas de marché<br>à cause de la météo…</div>
     <div class="big" id="h2">C'est nous<br>qui venons<br>à vous !</div>
-    <div class="pillc" id="h3">🛍️ À emporter <i>ou</i> 🛵 à livrer</div>
+    <div class="pillc" id="h3">🛵 Livraison <i>uniquement</i></div>
   </div>
 
   <div class="scene" id="menu">
@@ -101,11 +101,10 @@
 
   <div class="scene" id="slots">
     <div class="kicker" id="slotsK">Vendredi 23/10</div>
-    <div class="big" id="sTitle">Nos créneaux</div>
+    <div class="big" id="sTitle">Livraison</div>
     <div class="slot" id="s1"><small>Midi</small><b>11h30 – 14h</b></div>
     <div class="slot" id="s2"><small>Soir</small><b>18h – 20h</b></div>
-    <div class="pillc" id="mode">🛍️ À emporter <i>ou</i> 🛵 à livrer</div>
-    <div id="pickNote">Lieu de retrait confirmé lors de notre appel</div>
+    <div class="pillc" id="mode">🛵 On vous <i>livre</i> !</div>
   </div>
 
   <div class="scene" id="where">
@@ -125,7 +124,7 @@
     <div class="big" id="hTitle">Comment<br>commander ?</div>
     <div id="steps">
       <div class="step pillc"><b>1</b><span>Envoie-nous un <em>message privé sur Messenger</em> ou <span style="white-space:nowrap">appelle-nous</span></span></div>
-      <div class="step pillc"><b>2</b><span>Dis ce que tu veux + <em>à emporter ou à livrer</em> + <span style="white-space:nowrap">ton heure</span></span></div>
+      <div class="step pillc"><b>2</b><span>Dis ce que tu veux, <em>ton adresse</em> et ton <span style="white-space:nowrap">heure de livraison</span></span></div>
       <div class="step pillc"><b>3</b><span><em>On confirme</em> ta commande !</span></div>
     </div>
   </div>
@@ -136,7 +135,7 @@
     <div class="menu">Message privé <i>Messenger</i></div>
     <div class="tel">Ou par téléphone</div>
     <div class="num">+32 474 60 64 51</div>
-    <div class="how pillc">Vendredi 23/10 · À emporter ou à livrer<br>Midi <i>11h30 – 14h</i> · Soir <i>18h – 20h</i></div>
+    <div class="how pillc">Vendredi 23/10 · Livraison uniquement<br>Livraison midi <i>11h30 – 14h</i> · soir <i>18h – 20h</i></div>
     <div class="url">yummy-streetfood.be</div>
   </div>
 </div>
@@ -203,7 +202,6 @@ window.render = function(t) {
   slideX($('s1'), a+.8, -440, -2);
   slideX($('s2'), a+1.3, 440, 2);
   pop($('mode'), a+1.75);
-  set($('pickNote'), prog(t,a+2.1,a+2.4));
 
   // 4. Où commander
   a = scene('where');
