@@ -1,7 +1,10 @@
 {
-  "note": "Commandes à livrer depuis le formulaire de contact. Le module n'apparaît QUE les jours listés dans « jours » (format AAAA-MM-JJ, heure belge) : il s'éteint tout seul le lendemain. Liste vide = commandes fermées. N'ajouter un jour que sur demande explicite de Yummy.",
+  "note": "Commandes à emporter (retrait) ou à livrer depuis le formulaire de contact. Le module n'apparaît QUE les jours listés dans « jours » (format AAAA-MM-JJ, heure belge) : il s'éteint tout seul le lendemain. Liste vide = commandes fermées. N'ajouter un jour que sur demande explicite de Yummy. « creneaux » = plages horaires acceptées pour l'heure souhaitée (HH:MM). « lieuRetrait » : laisser vide tant que le lieu n'est pas confirmé (le site affiche alors « lieu de retrait confirmé lors de notre appel »).",
   "jours": [],
-  "libelle": "Commande à livrer",
+  "libelle": "Commande à emporter ou à livrer",
+  "bandeau": "Commandes ouvertes aujourd'hui : à emporter ou à livrer",
+  "creneaux": [["11:30", "14:00"], ["18:00", "20:00"]],
+  "lieuRetrait": "",
   "produits": [
     { "id": "pita", "nom": "Pita", "emoji": "🥙" },
     { "id": "burger", "nom": "Burger", "emoji": "🍔" },

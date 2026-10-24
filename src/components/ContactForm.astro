@@ -4,13 +4,20 @@
 // de réception doit changer, se reconnecter sur web3forms.com et ajuster dans le dashboard.
 const WEB3FORMS_ACCESS_KEY = '06bcfbd6-a51a-4c67-878c-47281f3aafd2';
 
-// Module « commande à livrer » : masqué par défaut, affiché par le script uniquement
-// les jours activés dans src/data/commande.json.
+// Module « commande à emporter ou à livrer » : masqué par défaut, affiché par le script
+// uniquement les jours activés dans src/data/commande.json.
 import commande from '../data/commande.json';
 import contact from '../data/contact.json';
 
 const SUBJECT_CONTACT = 'Nouveau message depuis le site Yummy';
 const SUBJECT_COMMANDE = `🛵 NOUVELLE ${commande.libelle.toUpperCase()}`;
+// Créneaux acceptés pour l'heure souhaitée, ex. [["11:30","14:00"],["18:00","21:00"]].
+const creneaux: string[][] = commande.creneaux ?? [];
+const fmtHeure = (h: string) => h.replace(/^0/, '').replace(':00', 'h').replace(':', 'h');
+const creneauxTexte = creneaux.map(([a, b]) => `${fmtHeure(a)} – ${fmtHeure(b)}`).join(' ou ');
+const lieuRetrait = commande.lieuRetrait?.trim() || '';
+const retraitTexte = lieuRetrait ? `Lieu de retrait : ${lieuRetrait}.` : 'Lieu de retrait confirmé lors de notre appel.';
+const telHref = `tel:${contact.telephone.replace(/\s+/g, '')}`;
 const inputClass =
   'rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary';
 ---
@@ -24,6 +31,7 @@ const inputClass =
   data-subject-contact={SUBJECT_CONTACT}
   data-subject-commande={SUBJECT_COMMANDE}
   data-libelle={commande.libelle}
+  data-creneaux={JSON.stringify(creneaux)}
   class="flex flex-col gap-4 rounded-xl border border-primary/20 bg-white p-6 shadow-sm md:p-8"
 >
   <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
@@ -31,47 +39,49 @@ const inputClass =
   <input type="hidden" name="commande" value="" disabled />
   <input type="checkbox" name="botcheck" class="hidden" style="display: none" />
 
-  <div class="grid gap-4 md:grid-cols-2">
-    <div class="flex flex-col gap-1">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="name" class="font-body text-sm font-semibold text-anthracite">Nom</label>
       <input
         id="name"
         name="name"
         type="text"
         required
-        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
 
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="email" class="font-body text-sm font-semibold text-anthracite">Email</label>
       <input
         id="email"
         name="email"
         type="email"
         required
-        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
   </div>
 
-  <div class="grid gap-4 md:grid-cols-2">
-    <div class="flex flex-col gap-1">
-      <label for="phone" class="font-body text-sm font-semibold text-anthracite">Téléphone<span id="phone-optional"> (facultatif)</span></label>
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="flex min-w-0 flex-col gap-1">
+      <label for="phone" class="font-body text-sm font-semibold text-anthracite">Téléphone</label>
       <input
         id="phone"
         name="phone"
         type="tel"
-        class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        autocomplete="tel"
+        required
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
 
-    <div class="flex flex-col gap-1">
+    <div class="flex min-w-0 flex-col gap-1">
       <label for="event_type" class="font-body text-sm font-semibold text-anthracite">Type d'événement (facultatif)</label>
       <select
         id="event_type"
         name="event_type"
-        class="rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full min-w-0 rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       >
         <option value="">Sélectionnez...</option>
         <option value={commande.libelle} data-commande hidden disabled>🛵 {commande.libelle} (aujourd'hui)</option>
@@ -113,27 +123,48 @@ const inputClass =
       }
     </ul>
     <p id="order-error" hidden class="font-body text-sm font-bold text-red-700">Ajoutez au moins un produit à votre commande.</p>
-    <div class="grid gap-4 md:grid-cols-3">
-      <div class="flex flex-col gap-1 md:col-span-2">
-        <label for="adresse" class="font-body text-sm font-semibold text-anthracite">Adresse de livraison</label>
-        <input id="adresse" name="adresse" type="text" required autocomplete="street-address" class={inputClass} />
+    <div role="radiogroup" aria-labelledby="mode-label" class="flex flex-col gap-2">
+      <p id="mode-label" class="font-body text-sm font-semibold text-anthracite">À emporter ou à livrer ?</p>
+      <div class="grid grid-cols-2 gap-2">
+        <label class="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-anthracite/15 bg-white px-3 py-2 text-left leading-tight font-heading text-sm font-semibold text-primary-dark shadow-sm has-[:checked]:border-primary has-[:checked]:bg-lime">
+          <input type="radio" name="mode" value="À emporter (retrait)" required class="accent-primary" />
+          <span class="flex flex-col"><span class="whitespace-nowrap">🛍️ À emporter</span><span class="font-body text-xs font-normal">retrait sur place</span></span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-anthracite/15 bg-white px-3 py-2 text-left leading-tight font-heading text-sm font-semibold text-primary-dark shadow-sm has-[:checked]:border-primary has-[:checked]:bg-lime">
+          <input type="radio" name="mode" value="À livrer" required class="accent-primary" />
+          <span class="flex flex-col"><span class="whitespace-nowrap">🛵 À livrer</span><span class="font-body text-xs font-normal">à votre adresse</span></span>
+        </label>
       </div>
-      <div class="flex flex-col gap-1">
+      <p id="retrait-info" hidden class="font-body text-xs text-anthracite/80">📍 {retraitTexte}</p>
+    </div>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div id="adresse-wrap" class="flex flex-col gap-1 md:col-span-2">
+        <label for="adresse" class="font-body text-sm font-semibold text-anthracite">Adresse de livraison</label>
+        <input id="adresse" name="adresse" type="text" autocomplete="street-address" class={inputClass} />
+      </div>
+      <div class="flex min-w-0 flex-col gap-1">
         <label for="heure" class="font-body text-sm font-semibold text-anthracite">Heure souhaitée</label>
-        <input id="heure" name="heure" type="time" required class={inputClass} />
+        <input id="heure" name="heure" type="time" required min={creneaux[0]?.[0]} max={creneaux.at(-1)?.[1]} step="300" aria-describedby="heure-aide" class={inputClass} />
+        <p id="heure-aide" class="font-body text-xs text-anthracite/70">Créneaux : {creneauxTexte}</p>
       </div>
     </div>
+    <p id="heure-error" hidden class="font-body text-sm font-bold text-red-700">Choisissez une heure dans nos créneaux : {creneauxTexte}.</p>
     <p class="font-body text-xs text-anthracite/70">Nous vous recontacterons pour valider la commande. Pensez à indiquer votre téléphone.</p>
+    <p class="font-body text-xs text-anthracite/80">
+      Aussi par téléphone (<a href={telHref} class="font-bold text-primary hover:underline">{contact.telephone}</a>),
+      <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener" class="font-bold text-primary hover:underline">Messenger</a>
+      et <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener" class="font-bold text-primary hover:underline">Instagram</a>.
+    </p>
   </fieldset>
 
-  <div class="flex flex-col gap-1">
+  <div class="flex min-w-0 flex-col gap-1">
     <label for="message" class="font-body text-sm font-semibold text-anthracite">Message<span id="message-optional" hidden> (facultatif)</span></label>
     <textarea
       id="message"
       name="message"
       rows="5"
       required
-      class="rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      class="w-full min-w-0 rounded-lg border border-anthracite/20 px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
     ></textarea>
   </div>
 
@@ -153,12 +184,13 @@ const inputClass =
   <span class="text-4xl" aria-hidden="true">✅</span>
   <h2 class="font-heading text-2xl font-bold text-primary-dark">Demande bien prise en compte !</h2>
   <p id="success-commande" hidden class="font-body text-anthracite/80">
-    Nous vous recontacterons pour valider la commande.
+    Nous vous recontacterons pour valider la commande<span id="success-mode"></span>.
   </p>
+  <p id="success-retrait" hidden class="font-body text-sm text-anthracite/80">📍 {retraitTexte}</p>
   <p id="success-contact" class="font-body text-anthracite/80">Merci, nous revenons vers vous rapidement.</p>
   <p class="font-body text-sm text-anthracite/70">
     Une question ? Appelez-nous au
-    <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="font-bold text-primary hover:underline">{contact.telephone}</a>
+    <a href={telHref} class="font-bold text-primary hover:underline">{contact.telephone}</a>
   </p>
 </div>
 </div>
@@ -171,10 +203,36 @@ const inputClass =
   const option = select.querySelector<HTMLOptionElement>('option[data-commande]')!;
   const panel = document.getElementById('order-panel') as HTMLFieldSetElement;
   const message = form.querySelector<HTMLTextAreaElement>('#message')!;
-  const phone = form.querySelector<HTMLInputElement>('#phone')!;
   const summary = form.querySelector<HTMLInputElement>('input[name="commande"]')!;
   const subject = form.querySelector<HTMLInputElement>('input[name="subject"]')!;
   const qtyInputs = [...panel.querySelectorAll<HTMLInputElement>('input[type="number"]')];
+  const modes = [...panel.querySelectorAll<HTMLInputElement>('input[name="mode"]')];
+  const adresse = form.querySelector<HTMLInputElement>('#adresse')!;
+  const heure = form.querySelector<HTMLInputElement>('#heure')!;
+  const creneaux: string[][] = JSON.parse(form.dataset.creneaux || '[]');
+  const heureError = document.getElementById('heure-error')!;
+
+  const mode = () => modes.find((m) => m.checked)?.value ?? '';
+  const isDelivery = () => mode() === 'À livrer';
+  const syncMode = () => {
+    const livraison = isDelivery();
+    adresse.required = livraison;
+    adresse.disabled = !livraison && mode() !== '';
+    document.getElementById('adresse-wrap')!.hidden = !livraison && mode() !== '';
+    document.getElementById('retrait-info')!.hidden = livraison || mode() === '';
+  };
+  modes.forEach((m) => m.addEventListener('change', syncMode));
+
+  // L'heure (HH:MM) doit tomber dans un des créneaux de commande.json (bornes incluses).
+  const inSlot = (v: string) => !creneaux.length || creneaux.some(([a, b]) => v >= a && v <= b);
+  const checkHeure = () => {
+    const ok = !heure.value || inSlot(heure.value);
+    heure.setCustomValidity(ok ? '' : heureError.textContent?.trim() ?? 'Heure hors créneaux');
+    heureError.hidden = ok;
+    return ok;
+  };
+  heure.addEventListener('input', checkHeure);
+  heure.addEventListener('change', checkHeure);
 
   const isOrder = () => !panel.disabled;
 
@@ -184,8 +242,6 @@ const inputClass =
     summary.disabled = !on;
     message.required = !on;
     document.getElementById('message-optional')!.hidden = !on;
-    phone.required = on;
-    document.getElementById('phone-optional')!.hidden = on;
     subject.value = (on ? form.dataset.subjectCommande : form.dataset.subjectContact) ?? '';
   };
 
@@ -212,7 +268,13 @@ const inputClass =
         document.getElementById('order-error')!.hidden = false;
         return;
       }
-      summary.value = lignes.join(', ');
+      if (!checkHeure()) {
+        heure.reportValidity();
+        return;
+      }
+      const lieu = isDelivery() ? `livraison : ${adresse.value.trim()}` : 'retrait';
+      summary.value = `${mode()} — ${lignes.join(', ')} — ${heure.value} (${lieu})`;
+      subject.value = `🛵 NOUVELLE COMMANDE ${mode().replace(/ \(.*\)$/, '').toUpperCase()} — ${heure.value}`;
     }
 
     const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
@@ -223,6 +285,8 @@ const inputClass =
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
       document.getElementById('success-commande')!.hidden = !isOrder();
+      document.getElementById('success-mode')!.textContent = isOrder() ? (isDelivery() ? ' et l\'heure de livraison' : ' et le retrait') : '';
+      document.getElementById('success-retrait')!.hidden = !isOrder() || isDelivery();
       document.getElementById('success-contact')!.hidden = isOrder();
       form.hidden = true;
       const success = document.getElementById('form-success')!;

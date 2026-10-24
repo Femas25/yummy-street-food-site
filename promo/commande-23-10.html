@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Yummy — Vendredi 23/10, on vous livre (vidéo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  /* Même style que promo/commande-a-livrer.html. Commandes UNIQUEMENT par message privé
+     Messenger ou par téléphone (pas d'Instagram, pas de commande sur le site). Livraison uniquement. */
+  :root { --forest:#083E23; --emerald:#0C7C5E; --lime:#BED70B; --leaf:#5FB98A; --mint:#E4EFE2; --cream:#F8F6F2; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:540px; height:960px; overflow:hidden; background:var(--forest); }
+  #stage { position:relative; width:540px; height:960px; overflow:hidden; font-family:Fredoka, sans-serif; color:var(--cream);
+    background: radial-gradient(120% 70% at 50% 18%, #129e78 0%, #0C7C5E 30%, #083E23 75%); }
+  .leaf { position:absolute; width:70px; filter:drop-shadow(0 8px 12px rgba(0,0,0,.25)); }
+  #rays { position:absolute; left:50%; top:30%; width:1400px; height:1400px; margin:-700px 0 0 -700px; opacity:.10;
+    background: repeating-conic-gradient(from 0deg, #BED70B 0 8deg, transparent 8deg 22deg); border-radius:50%; }
+  .scene { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 34px; }
+  .kicker { font-weight:700; font-size:26px; letter-spacing:.28em; text-transform:uppercase; }
+  .big { font-weight:700; font-size:70px; line-height:.98; color:var(--lime); text-transform:uppercase; text-align:center;
+    text-shadow: 0 6px 0 #083E23, 0 14px 30px rgba(0,0,0,.35); }
+  .pillc { background:var(--cream); color:var(--forest); font-weight:700; border-radius:99px; box-shadow:0 14px 26px -10px rgba(0,0,0,.5); }
+  .pillc i { font-style:normal; color:var(--emerald); }
+
+  /* 1. Accroche */
+  #hook { padding-bottom:40px; }
+  #hookLogo { width:190px; margin-bottom:34px; }
+  #h1 { font-weight:600; font-size:31px; line-height:1.25; max-width:440px; }
+  #h1 .cloud { display:block; font-size:54px; margin-bottom:8px; }
+  #h2 { margin-top:30px; font-size:64px; white-space:nowrap; }
+  #h3 { margin-top:38px; font-size:30px; padding:12px 28px; white-space:nowrap; }
+
+  /* 2. Produits */
+  #menuK { margin-bottom:26px; font-size:24px; letter-spacing:.16em; white-space:nowrap; }
+  #cards { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; width:440px; }
+  .card { background:var(--cream); border-radius:26px; padding:10px 10px 12px; color:var(--forest);
+    box-shadow:0 18px 30px -10px rgba(0,0,0,.45); text-align:center; }
+  .card .ph { width:190px; height:170px; border-radius:18px; background-size:cover; background-position:center; }
+  .card .nm { margin-top:8px; font-weight:700; font-size:27px; line-height:1.05; display:grid; place-items:center; }
+
+  /* 3. Créneaux */
+  #slotsK { margin-bottom:6px; }
+  #slots .big { font-size:64px; }
+  .slot { margin-top:22px; display:flex; flex-direction:column; align-items:center; }
+  .slot small { font-family:Lato; font-weight:900; font-size:22px; letter-spacing:.22em; text-transform:uppercase; margin-bottom:8px; }
+  .slot b { background:var(--lime); color:var(--forest); font-weight:700; font-size:58px; border-radius:26px; padding:4px 30px;
+    box-shadow:0 7px 0 #062f1a, 0 20px 34px -12px rgba(0,0,0,.5); }
+  #mode { margin-top:40px; font-size:30px; padding:12px 28px; white-space:nowrap; }
+  #pickNote { margin-top:14px; font-family:Lato; font-weight:700; font-size:19px; opacity:.9; }
+
+  /* 4. Où commander */
+  #where .big { font-size:66px; }
+  #pills { margin-top:40px; display:flex; flex-direction:column; gap:22px; width:450px; }
+  .pill { display:flex; align-items:center; gap:18px; padding:12px 26px 12px 12px; font-size:34px; text-align:left; white-space:nowrap; }
+  .pill small { display:block; font-family:Lato; font-weight:900; font-size:16px; letter-spacing:.12em; text-transform:uppercase; color:var(--emerald); }
+  .pill .ic { flex:none; display:grid; place-items:center; width:74px; height:74px; border-radius:50%; background:var(--forest); }
+  .pill .ic svg { width:42px; height:42px; }
+  .pill.tel .ic { background:var(--lime); }
+  #whereNote { margin-top:30px; font-family:Lato; font-weight:900; font-size:20px; letter-spacing:.04em; opacity:.9; }
+
+  /* 5. Comment commander */
+  #how .big { font-size:60px; }
+  #steps { margin-top:36px; display:flex; flex-direction:column; gap:22px; width:480px; }
+  .step { display:flex; align-items:center; gap:16px; padding:16px 22px 16px 14px; border-radius:28px; font-size:27px; line-height:1.2; text-align:left; }
+  .step b { flex:none; display:grid; place-items:center; width:54px; height:54px; border-radius:50%; background:var(--lime); font-size:30px; }
+  .step em { font-style:normal; color:var(--emerald); }
+
+  /* 6. Outro */
+  #outroLogo { width:170px; margin-bottom:16px; }
+  #outro .big { font-size:62px; white-space:nowrap; }
+  #outro .menu { margin-top:18px; font-size:30px; font-weight:700; line-height:1.25; }
+  #outro .menu i { font-style:normal; color:var(--lime); }
+  #outro .tel { margin-top:22px; font-family:Lato; font-weight:900; font-size:20px; letter-spacing:.06em; text-transform:uppercase; opacity:.9; }
+  #outro .num { margin-top:8px; background:var(--lime); color:var(--forest); font-weight:700; font-size:42px; border-radius:22px; padding:8px 26px;
+    box-shadow:0 6px 0 #083E23, 0 18px 30px -10px rgba(0,0,0,.5); }
+  #outro .how { margin-top:30px; font-size:22px; padding:11px 24px; line-height:1.3; border-radius:24px; }
+  #outro .url { position:absolute; bottom:46px; left:0; right:0; font-family:Lato; font-weight:700; font-size:17px; opacity:.75; letter-spacing:.03em; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="rays"></div>
+  <div id="leaves"></div>
+
+  <div class="scene" id="hook">
+    <img id="hookLogo" src="img/logo.png" alt="">
+    <div id="h1"><span class="cloud">🌧️</span>Ce vendredi, pas de marché<br>à cause de la météo…</div>
+    <div class="big" id="h2">C'est nous<br>qui venons<br>à vous !</div>
+    <div class="pillc" id="h3">🛵 Livraison <i>uniquement</i></div>
+  </div>
+
+  <div class="scene" id="menu">
+    <div class="kicker" id="menuK">Vendredi 23/10 · au menu</div>
+    <div id="cards">
+      <div class="card"><div class="ph" style="background-image:url(img/pita.jpg)"></div><div class="nm">Pita</div></div>
+      <div class="card"><div class="ph" style="background-image:url(img/burger.jpg)"></div><div class="nm">Burger</div></div>
+      <div class="card"><div class="ph" style="background-image:url(img/bowl.jpg)"></div><div class="nm">Bowl</div></div>
+    </div>
+  </div>
+
+  <div class="scene" id="slots">
+    <div class="kicker" id="slotsK">Vendredi 23/10</div>
+    <div class="big" id="sTitle">Livraison</div>
+    <div class="slot" id="s1"><small>Midi</small><b>11h30 – 14h</b></div>
+    <div class="slot" id="s2"><small>Soir</small><b>18h – 20h</b></div>
+    <div class="pillc" id="mode">🛵 On vous <i>livre</i> !</div>
+  </div>
+
+  <div class="scene" id="where">
+    <div class="big" id="wTitle">Pour<br>commander</div>
+    <div id="pills">
+      <div class="pill pillc"><span class="ic"><svg viewBox="0 0 36 36" fill="none" stroke="#BED70B" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M18 5C10.3 5 4.5 10.5 4.5 17.4c0 3.9 1.9 7.3 4.9 9.5V32l4.6-2.6c1.3.4 2.6.5 4 .5 7.7 0 13.5-5.5 13.5-12.5S25.7 5 18 5z"/>
+        <path d="M10.5 20.5l5-5 3.6 3 6.4-4.5-5 5.5-3.6-3z" fill="#BED70B"/></svg></span>
+        <span><small>Message privé</small>Messenger</span></div>
+      <div class="pill pillc tel"><span class="ic"><svg viewBox="0 0 36 36" fill="#083E23">
+        <path d="M12.2 6.5c.8-.2 1.6.2 2 .9l2.3 4.6c.4.7.2 1.6-.4 2.1l-2.2 1.8c1.4 3 3.8 5.4 6.8 6.8l1.8-2.2c.5-.6 1.4-.8 2.1-.4l4.6 2.3c.7.4 1.1 1.2.9 2l-.7 3c-.2.9-1 1.5-1.9 1.5C15.6 28.9 7.1 20.4 7 8.6c0-.9.6-1.7 1.5-1.9z"/></svg></span>
+        <span><small>Téléphone</small>+32 474 60 64 51</span></div>
+    </div>
+  </div>
+
+  <div class="scene" id="how">
+    <div class="big" id="hTitle">Comment<br>commander ?</div>
+    <div id="steps">
+      <div class="step pillc"><b>1</b><span>Envoie-nous un <em>message privé sur Messenger</em> ou <span style="white-space:nowrap">appelle-nous</span></span></div>
+      <div class="step pillc"><b>2</b><span>Dis ce que tu veux, <em>ton adresse</em> et ton <span style="white-space:nowrap">heure de livraison</span></span></div>
+      <div class="step pillc"><b>3</b><span><em>On confirme</em> ta commande !</span></div>
+    </div>
+  </div>
+
+  <div class="scene" id="outro">
+    <img id="outroLogo" src="img/logo.png" alt="">
+    <div class="big">On vous livre !</div>
+    <div class="menu">Message privé <i>Messenger</i></div>
+    <div class="tel">Ou par téléphone</div>
+    <div class="num">+32 474 60 64 51</div>
+    <div class="how pillc">Vendredi 23/10 · Livraison uniquement<br>Livraison midi <i>11h30 – 14h</i> · soir <i>18h – 20h</i></div>
+    <div class="url">yummy-streetfood.be</div>
+  </div>
+</div>
+
+<script>
+const LEAF = `<svg viewBox="0 0 200 200"><g transform="translate(100,100) rotate(-20)">
+<path d="M0 -82 C 54 -54, 54 54, 0 82 C -54 54, -54 -54, 0 -82 Z" fill="#8FD9B4"/>
+<path d="M0 -82 C 54 -54, 54 54, 0 82 C 15 41, 15 -41, 0 -82 Z" fill="#5FB98A"/>
+<path d="M0 82 C -3 27, -3 -27, 0 -82" stroke="#083E23" stroke-width="7" fill="none" stroke-linecap="round"/>
+<g stroke="#083E23" stroke-width="4.5" stroke-linecap="round" fill="none">
+<path d="M-1 -46 C 13 -49, 24 -43, 31 -29"/><path d="M-1 -7 C 14 -10, 26 -3, 33 12"/><path d="M-1 31 C 12 27, 21 32, 26 44"/>
+<path d="M-1 -46 C -13 -49, -24 -43, -31 -29"/><path d="M-1 -7 C -14 -10, -26 -3, -33 12"/></g></g></svg>`;
+const leafSpec = [[30,90,1.1,-20,0],[470,60,.9,25,1],[15,520,1.3,10,2],[480,430,1.0,-30,3],[60,800,.8,40,4],[440,840,1.2,-15,5],[250,20,.6,60,6]];
+const leaves = leafSpec.map(([x,y,s,r,i]) => { const d=document.createElement('div'); d.className='leaf'; d.innerHTML=LEAF;
+  document.getElementById('leaves').appendChild(d); return {d,x,y,s,r,i}; });
+
+const $ = id => document.getElementById(id);
+const clamp = (v,a=0,b=1) => Math.min(b, Math.max(a, v));
+const prog = (t,a,b) => clamp((t-a)/(b-a));
+const lerp = (a,b,p) => a+(b-a)*p;
+const easeOut = p => 1-Math.pow(1-p,3);
+const easeIn = p => p*p*p;
+const back = p => { const c1=1.70158, c3=c1+1; return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2); };
+const elastic = p => p===0?0:p===1?1:Math.pow(2,-10*p)*Math.sin((p*10-.75)*(2*Math.PI)/3)+1;
+const set = (el, o, tr) => { el.style.opacity = o; if (tr!==undefined) el.style.transform = tr; };
+
+// ---------- timeline (s) : chaque texte reste lisible ≥ 2,5-3 s ----------
+const SC = { hook:[0,6.0], menu:[6.0,10.6], slots:[10.6,15.9], where:[15.9,20.1], how:[20.1,27.1], outro:[27.1,32.1] };
+const DUR = 32.1;
+
+let t_ = 0;
+// Sortie douce d'une scène (fondu + léger zoom vers le haut), entrée gérée élément par élément.
+function scene(id) { const [a,b] = SC[id]; const po = easeIn(prog(t_,b-.45,b)); const s = $(id);
+  const on = t_>=a && (t_<b || b===DUR); s.style.visibility = on ? 'visible':'hidden';
+  s.style.opacity = 1-po; s.style.transform = `translateY(${-70*po}px) scale(${1+0.1*po})`; return a; }
+// Apparition « pop » d'un élément à l'instant a
+const pop = (e,a,dur=.6) => set(e, prog(t_,a,a+.25), `scale(${back(prog(t_,a,a+dur))})`);
+const slideUp = (e,a,dist=60,rot=0) => set(e, prog(t_,a,a+.25), `translateY(${lerp(dist,0,back(prog(t_,a,a+.7)))}px) rotate(${rot}deg)`);
+const slideX = (e,a,from,rot=0) => set(e, prog(t_,a,a+.25), `translateX(${lerp(from,0,back(prog(t_,a,a+.75)))}px) rotate(${rot}deg)`);
+
+window.render = function(t) {
+  t_ = t;
+  $('rays').style.transform = `rotate(${t*10}deg) scale(${1+0.05*Math.sin(t*1.6)})`;
+  leaves.forEach(L => { const a = L.r + 12*Math.sin(t*1.1+L.i); const dy = 14*Math.sin(t*1.4+L.i*1.3);
+    L.d.style.left=L.x-35+'px'; L.d.style.top=L.y-35+dy+'px'; L.d.style.transform=`rotate(${a}deg) scale(${L.s*back(prog(t,0.06*L.i,0.06*L.i+0.8))})`; });
+
+  // 1. Accroche
+  let a = scene('hook');
+  set($('hookLogo'), prog(t,a,a+.3), `scale(${elastic(prog(t,a,a+1.0))}) rotate(${lerp(-12,0,easeOut(prog(t,a,a+.8)))}deg)`);
+  slideUp($('h1'), a+.6, 50);
+  set($('h2'), prog(t,a+1.8,a+2.05), `scale(${back(prog(t,a+1.8,a+2.4))}) rotate(${lerp(8,-3,easeOut(prog(t,a+1.8,a+2.6)))}deg)`);
+  pop($('h3'), a+2.9);
+
+  // 2. Produits
+  a = scene('menu');
+  slideX($('menuK'), a+.1, -320);
+  document.querySelectorAll('.card').forEach((c,i) => { const s = a+.45+i*.3;
+    set(c, prog(t,s,s+.2), `translateY(${lerp(300,0,back(prog(t,s,s+.65)))}px) rotate(${lerp([-12,12,0][i],[-2,2,0][i],easeOut(prog(t,s,s+.7)))}deg)`); });
+
+  // 3. Créneaux
+  a = scene('slots');
+  set($('slotsK'), prog(t,a+.05,a+.3));
+  pop($('sTitle'), a+.2); $('sTitle').style.transform += ' rotate(-3deg)';
+  slideX($('s1'), a+.8, -440, -2);
+  slideX($('s2'), a+1.3, 440, 2);
+  pop($('mode'), a+1.75);
+
+  // 4. Où commander
+  a = scene('where');
+  pop($('wTitle'), a+.15); $('wTitle').style.transform += ' rotate(-3deg)';
+  document.querySelectorAll('.pill').forEach((c,i) => { const s = a+.7+i*.4;
+    set(c, prog(t,s,s+.25), `translateX(${lerp(i%2?480:-480,0,back(prog(t,s,s+.75)))}px) scale(${1+0.035*Math.sin(t*4+i)*prog(t,s+1,s+1.4)})`); });
+
+  // 5. Comment commander
+  a = scene('how');
+  pop($('hTitle'), a+.15); $('hTitle').style.transform += ' rotate(-3deg)';
+  document.querySelectorAll('.step').forEach((c,i) => { const s = a+.9+i*1.2; slideX(c, s, i%2?480:-480); });
+
+  // 6. Outro
+  a = scene('outro'); const q = s => $('outro').querySelector(s);
+  set($('outroLogo'), prog(t,a,a+.3), `scale(${elastic(prog(t,a,a+1.0))})`);
+  set(q('.big'), prog(t,a+.15,a+.4), `scale(${back(prog(t,a+.15,a+.75))}) rotate(-3deg)`);
+  slideUp(q('.menu'), a+.5);
+  set(q('.tel'), prog(t,a+.85,a+1.1));
+  set(q('.num'), prog(t,a+1.0,a+1.25), `scale(${back(prog(t,a+1.0,a+1.6)) * (1+0.035*Math.sin(t*6)*prog(t,a+1.8,a+2.2))}) rotate(2deg)`);
+  pop(q('.how'), a+1.4);
+  set(q('.url'), prog(t,a+1.8,a+2.2)*.75);
+};
+
+window.ready = Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => i.onload = i.onerror = r)))
+  .then(() => document.fonts.ready)
+  .then(() => new Promise(r => setTimeout(r, 500)))
+  .then(() => { render(0); window.DURATION = DUR; });
+</script>
+</body>
+</html>
