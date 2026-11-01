@@ -58,14 +58,6 @@
       "couleur": "primary"
     },
     {
-      "date": "2026-11-19",
-      "titre": "Marché d'Arlon",
-      "lieu": "Marché d'Arlon — Place Léopold",
-      "adresse": "Place Léopold, 6700 Arlon, Belgique",
-      "horaires": "8h - 13h",
-      "couleur": "primary"
-    },
-    {
       "date": "2026-10-02",
       "titre": "Marché de Virton",
       "lieu": "Marché de Virton — Avenue Bouvier",
@@ -115,14 +107,6 @@
     },
     {
       "date": "2026-11-13",
-      "titre": "Marché de Virton",
-      "lieu": "Marché de Virton — Avenue Bouvier",
-      "adresse": "Avenue Bouvier, 6760 Virton, Belgique",
-      "horaires": "8h - 13h",
-      "couleur": "leaf"
-    },
-    {
-      "date": "2026-11-20",
       "titre": "Marché de Virton",
       "lieu": "Marché de Virton — Avenue Bouvier",
       "adresse": "Avenue Bouvier, 6760 Virton, Belgique",
