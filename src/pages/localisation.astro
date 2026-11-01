@@ -24,6 +24,7 @@ const eventColors: Record<string, { border: string; dot: string }> = {
   leaf: { border: 'border-leaf', dot: 'bg-leaf' },
   lime: { border: 'border-lime', dot: 'bg-lime' },
   red: { border: 'border-red-500', dot: 'bg-red-500' },
+  noel: { border: 'border-red-600', dot: 'bg-red-600' },
 };
 const colorFor = (couleur?: string) => eventColors[couleur ?? 'primary'] ?? eventColors.primary;
 
@@ -49,11 +50,17 @@ const parseHoraires = (horaires: string) => {
     end: `${match[3].padStart(2, '0')}:${match[4] ?? '00'}`,
   };
 };
+// « 16h - 0h » : la fin à minuit est ramenée à 23h59 le même jour pour Google.
+const horairesSchema = (horaires: string) => {
+  const t = parseHoraires(horaires);
+  if (t && t.end <= t.start) t.end = '23:59';
+  return t;
+};
 
 const eventsSchema = evenements
   .filter((e) => isoDateRe.test(e.date) && e.adresse)
   .map((e) => {
-    const times = parseHoraires(e.horaires) ?? { start: '08:00', end: '18:00' };
+    const times = horairesSchema(e.horaires) ?? { start: '08:00', end: '18:00' };
     return {
       '@context': 'https://schema.org',
       '@type': 'Event',
@@ -413,8 +420,14 @@ const hasEvenements = evenements.length > 0;
         cell.setAttribute('aria-label', `${event.titre} — voir les détails`);
         cell.title = event.titre;
         const dot = document.createElement('span');
-        const dotColor = eventDotColors[event.couleur] ?? eventDotColors.primary;
-        dot.className = `absolute bottom-1 h-1.5 w-1.5 rounded-full ${dotColor}`;
+        if (event.couleur === 'noel') {
+          dot.textContent = '🎄';
+          dot.className = 'absolute -top-1 -right-1 text-xs leading-none';
+          cell.classList.add('ring-2', 'ring-red-600/60');
+        } else {
+          const dotColor = eventDotColors[event.couleur] ?? eventDotColors.primary;
+          dot.className = `absolute bottom-1 h-1.5 w-1.5 rounded-full ${dotColor}`;
+        }
         cell.appendChild(dot);
         cell.addEventListener('click', () => openEventModal(event));
       }

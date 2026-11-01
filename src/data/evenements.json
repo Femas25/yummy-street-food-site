@@ -50,6 +50,22 @@
       "couleur": "primary"
     },
     {
+      "date": "2026-11-12",
+      "titre": "Marché d'Arlon",
+      "lieu": "Marché d'Arlon — Place Léopold",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "horaires": "8h - 13h",
+      "couleur": "primary"
+    },
+    {
+      "date": "2026-11-19",
+      "titre": "Marché d'Arlon",
+      "lieu": "Marché d'Arlon — Place Léopold",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "horaires": "8h - 13h",
+      "couleur": "primary"
+    },
+    {
       "date": "2026-10-02",
       "titre": "Marché de Virton",
       "lieu": "Marché de Virton — Avenue Bouvier",
@@ -98,6 +114,22 @@
       "couleur": "leaf"
     },
     {
+      "date": "2026-11-13",
+      "titre": "Marché de Virton",
+      "lieu": "Marché de Virton — Avenue Bouvier",
+      "adresse": "Avenue Bouvier, 6760 Virton, Belgique",
+      "horaires": "8h - 13h",
+      "couleur": "leaf"
+    },
+    {
+      "date": "2026-11-20",
+      "titre": "Marché de Virton",
+      "lieu": "Marché de Virton — Avenue Bouvier",
+      "adresse": "Avenue Bouvier, 6760 Virton, Belgique",
+      "horaires": "8h - 13h",
+      "couleur": "leaf"
+    },
+    {
       "date": "2026-10-11",
       "titre": "Événement privé",
       "lieu": "Événement privé",
@@ -111,6 +143,54 @@
       "adresse": "Place de l'Église, 6760 Virton, Belgique",
       "horaires": "16h30 - 21h",
       "couleur": "red"
+    },
+    {
+      "date": "2026-11-27",
+      "titre": "🎄 Marché de Noël d'Arlon",
+      "lieu": "Marché de Noël de l'ACIA — Place Léopold, à côté de la patinoire",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "couleur": "noel",
+      "horaires": "16h - 0h"
+    },
+    {
+      "date": "2026-11-28",
+      "titre": "🎄 Marché de Noël d'Arlon",
+      "lieu": "Marché de Noël de l'ACIA — Place Léopold, à côté de la patinoire",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "couleur": "noel",
+      "horaires": "13h - 0h"
+    },
+    {
+      "date": "2026-11-29",
+      "titre": "🎄 Marché de Noël d'Arlon",
+      "lieu": "Marché de Noël de l'ACIA — Place Léopold, à côté de la patinoire",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "couleur": "noel",
+      "horaires": "13h - 0h"
+    },
+    {
+      "date": "2026-12-04",
+      "titre": "🎄 Marché de Noël d'Arlon",
+      "lieu": "Marché de Noël de l'ACIA — Place Léopold, à côté de la patinoire",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "couleur": "noel",
+      "horaires": "16h - 0h"
+    },
+    {
+      "date": "2026-12-05",
+      "titre": "🎄 Marché de Noël d'Arlon",
+      "lieu": "Marché de Noël de l'ACIA — Place Léopold, à côté de la patinoire",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "couleur": "noel",
+      "horaires": "13h - 0h"
+    },
+    {
+      "date": "2026-12-06",
+      "titre": "🎄 Marché de Noël d'Arlon",
+      "lieu": "Marché de Noël de l'ACIA — Place Léopold, à côté de la patinoire",
+      "adresse": "Place Léopold, 6700 Arlon, Belgique",
+      "couleur": "noel",
+      "horaires": "13h - 0h"
     }
   ]
 }
