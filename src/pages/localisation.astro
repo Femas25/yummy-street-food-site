@@ -57,6 +57,14 @@ const horairesSchema = (horaires: string) => {
   return t;
 };
 
+// Décalage horaire belge du jour (+01:00 en hiver, +02:00 en été).
+const brusselsOffset = (iso: string) => {
+  const name = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Brussels', timeZoneName: 'shortOffset' })
+    .formatToParts(new Date(`${iso}T12:00:00Z`))
+    .find((p) => p.type === 'timeZoneName')?.value ?? 'GMT+1';
+  return name === 'GMT+2' ? '+02:00' : '+01:00';
+};
+
 const eventsSchema = evenements
   .filter((e) => isoDateRe.test(e.date) && e.adresse)
   .map((e) => {
@@ -66,8 +74,8 @@ const eventsSchema = evenements
       '@type': 'Event',
       name: `${e.titre} — Yummy Street Food`,
       description: `Retrouvez le food truck Yummy Street Food : ${e.lieu}, ${e.horaires}.`,
-      startDate: `${e.date}T${times.start}:00+02:00`,
-      endDate: `${e.date}T${times.end}:00+02:00`,
+      startDate: `${e.date}T${times.start}:00${brusselsOffset(e.date)}`,
+      endDate: `${e.date}T${times.end}:00${brusselsOffset(e.date)}`,
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       eventStatus: 'https://schema.org/EventScheduled',
       location: {
@@ -271,6 +279,7 @@ const hasEvenements = evenements.length > 0;
           <p class="font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70">Horaires</p>
           <p id="event-modal-horaires" class="font-body text-sm text-anthracite/80"></p>
         </div>
+        <div id="event-modal-others" class="hidden flex-col gap-2"></div>
         <div class="flex flex-wrap gap-2">
           <a
             id="event-modal-maps-google"
@@ -318,7 +327,13 @@ const hasEvenements = evenements.length > 0;
   const prevBtn = document.getElementById('cal-prev');
   const nextBtn = document.getElementById('cal-next');
 
-  const eventsByDate = new Map(eventsForCalendar.map((e) => [e.date, e]));
+  // Plusieurs événements possibles le même jour (ex. marché le matin + nocturne le soir).
+  const eventsByDate = new Map();
+  eventsForCalendar.forEach((e) => {
+    if (!eventsByDate.has(e.date)) eventsByDate.set(e.date, []);
+    eventsByDate.get(e.date).push(e);
+  });
+  const modalOthers = document.getElementById('event-modal-others');
 
   const modal = document.getElementById('event-modal');
   const modalCard = document.getElementById('event-modal-card');
@@ -331,7 +346,29 @@ const hasEvenements = evenements.length > 0;
   const modalMapsApple = document.getElementById('event-modal-maps-apple');
   const modalMapsWaze = document.getElementById('event-modal-maps-waze');
 
-  function openEventModal(event) {
+  function openEventModal(event, sameDay = [event]) {
+    const others = sameDay.filter((e) => e !== event);
+    modalOthers.innerHTML = '';
+    if (others.length) {
+      const heading = document.createElement('p');
+      heading.className = 'font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70';
+      heading.textContent = 'Aussi ce jour-là';
+      modalOthers.appendChild(heading);
+      others.forEach((other) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className =
+          'rounded-xl border-2 border-primary/30 p-3 text-left font-body text-sm text-primary-dark transition-colors hover:bg-primary/10';
+        btn.textContent = `${other.titre} — ${other.horaires ?? ''}`;
+        btn.addEventListener('click', () => openEventModal(other, sameDay));
+        modalOthers.appendChild(btn);
+      });
+      modalOthers.classList.remove('hidden');
+      modalOthers.classList.add('flex');
+    } else {
+      modalOthers.classList.add('hidden');
+      modalOthers.classList.remove('flex');
+    }
     modalDate.textContent = event.dateFormatted;
     modalTitle.textContent = event.titre;
     modalLieu.textContent = event.lieu;
@@ -404,7 +441,8 @@ const hasEvenements = evenements.length > 0;
     for (let d = 1; d <= daysInMonth; d++) {
       const iso = `${viewYear}-${pad(viewMonth + 1)}-${pad(d)}`;
       const isToday = iso === `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
-      const event = eventsByDate.get(iso);
+      const dayEvents = eventsByDate.get(iso) ?? [];
+      const event = dayEvents.find((e) => e.couleur === 'noel') ?? dayEvents[0];
 
       const cell = document.createElement('button');
       cell.type = 'button';
@@ -417,8 +455,9 @@ const hasEvenements = evenements.length > 0;
 
       if (event) {
         cell.classList.add('bg-primary/10', 'font-bold', 'text-primary-dark', 'hover:scale-110');
-        cell.setAttribute('aria-label', `${event.titre} — voir les détails`);
-        cell.title = event.titre;
+        const dayTitle = dayEvents.map((e) => e.titre).join(' + ');
+        cell.setAttribute('aria-label', `${dayTitle} — voir les détails`);
+        cell.title = dayTitle;
         const dot = document.createElement('span');
         if (event.couleur === 'noel') {
           dot.textContent = '🎄';
@@ -429,7 +468,7 @@ const hasEvenements = evenements.length > 0;
           dot.className = `absolute bottom-1 h-1.5 w-1.5 rounded-full ${dotColor}`;
         }
         cell.appendChild(dot);
-        cell.addEventListener('click', () => openEventModal(event));
+        cell.addEventListener('click', () => openEventModal(dayEvents[0], dayEvents));
       }
 
       grid.appendChild(cell);
