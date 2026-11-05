@@ -6,7 +6,6 @@ import Layout from '../layouts/Layout.astro';
 import Trailer from '../components/icons/Trailer.astro';
 import Leaf from '../components/icons/Leaf.astro';
 import sandwichLegumes from '../assets/menu/sandwich-legumes-truck.jpg';
-import bowlVegetal from '../assets/menu/bowl-vegetal-fleurs.jpg';
 import pitaLegumes from '../assets/menu/pita-legumes-jardin.jpg';
 import bowlsVegetauxFleurs from '../assets/menu/bowls-vegetaux-fleurs.jpg';
 import pitaGarniSauceBlanche from '../assets/menu/pita-garni-sauce-blanche.jpg';
@@ -16,14 +15,13 @@ import bowlChili from '../assets/menu/bowl-chili-vegetal.jpg';
 import bowlAutomne from '../assets/menu/bowl-automne.jpg';
 
 const creations: { src: ImageMetadata; alt: string; wide?: boolean }[] = [
+  { src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce' },
   { src: sandwichLegumes, alt: 'Sandwich garni de légumes grillés, cornichons et oignons rouges, devant le truck Yummy Street Food' },
-  { src: bowlVegetal, alt: 'Bowl végétal avec tomates cerises, carottes grillées, salade et fleurs comestibles' },
   { src: bowlAutomne, alt: '' },
   { src: bowlChili, alt: 'Chili sin carne : haricots rouges, maïs, riz, sauce crémeuse, coriandre, oignons nouveaux et nachos' },
+  { src: bowlsVegetauxFleurs, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles' },
   { src: pitaLegumes, alt: 'Pitas garnis de légumes, tomates, oignons rouges, salade et sauce blanche' },
-  { src: bowlsVegetauxFleurs, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles', wide: true },
   { src: pitaGarniSauceBlanche, alt: 'Pita garni de protéines végétales, tomate, oignon rouge, salade et sauce blanche' },
-  { src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce' },
   { src: boulettesSauceYaourt, alt: 'Boulettes végétales en bouchées apéritives, servies avec une sauce au yaourt et aux herbes' },
 ];
 
@@ -31,7 +29,7 @@ const aManger = [
   { emoji: '🥙', nom: 'Pita', desc: 'Pain pita généreusement garni' },
   { emoji: '🍔', nom: 'Burger', desc: 'Le burger version végétale' },
   { emoji: '🌯', nom: 'Wrap', desc: 'Roulé, frais et gourmand' },
-  { emoji: '🍲', nom: 'Soupe', desc: 'Légumes principalement du potager' },
+  { emoji: '🍲', nom: 'Soupe', desc: 'Légumes du potager' },
   { emoji: '🥗', nom: 'Bowl', desc: 'Un bol plein de bonnes choses' },
   { emoji: '🌶️', nom: 'Chili sin carne', desc: 'Haricots rouges, maïs, riz et nachos' },
 ];
@@ -93,7 +91,7 @@ const aBoire = [
               ))}
             </ul>
             <div class="mt-6 flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-center font-heading text-sm font-bold text-cream">
-              🌿 Légumes de saison, principalement du potager
+              🌿 Légumes de saison, du potager
             </div>
           </div>
         </div>
@@ -105,14 +103,14 @@ const aBoire = [
             {creations.map((c, i) => (
               <button
                 type="button"
-                class={`creation-thumb reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${c.wide ? 'col-span-2' : ''}`}
+                class={`creation-thumb reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${c.wide ? 'col-span-2 md:row-span-2' : ''}`}
                 style={`--reveal-delay:${i * 70}ms`}
                 aria-label={`Agrandir la photo : ${c.alt}`}
               >
                 <Image
                   src={c.src}
                   alt={c.alt}
-                  class={`w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110 ${c.wide ? 'aspect-video' : 'aspect-square'}`}
+                  class={`w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110 ${c.wide ? 'aspect-video md:aspect-auto md:h-full' : 'aspect-square'}`}
                   widths={[300, 600, 1200]}
                   sizes={c.wide ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
                 />
