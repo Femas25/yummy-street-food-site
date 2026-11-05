@@ -6,7 +6,6 @@ import Layout from '../layouts/Layout.astro';
 import Trailer from '../components/icons/Trailer.astro';
 import Leaf from '../components/icons/Leaf.astro';
 import sandwichLegumes from '../assets/menu/sandwich-legumes-truck.jpg';
-import bowlVegetal from '../assets/menu/bowl-vegetal-fleurs.jpg';
 import pitaLegumes from '../assets/menu/pita-legumes-jardin.jpg';
 import bowlsVegetauxFleurs from '../assets/menu/bowls-vegetaux-fleurs.jpg';
 import pitaGarniSauceBlanche from '../assets/menu/pita-garni-sauce-blanche.jpg';
@@ -16,14 +15,13 @@ import bowlChili from '../assets/menu/bowl-chili-vegetal.jpg';
 import bowlAutomne from '../assets/menu/bowl-automne.jpg';
 
 const creations: { src: ImageMetadata; alt: string; wide?: boolean }[] = [
+  { src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce' },
   { src: sandwichLegumes, alt: 'Sandwich garni de légumes grillés, cornichons et oignons rouges, devant le truck Yummy Street Food' },
-  { src: bowlVegetal, alt: 'Bowl végétal avec tomates cerises, carottes grillées, salade et fleurs comestibles' },
   { src: bowlAutomne, alt: '' },
   { src: bowlChili, alt: 'Chili sin carne : haricots rouges, maïs, riz, sauce crémeuse, coriandre, oignons nouveaux et nachos' },
-  { src: bowlsVegetauxFleurs, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles', wide: true },
+  { src: bowlsVegetauxFleurs, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles' },
   { src: pitaLegumes, alt: 'Pitas garnis de légumes, tomates, oignons rouges, salade et sauce blanche' },
   { src: pitaGarniSauceBlanche, alt: 'Pita garni de protéines végétales, tomate, oignon rouge, salade et sauce blanche' },
-  { src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce' },
   { src: boulettesSauceYaourt, alt: 'Boulettes végétales en bouchées apéritives, servies avec une sauce au yaourt et aux herbes' },
 ];
 
@@ -31,7 +29,7 @@ const aManger = [
   { emoji: '🥙', nom: 'Pita', desc: 'Pain pita généreusement garni' },
   { emoji: '🍔', nom: 'Burger', desc: 'Le burger version végétale' },
   { emoji: '🌯', nom: 'Wrap', desc: 'Roulé, frais et gourmand' },
-  { emoji: '🍲', nom: 'Soupe', desc: 'Légumes principalement du potager' },
+  { emoji: '🍲', nom: 'Soupe', desc: 'Légumes du potager' },
   { emoji: '🥗', nom: 'Bowl', desc: 'Un bol plein de bonnes choses' },
   { emoji: '🌶️', nom: 'Chili sin carne', desc: 'Haricots rouges, maïs, riz et nachos' },
 ];
@@ -93,7 +91,7 @@ const aBoire = [
               ))}
             </ul>
             <div class="mt-6 flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-center font-heading text-sm font-bold text-cream">
-              🌿 Légumes de saison, principalement du potager
+              🌿 Légumes de saison, du potager
             </div>
           </div>
         </div>
