@@ -84,7 +84,7 @@ const inputClass =
         class="w-full min-w-0 rounded-lg border border-anthracite/20 bg-white px-3 py-2 font-body text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       >
         <option value="">Sélectionnez...</option>
-        <option value={commande.libelle} data-commande hidden disabled>🛵 {commande.libelle} (aujourd'hui)</option>
+        <option value={commande.libelle} data-commande disabled>🛵 {commande.libelle} (fermé aujourd'hui)</option>
         <option value="Mariage">Mariage</option>
         <option value="Anniversaire / fête de famille">Anniversaire / fête de famille</option>
         <option value="Entreprise">Entreprise</option>
@@ -247,6 +247,7 @@ const inputClass =
 
   if (ordersOpen()) {
     option.hidden = option.disabled = false;
+    option.textContent = `🛵 ${option.value} (aujourd'hui)`;
     if (new URLSearchParams(location.search).has('commande')) select.value = option.value;
     syncOrder();
   }
