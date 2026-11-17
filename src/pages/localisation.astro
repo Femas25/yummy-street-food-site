@@ -130,7 +130,8 @@ const hasEvenements = evenements.length > 0;
         </div>
 
         <div class={`grid gap-8 ${hasEvenements ? 'lg:grid-cols-[400px_1fr] lg:items-start lg:gap-12' : 'mx-auto max-w-md'}`}>
-          <div class="reveal-scale rounded-2xl bg-white p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl md:p-7 lg:sticky lg:top-24 lg:self-start">
+          <div class="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+          <div class="reveal-scale rounded-2xl bg-white p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl md:p-7">
             <div class="mb-4 flex items-center justify-between">
               <button
                 id="cal-prev"
@@ -166,6 +167,21 @@ const hasEvenements = evenements.length > 0;
                 Aujourd'hui
               </p>
             </div>
+          </div>
+
+          <div class="reveal-scale hidden rounded-2xl bg-primary-dark p-6 text-cream shadow-xl lg:block" style="--reveal-delay:120ms">
+            <p class="mb-1 font-heading text-xs font-bold uppercase tracking-wide text-cream/70">Événements privés</p>
+            <h3 class="mb-2 font-heading text-xl font-bold">Envie de nous recevoir chez vous ?</h3>
+            <p class="mb-5 font-body text-sm text-cream/80">
+              Mariage, anniversaire, fête d'entreprise : notre remorque se déplace avec sa street food 100 % végétale.
+            </p>
+            <a
+              href="/evenements-prives"
+              class="inline-flex items-center gap-2 rounded-full bg-cream px-5 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+            >
+              Demander un devis →
+            </a>
+          </div>
           </div>
 
           {hasEvenements && (
