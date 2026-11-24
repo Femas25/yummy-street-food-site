@@ -13,21 +13,8 @@ import Facebook from '../components/icons/Facebook.astro';
 import contact from '../data/contact.json';
 import remorquePhoto from '../assets/truck/remorque-yummy.jpg';
 import champPhoto from '../assets/gallery/jardin-serre-fleurs.jpg';
-import recoltePanierLegumes from '../assets/gallery/recolte-panier-legumes.jpg';
-import tomatesAnciennes from '../assets/gallery/tomates-anciennes.jpg';
-import saladesRougeVerte from '../assets/gallery/salades-rouge-verte.jpg';
-import herbesAromatiques from '../assets/gallery/herbes-aromatiques.jpg';
-import caissesTomatesMarche from '../assets/gallery/caisses-tomates-marche.jpg';
-import haricotsJaunesVerts from '../assets/gallery/haricots-jaunes-verts.jpg';
+import eventPhoto from '../assets/menu/bowls-vegetaux-fleurs.jpg';
 
-const mosaic = [
-  { src: recoltePanierLegumes, alt: 'Panier de légumes fraîchement récoltés', span: 'col-span-2 row-span-2' },
-  { src: tomatesAnciennes, alt: 'Assortiment de tomates anciennes multicolores', span: '' },
-  { src: saladesRougeVerte, alt: 'Salades rouges et vertes côte à côte', span: '' },
-  { src: herbesAromatiques, alt: 'Bouquet d’herbes aromatiques du jardin', span: 'row-span-2' },
-  { src: caissesTomatesMarche, alt: 'Caisses de tomates prêtes pour le marché', span: '' },
-  { src: haricotsJaunesVerts, alt: 'Haricots verts et beurre fraîchement récoltés', span: '' },
-];
 ---
 
 <Layout
@@ -152,60 +139,37 @@ const mosaic = [
     </div>
   </section>
 
-  <section class="py-20 md:py-28">
-    <div class="mx-auto max-w-6xl px-4">
-      <div class="reveal mb-10 text-center">
-        <h2 class="mb-3 font-heading text-2xl font-bold text-primary-dark md:text-3xl">Les produits de notre potager</h2>
-        <p class="mx-auto max-w-xl font-body text-anthracite/70">
-          Des légumes cultivés par nos soins, récoltés au bon moment, du jardin jusqu’à votre assiette.
+  <section class="px-4 py-20 md:py-28">
+    <div class="reveal-scale relative isolate mx-auto max-w-6xl overflow-hidden rounded-3xl shadow-2xl">
+      <Image
+        src={eventPhoto}
+        alt="Bowls végétaux servis pour un événement"
+        class="absolute inset-0 -z-10 h-full w-full object-cover"
+        widths={[600, 1200, 1800]}
+        sizes="(min-width: 1152px) 1152px, 100vw"
+      />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-primary-dark/90 via-primary-dark/70 to-primary-dark/20"></div>
+      <div class="max-w-xl px-6 py-16 text-center text-cream md:px-14 md:py-24 md:text-left">
+        <span class="mb-4 inline-block rounded-full bg-lime px-4 py-1.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-primary-dark">Événements privés</span>
+        <h2 class="mb-5 font-heading text-3xl font-bold md:text-4xl">Un événement à organiser ?</h2>
+        <p class="mb-8 font-body text-base leading-relaxed text-cream/90 md:text-lg">
+          Mariages, anniversaires, fêtes d'entreprise, festivals : notre remorque s'installe chez vous et régale vos invités avec une street food végétale faite maison.
         </p>
+        <div class="flex flex-wrap justify-center gap-3 md:justify-start">
+          <a
+            href="/evenements-prives"
+            class="inline-block rounded-full bg-lime px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark shadow-sm transition-all hover:-translate-y-0.5 hover:bg-lime/90 hover:shadow-md"
+          >
+            Demander un devis →
+          </a>
+          <a
+            href="/evenements-prives"
+            class="inline-block rounded-full border-2 border-cream px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream transition-all hover:-translate-y-0.5 hover:bg-cream hover:text-primary-dark"
+          >
+            Nos formules
+          </a>
+        </div>
       </div>
-
-      <div class="grid auto-rows-[140px] grid-cols-2 gap-4 md:auto-rows-[160px] md:grid-cols-4">
-        {
-          mosaic.map((photo, i) => (
-            <div
-              class={`reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${photo.span}`}
-              style={`--reveal-delay:${i * 90}ms`}
-            >
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                class="h-full w-full object-cover saturate-[1.2] contrast-[1.05] transition-transform duration-500 ease-out group-hover:scale-110"
-                widths={[300, 600, 900]}
-                sizes="(min-width: 768px) 25vw, 50vw"
-              />
-            </div>
-          ))
-        }
-      </div>
-
-      <div class="mt-10 text-center">
-        <a href="/galerie" class="font-heading text-sm font-bold uppercase tracking-wide text-primary transition-colors hover:text-primary-dark">
-          Voir toute la galerie →
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-4xl px-4 py-20 text-center md:py-28">
-    <h2 class="reveal mb-4 font-heading text-2xl font-bold text-primary-dark md:text-3xl">Un événement à organiser ?</h2>
-    <p class="reveal mb-8 font-body text-base text-anthracite/90 md:text-lg" style="--reveal-delay:100ms">
-      Mariages, entreprises, festivals — Yummy se déplace pour régaler vos invités.
-    </p>
-    <div class="reveal flex flex-wrap justify-center gap-3" style="--reveal-delay:200ms">
-      <a
-        href="/evenements-prives"
-        class="inline-block rounded-full bg-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
-      >
-        Nos formules événements
-      </a>
-      <a
-        href="/contact"
-        class="inline-block rounded-full border-2 border-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-      >
-        Nous contacter
-      </a>
     </div>
   </section>
 
