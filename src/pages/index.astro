@@ -19,10 +19,12 @@ const propositions = [
   { nom: 'Burger', src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce', pos: '50% 55%' },
   { nom: 'Pita', src: pitaGarni, alt: 'Pita garni de protéines végétales, tomate, oignon rouge, salade et sauce blanche', pos: '55% 42%' },
   { nom: 'Chili sin carne', src: bowlChili, alt: 'Chili sin carne : haricots rouges, maïs, riz, sauce crémeuse, coriandre et nachos', pos: '50% 50%' },
+  { nom: 'Sur les marchés', src: remorquePhoto, alt: 'Le comptoir de la remorque Yummy Street Food et son menu à l’ardoise', pos: '30% 78%' },
   { nom: 'Bowl', src: eventPhoto, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles', pos: '55% 60%' },
   { nom: 'Pita aux légumes', src: pitaLegumes, alt: 'Pitas garnis de légumes, tomates, oignons rouges, salade et sauce blanche', pos: '50% 50%' },
   { nom: 'Bowl de saison', src: bowlAutomne, alt: 'Bowl de saison garni de légumes, radis et sauce crémeuse', pos: '50% 50%' },
   { nom: 'Bouchées & sauce yaourt', src: boulettes, alt: 'Boulettes végétales en bouchées apéritives, servies avec une sauce au yaourt et aux herbes', pos: '50% 40%' },
+  { nom: 'Notre remorque', src: remorquePhoto, alt: 'La remorque verte Yummy Street Food, hayon ouvert, sur un marché', pos: '45% 60%' },
   { nom: 'Street food à emporter', src: sandwichLegumes, alt: 'Pita garnie de légumes, tenue devant la remorque verte Yummy Street Food', pos: '50% 45%' },
 ];
 
@@ -47,12 +49,10 @@ const apercu = [
       aria-hidden="true"
     ></div>
     <div class="container-y grid items-center gap-10 py-12 md:grid-cols-[0.9fr_1.1fr] md:gap-10 md:py-16 lg:py-20">
-      <div class="flex flex-col items-center gap-6 text-center md:items-start md:text-left">
+      <div class="flex flex-col items-center gap-5 text-center md:items-start md:text-left">
         <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="w-60 max-w-[75vw] drop-shadow-xl md:w-80 lg:w-96" loading="eager" fetchpriority="high" />
         <h1 class="sr-only">Yummy Street Food, street food végétale à Virton et en Gaume</h1>
-        <span class="inline-block rounded-full border border-cream/30 bg-cream/10 px-4 py-1.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-mint md:text-sm">
-          Food Truck
-        </span>
+        <p class="-mt-2 w-60 max-w-[75vw] text-center font-heading text-sm font-bold uppercase tracking-[0.35em] text-mint md:w-80 md:text-base lg:w-96">Food Truck</p>
         <p class="font-body text-base font-semibold text-mint md:text-lg">Local • Végétal • Gourmand</p>
         <div class="flex flex-wrap justify-center gap-3 md:justify-start">
           <a href="/menu" class="btn-lime">Voir nos propositions</a>
@@ -60,85 +60,91 @@ const apercu = [
         </div>
       </div>
 
-      <div class="relative -mx-4 min-w-0 md:mx-0">
-        <p class="sr-only" id="defile-titre">Nos propositions en images (défilement automatique, faites glisser pour aller plus vite)</p>
-        <div
-          id="defile"
-          class="defile flex cursor-grab gap-4 overflow-x-auto px-4 pb-2 md:px-0"
-          role="region"
-          aria-labelledby="defile-titre"
-          tabindex="0"
-        >
-          {[...propositions, ...propositions].map((p, i) => (
-            <figure class="relative w-56 shrink-0 overflow-hidden rounded-3xl shadow-2xl sm:w-64 lg:w-72" aria-hidden={i >= propositions.length ? 'true' : undefined}>
-              <Image
-                src={p.src}
-                alt={i >= propositions.length ? '' : p.alt}
-                class="aspect-[3/4] w-full select-none object-cover"
-                style={`object-position:${p.pos}`}
-                widths={[320, 480, 640]}
-                sizes="(min-width: 1024px) 288px, (min-width: 640px) 256px, 224px"
-                loading={i < 3 ? 'eager' : 'lazy'}
-                draggable="false"
-              />
-              <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-primary-dark/90 to-transparent px-4 pb-4 pt-10 font-heading text-lg font-semibold text-cream">
-                {p.nom}
-              </figcaption>
-            </figure>
-          ))}
+      <div class="relative min-w-0">
+        <p class="sr-only" id="manege-titre">Nos propositions et notre remorque en images, sur un carrousel 3D qui tourne tout seul : faites-le tourner à la souris ou au doigt, ou avec les flèches du clavier.</p>
+        <div id="manege" class="manege" role="region" aria-labelledby="manege-titre" tabindex="0">
+          <div class="manege-anneau" id="manege-anneau" style={`--n:${propositions.length}`}>
+            {propositions.map((p, i) => (
+              <figure class="manege-carte" style={`--i:${i}`}>
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  class="h-full w-full select-none object-cover"
+                  style={`object-position:${p.pos}`}
+                  widths={[240, 360, 480]}
+                  sizes="(min-width: 1024px) 220px, 150px"
+                  loading={i < 4 ? 'eager' : 'lazy'}
+                  draggable="false"
+                />
+                <figcaption>{p.nom}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <div class="manege-sol" aria-hidden="true"></div>
         </div>
       </div>
     </div>
   </section>
 
   <style>
-    .defile { scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%); }
-    .defile::-webkit-scrollbar { display: none; }
-    .defile.is-dragging { cursor: grabbing; }
+    .manege { --w: 100px; --h: 136px; position: relative; height: calc(var(--h) + 150px); perspective: 900px; perspective-origin: 50% 0%; cursor: grab; touch-action: pan-y; outline: none; }
+    @media (min-width: 640px) { .manege { --w: 140px; --h: 188px; } }
+    @media (min-width: 1024px) { .manege { --w: 165px; --h: 220px; perspective: 1200px; } }
+    .manege.is-dragging { cursor: grabbing; }
+    .manege:focus-visible { box-shadow: 0 0 0 3px #BED70B; border-radius: 1.5rem; }
+    .manege-anneau { --r: calc(var(--w) * 0.5 / tan(calc(180deg / var(--n))) + 18px); position: absolute; left: 50%; top: 55px; width: var(--w); height: var(--h); margin-left: calc(var(--w) / -2); transform-style: preserve-3d; transform: rotateX(-14deg) rotateY(0deg); will-change: transform; }
+    .manege-carte { position: absolute; inset: 0; margin: 0; overflow: hidden; border-radius: 1.25rem; box-shadow: 0 18px 40px rgba(0,0,0,.35); transform: rotateY(calc(var(--i) * 360deg / var(--n))) translateZ(var(--r)); background: #083E23; transition: opacity .2s; }
+    .manege-carte.dos figcaption { visibility: hidden; }
+    .manege-carte figcaption { position: absolute; inset: auto 0 0 0; padding: 2.25rem .9rem .8rem; background: linear-gradient(to top, rgba(8,62,35,.92), transparent); color: #FAF5EA; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 1rem; line-height: 1.15; }
+    .manege-sol { position: absolute; left: 12%; right: 12%; bottom: 22px; height: 46px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.45), transparent); filter: blur(6px); }
   </style>
 
   <script>
-    // Défilement automatique continu ; glisser à la souris (ou au doigt) pour aller plus vite.
-    const el = document.getElementById('defile');
-    if (el) {
+    // Carrousel 3D en cercle : tourne tout seul autour de son axe ; on le fait tourner plus vite en le faisant glisser.
+    const scene = document.getElementById('manege');
+    const anneau = document.getElementById('manege-anneau');
+    if (scene && anneau) {
       const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const vitesse = 0.5; // px par image (~30 px/s)
-      let pause = false, drag = false, startX = 0, startScroll = 0, elan = 0, dernierX = 0, pos = el.scrollLeft;
-      const moitie = () => el.scrollWidth / 2;
+      const n = Number(getComputedStyle(anneau).getPropertyValue('--n')) || 10;
+      const pas = 360 / n;
+      let angle = 0, vitesse = reduit ? 0 : -0.12, elan = 0, drag = false, survol = false, dernierX = 0;
+      const cartes = [...anneau.querySelectorAll('.manege-carte')];
+      const appliquer = () => {
+        anneau.style.transform = `rotateX(-14deg) rotateY(${angle}deg)`;
+        cartes.forEach((c, i) => {
+          const a = ((angle + i * pas) * Math.PI) / 180;
+          const face = Math.cos(a); // 1 = devant, -1 = derrière
+          c.style.filter = `brightness(${(0.45 + 0.55 * Math.max(face, 0)).toFixed(2)})`;
+          c.style.opacity = face < -0.1 ? '0.55' : '1';
+          c.classList.toggle('dos', face < 0);
+        });
+      };
       const boucle = () => {
         if (!drag) {
-          if (Math.abs(elan) > 0.1) { pos += elan; elan *= 0.95; }
-          else if (!pause && !reduit) { pos += vitesse; }
-          if (pos >= moitie()) pos -= moitie();
-          if (pos < 0) pos += moitie();
-          el.scrollLeft = pos;
+          if (Math.abs(elan) > 0.02) { angle += elan; elan *= 0.95; }
+          else if (!survol) angle += vitesse;
+          appliquer();
         }
         requestAnimationFrame(boucle);
       };
-      el.addEventListener('pointerdown', (e) => {
-        if (e.pointerType !== 'mouse') return; // au doigt : défilement natif
-        drag = true; el.classList.add('is-dragging'); startX = dernierX = e.clientX; startScroll = el.scrollLeft; elan = 0;
-        el.setPointerCapture(e.pointerId);
+      scene.addEventListener('pointerdown', (e) => {
+        drag = true; scene.classList.add('is-dragging'); dernierX = e.clientX; elan = 0;
+        scene.setPointerCapture(e.pointerId);
       });
-      el.addEventListener('pointermove', (e) => {
+      scene.addEventListener('pointermove', (e) => {
         if (!drag) return;
-        const dx = e.clientX - startX; elan = dernierX - e.clientX; dernierX = e.clientX;
-        pos = startScroll - dx; if (pos < 0) pos += moitie(); if (pos >= moitie()) pos -= moitie();
-        el.scrollLeft = pos;
+        const dx = e.clientX - dernierX; dernierX = e.clientX;
+        const d = dx * 0.35; angle += d; elan = d; appliquer();
       });
-      const fin = () => { drag = false; el.classList.remove('is-dragging'); };
-      el.addEventListener('pointerup', fin); el.addEventListener('pointercancel', fin);
-      el.addEventListener('scroll', () => { if (!drag && Math.abs(el.scrollLeft - pos) > 2) pos = el.scrollLeft; }, { passive: true });
-      el.addEventListener('mouseenter', () => (pause = true));
-      el.addEventListener('mouseleave', () => (pause = false));
-      el.addEventListener('focusin', () => (pause = true));
-      el.addEventListener('focusout', () => (pause = false));
-      el.addEventListener('touchstart', () => (pause = true), { passive: true });
-      el.addEventListener('touchend', () => setTimeout(() => (pause = false), 2500), { passive: true });
-      el.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') { elan = 18; e.preventDefault(); }
-        if (e.key === 'ArrowLeft') { elan = -18; e.preventDefault(); }
+      const fin = () => { drag = false; scene.classList.remove('is-dragging'); };
+      scene.addEventListener('pointerup', fin); scene.addEventListener('pointercancel', fin);
+      scene.addEventListener('mouseenter', () => (survol = true));
+      scene.addEventListener('mouseleave', () => (survol = false));
+      scene.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { elan = -pas / 12; e.preventDefault(); }
+        if (e.key === 'ArrowLeft') { elan = pas / 12; e.preventDefault(); }
       });
+      appliquer();
       requestAnimationFrame(boucle);
     }
   </script>
