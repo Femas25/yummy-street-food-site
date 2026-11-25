@@ -1,5 +1,5 @@
 {
-  "note": "Le champ \"date\" doit être au format AAAA-MM-JJ (ex. 2026-09-14) pour que l'événement apparaisse sur le calendrier.",
+  "note": "Le champ \"date\" doit être au format AAAA-MM-JJ (ex. 2026-09-14) pour que l'événement apparaisse sur le calendrier. Cette liste alimente à la fois la carte « Prochain passage » de l'accueil, la page « Où nous trouver » et les données Google. \"horaires\" au format « 8h - 13h » ou « 16h30 - 21h » (une fin à « 0h » ou plus tôt que le début = fin après minuit, le lendemain). Champs facultatifs : \"commune\" (sinon lue dans l'adresse, après le code postal) et \"statut\": \"annulé\" (le passage reste affiché, barré, sans itinéraire). Sans \"adresse\" = événement privé (jamais mis en avant comme prochain passage).",
   "evenements": [
     {
       "date": "2026-10-01",

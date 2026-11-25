@@ -2,83 +2,72 @@
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm.astro';
 import contact from '../data/contact.json';
-import Trailer from '../components/icons/Trailer.astro';
-import Leaf from '../components/icons/Leaf.astro';
 import Mail from '../components/icons/Mail.astro';
 import Phone from '../components/icons/Phone.astro';
 import Instagram from '../components/icons/Instagram.astro';
 import Facebook from '../components/icons/Facebook.astro';
+
+const telHref = `tel:${contact.telephone.replace(/\s+/g, '')}`;
+const canaux = [
+  { titre: 'Téléphone', texte: contact.telephone, href: telHref, Icone: Phone, externe: false },
+  { titre: 'E-mail', texte: contact.email, href: `mailto:${contact.email}`, Icone: Mail, externe: false },
+  { titre: 'Instagram', texte: contact.reseaux.instagram, href: contact.reseaux.instagramUrl, Icone: Instagram, externe: true },
+  { titre: 'Facebook', texte: contact.reseaux.facebook, href: contact.reseaux.facebookUrl, Icone: Facebook, externe: true },
+];
 ---
 
 <Layout
   title="Contact"
-  description="Contactez Yummy Street Food : coordonnées, réseaux sociaux, demande d'événement sur mesure et formulaire de contact."
+  description="Contactez Yummy Street Food : téléphone, e-mail, Instagram, Facebook et formulaire de contact. Demande de devis pour vos événements privés."
 >
-  <div class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-      <Leaf class="leaf-deco absolute left-1 top-4 w-12 opacity-45 sm:w-14 md:left-6 md:w-16 md:opacity-55" style="--rot:14deg; --float-delay: 0.6s" />
-      <Leaf class="leaf-deco absolute bottom-10 right-1 w-12 opacity-40 sm:w-16 md:right-6 md:w-20 md:opacity-55" style="--rot:-9deg; --float-delay: 2s" />
-      <Trailer class="leaf-deco absolute right-1 top-6 w-20 opacity-70 sm:w-24 md:right-8 md:w-28 md:opacity-85" style="--rot:-7deg; --float-delay: 1.2s" />
+  <section class="bg-primary-dark text-cream">
+    <div class="container-y py-10 md:py-12">
+      <p class="kicker text-lime">Contact</p>
+      <h1 class="mt-2 font-heading text-4xl font-semibold text-cream md:text-5xl">Nous contacter</h1>
+      <p class="mt-3 max-w-prose font-body text-lg text-mint">Une question, un événement à organiser ? Écrivez-nous ou appelez-nous directement.</p>
+    </div>
+  </section>
+
+  <div class="container-y grid grid-cols-[minmax(0,1fr)] gap-10 py-10 md:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] lg:items-start lg:gap-14">
+    <div class="flex flex-col gap-6">
+      <ul class="card divide-y divide-primary-dark/10">
+        {
+          canaux.map(({ titre, texte, href, Icone, externe }) => (
+            <li>
+              <a
+                href={href}
+                {...(externe ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                class="flex min-h-[64px] items-center gap-4 px-5 py-3 hover:bg-mint"
+              >
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-dark text-lime">
+                  <Icone class="h-5 w-5" />
+                </span>
+                <span class="min-w-0">
+                  <span class="block font-heading text-sm font-semibold uppercase tracking-wide text-muted">{titre}</span>
+                  <span class="block font-body text-base font-semibold text-primary-dark [overflow-wrap:anywhere]">{texte}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <aside class="card border-t-4 border-lime p-5 md:p-6" aria-labelledby="evt-titre">
+        <h2 id="evt-titre" class="font-heading text-xl font-semibold">Un événement privé ?</h2>
+        <p class="mt-2 font-body text-base text-anthracite">
+          Mariage, anniversaire, fête de famille, événement d'entreprise : le truck Yummy se déplace et adapte son offre à
+          votre lieu, votre nombre d'invités et votre budget.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="/evenements-prives#formules" class="btn-outline btn-sm">Formules</a>
+          <a href="/evenements-prives#devis" class="btn-lime btn-sm">Demander un devis</a>
+        </div>
+      </aside>
     </div>
 
-    <section class="relative z-10 mx-auto max-w-5xl px-4 py-16">
-      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Contact</h1>
-      <p class="reveal mb-12 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">Une question, un événement à organiser ? Contactez-nous directement.</p>
-
-      <div class="mb-14 grid gap-10 md:grid-cols-2">
-        <div class="reveal-scale flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-2xl">
-          <div class="rounded-xl bg-primary/5 p-4 transition-colors hover:bg-primary/10">
-            <h2 class="mb-1 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark">Email</h2>
-            <p class="flex items-center gap-2 font-body text-anthracite/80">
-              <Mail class="h-4 w-4 shrink-0 text-primary" />
-              <a href={`mailto:${contact.email}`} class="hover:text-primary hover:underline">{contact.email}</a>
-            </p>
-          </div>
-          <div class="rounded-xl bg-primary/5 p-4 transition-colors hover:bg-primary/10">
-            <h2 class="mb-1 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark">Téléphone</h2>
-            <p class="flex items-center gap-2 font-body text-anthracite/80">
-              <Phone class="h-4 w-4 shrink-0 text-primary" />
-              <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="hover:text-primary hover:underline">{contact.telephone}</a>
-            </p>
-          </div>
-          <div class="rounded-xl bg-primary/5 p-4 transition-colors hover:bg-primary/10">
-            <h2 class="mb-1 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark">Réseaux sociaux</h2>
-            <ul class="flex flex-col gap-2 font-body text-anthracite/80">
-              <li class="flex items-center gap-2">
-                <Instagram class="h-4 w-4 shrink-0 text-primary" />
-                <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="hover:text-primary hover:underline">
-                  {contact.reseaux.instagram}
-                </a>
-              </li>
-              <li class="flex items-center gap-2">
-                <Facebook class="h-4 w-4 shrink-0 text-primary" />
-                <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="hover:text-primary hover:underline">
-                  {contact.reseaux.facebook}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="reveal-scale flex flex-col gap-3 rounded-2xl border-t-4 border-primary bg-white p-6 shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl" style="--reveal-delay:100ms">
-          <h2 class="font-heading text-lg font-bold text-primary-dark">Une formule sur mesure pour votre événementiel</h2>
-          <p class="font-body text-sm leading-relaxed text-anthracite/80">
-            Mariage, anniversaire, fête de famille, événement d'entreprise — le truck Yummy se déplace et adapte
-            son offre à votre lieu, votre nombre d'invités et votre budget.
-          </p>
-          <p class="font-body text-sm leading-relaxed text-anthracite/80">
-            Découvrez nos trois formules (starters, plat street food, dessert) et demandez votre devis en deux
-            minutes : nous revenons vers vous rapidement avec une proposition personnalisée.
-          </p>
-          <a href="/evenements-prives" class="mt-auto rounded-full bg-lime px-3 py-2 text-center font-heading text-sm font-bold text-primary-dark transition-colors hover:bg-lime/80">
-            Formules et devis événements →
-          </a>
-        </div>
-      </div>
-
-      <div class="reveal-scale mx-auto max-w-2xl" style="--reveal-delay:160ms">
-        <ContactForm />
-      </div>
+    <section aria-labelledby="form-titre">
+      <h2 id="form-titre" class="mb-4 font-heading text-2xl font-semibold md:text-3xl">Envoyer un message</h2>
+      <ContactForm />
     </section>
   </div>
 </Layout>

@@ -1,198 +1,160 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
-import logo from '../assets/brand/logo.png';
-import Leaf from '../components/icons/Leaf.astro';
-import Burger from '../components/icons/Burger.astro';
-import Wrap from '../components/icons/Wrap.astro';
-import Trailer from '../components/icons/Trailer.astro';
-import Mail from '../components/icons/Mail.astro';
-import Phone from '../components/icons/Phone.astro';
-import Instagram from '../components/icons/Instagram.astro';
-import Facebook from '../components/icons/Facebook.astro';
-import contact from '../data/contact.json';
+import ProchainPassage from '../components/ProchainPassage.astro';
+import heroPhoto from '../assets/menu/sandwich-legumes-truck.jpg';
 import remorquePhoto from '../assets/truck/remorque-yummy.jpg';
-import champPhoto from '../assets/gallery/jardin-serre-fleurs.jpg';
+import potagerPhoto from '../assets/gallery/jardin-serre-fleurs.jpg';
 import eventPhoto from '../assets/menu/bowls-vegetaux-fleurs.jpg';
+import burgerBetterave from '../assets/menu/burger-betterave.jpg';
+import pitaGarni from '../assets/menu/pita-garni-sauce-blanche.jpg';
+import bowlChili from '../assets/menu/bowl-chili-vegetal.jpg';
 
+// Aperçu : 3 plats déjà présentés sur la page « Nos propositions » (nom + description validés, vraie photo du plat).
+const apercu = [
+  { nom: 'Burger', desc: 'Le burger version végétale', src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce', pos: '50% 55%' },
+  { nom: 'Pita', desc: 'Pain pita généreusement garni', src: pitaGarni, alt: 'Pita garni de protéines végétales, tomate, oignon rouge, salade et sauce blanche', pos: '55% 42%' },
+  { nom: 'Chili sin carne', desc: 'Haricots rouges, maïs, riz et nachos', src: bowlChili, alt: 'Chili sin carne : haricots rouges, maïs, riz, sauce crémeuse, coriandre et nachos', pos: '50% 50%' },
+];
 ---
 
 <Layout
   title="Accueil"
-  description="Yummy Street Food, food truck végétal, local et gourmand — retrouvez nos prochains passages près de chez vous."
+  fullTitle="Food truck végétal à Virton | Yummy Street Food"
+  description="Yummy Street Food, food truck de street food végétale à Virton et en Gaume : prochain passage, menu, événements privés."
 >
-  <section class="relative isolate overflow-hidden bg-primary-dark text-cream">
-    <div
-      class="pointer-events-none absolute inset-0 -z-10"
-      style="background: radial-gradient(120% 90% at 50% 0%, #159E7B 0%, #0B4A2C 45%, #083E23 100%);"
-      aria-hidden="true"
-    >
-    </div>
-    <div class="pointer-events-none absolute inset-0 -z-10 opacity-90" aria-hidden="true">
-      <Leaf class="leaf-deco absolute left-[5%] top-[10%] w-16 opacity-40 md:w-24" style="--rot:-18deg; --float-delay:0s" />
-      <Leaf class="leaf-deco absolute right-[3%] top-[36%] w-14 opacity-35 md:w-20" style="--rot:16deg; --float-delay:1.3s" />
-      <Leaf class="leaf-deco absolute left-[2%] top-[58%] w-12 opacity-30 md:w-16" style="--rot:8deg; --float-delay:2.4s" />
-      <Leaf class="leaf-deco absolute bottom-[4%] left-[42%] w-16 opacity-30 md:w-24" style="--rot:-10deg; --float-delay:0.7s" />
-      <Burger class="leaf-deco absolute left-[24%] top-[6%] w-11 opacity-30 sm:w-14 md:w-20" style="--rot:-8deg; --float-delay:1.8s" />
-      <Burger class="leaf-deco absolute left-[8%] bottom-[12%] w-9 opacity-25 sm:w-12 md:w-16" style="--rot:14deg; --float-delay:1.1s" />
-      <Burger class="leaf-deco absolute right-[4%] bottom-[10%] w-10 opacity-25 sm:w-12 md:w-16" style="--rot:-15deg; --float-delay:2.6s" />
-      <Wrap class="leaf-deco absolute left-[4%] top-[34%] w-11 opacity-30 sm:w-14 md:w-20" style="--rot:12deg; --float-delay:0.4s" />
-      <Trailer class="leaf-deco absolute right-2 top-5 w-16 opacity-50 sm:w-20 md:right-10 md:top-8 md:w-28" style="--rot:-6deg; --float-delay:0.7s" />
-    </div>
-
-    <div class="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center gap-7 px-4 py-24 text-center md:min-h-[78vh]">
-      <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="reveal-scale w-64 max-w-[80vw] drop-shadow-xl md:w-96" />
-      <h1 class="sr-only">Yummy Street Food</h1>
-      <span
-        class="reveal inline-block rounded-full border border-cream/30 bg-cream/10 px-4 py-1.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-mint backdrop-blur-sm md:text-sm"
-        style="--reveal-delay:120ms"
-      >
-        Food Truck
-      </span>
-      <p class="reveal max-w-xl font-body text-base font-semibold text-mint md:text-lg" style="--reveal-delay:220ms">Local • Végétal • Gourmand</p>
-      <div class="reveal flex flex-wrap justify-center gap-4" style="--reveal-delay:320ms">
-        <a
-          href="/menu"
-          class="rounded-full bg-lime px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark shadow-sm transition-all hover:-translate-y-0.5 hover:bg-lime/90 hover:shadow-md"
-        >
-          Voir nos propositions
-        </a>
-        <a
-          href="/localisation"
-          class="rounded-full border-2 border-cream px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream transition-all hover:-translate-y-0.5 hover:bg-cream hover:text-primary-dark hover:shadow-md"
-        >
-          Localiser le truck
-        </a>
+  <!-- Héros : 2 colonnes (empilées sur mobile) -->
+  <section class="bg-primary-dark text-cream">
+    <div class="container-y grid items-center gap-8 py-10 md:grid-cols-[1.05fr_1fr] md:gap-12 md:py-16 lg:py-20">
+      <div>
+        <p class="kicker mb-4 text-lime"><span class="hidden sm:inline">Food truck · </span>Local · Végétal · Gourmand</p>
+        <h1 class="font-heading text-[2.15rem] font-semibold leading-[1.08] text-cream sm:text-5xl lg:text-[3.6rem]">
+          Street food végétale à Virton et en Gaume
+        </h1>
+        <p class="mt-5 max-w-prose font-body text-lg leading-relaxed text-mint md:text-xl">
+          Des classiques de la street food, cuisinés avec les légumes de saison de notre potager.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#prochain-passage" class="btn-lime">Voir le prochain passage</a>
+          <a href="/menu" class="btn-outline-light">Voir le menu</a>
+        </div>
+      </div>
+      <div class="relative">
+        <Image
+          src={heroPhoto}
+          alt="Pita garnie de légumes, tenue devant la remorque verte Yummy Street Food"
+          class="aspect-[4/5] w-full rounded-3xl object-cover object-[50%_40%] shadow-2xl md:aspect-[4/5] md:object-[50%_50%]"
+          widths={[480, 640, 800, 1080]}
+          sizes="(min-width: 1152px) 540px, (min-width: 768px) 46vw, calc(100vw - 2rem)"
+          loading="eager"
+          fetchpriority="high"
+          quality={72}
+        />
       </div>
     </div>
   </section>
 
-  <section class="py-20 md:py-28">
-    <div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-2 md:items-center md:gap-16">
-      <div class="reveal text-center md:order-2 md:text-left">
-        <h2 class="mb-6 font-heading text-3xl font-bold text-primary-dark md:text-4xl">Notre remorque.</h2>
-        <p class="font-body text-base leading-relaxed text-anthracite/90 md:text-lg">
-          Repérez notre remorque verte sur les marchés et événements : on y revisite les classiques de la street food, en version végétale, pour un service convivial et gourmand.
-        </p>
-        <div class="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
-          <a
-            href="/menu"
-            class="inline-block rounded-full bg-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-md transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-lg"
-          >
-            Voir nos propositions →
-          </a>
-          <a
-            href="/localisation"
-            class="inline-block rounded-full border-2 border-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-          >
-            Où nous trouver
-          </a>
-        </div>
-      </div>
-
-      <div class="reveal-scale overflow-hidden rounded-2xl shadow-xl transition-shadow duration-300 hover:shadow-2xl md:order-1">
+  <!-- Prochain passage + la remorque à repérer -->
+  <section class="py-10 md:py-16" aria-label="Où nous trouver">
+    <div class="container-y grid items-center gap-8 md:grid-cols-[1.1fr_1fr] md:gap-12">
+      <ProchainPassage lienAgenda />
+      <div class="flex items-center gap-5 md:flex-col md:items-start">
         <Image
           src={remorquePhoto}
-          alt=""
-          class="aspect-[4/5] w-full object-cover transition-transform duration-500 hover:scale-105 md:aspect-[3/4]"
-          widths={[400, 800, 1200]}
-          sizes="(min-width: 768px) 50vw, 100vw"
+          alt="La remorque Yummy Street Food, hayon ouvert et menu du jour à l'ardoise"
+          class="aspect-square w-28 shrink-0 rounded-2xl object-cover object-[40%_62%] sm:w-36 md:aspect-[4/3] md:w-full"
+          widths={[240, 480, 800]}
+          sizes="(min-width: 768px) 45vw, 144px"
         />
-      </div>
-    </div>
-  </section>
-
-  <section class="py-20 md:py-28">
-    <div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-2 md:items-center md:gap-16">
-      <div class="reveal-scale overflow-hidden rounded-2xl shadow-xl transition-shadow duration-300 hover:shadow-2xl md:order-2">
-        <Image
-          src={champPhoto}
-          alt="Vue d'ensemble de notre jardin et de sa serre, entourés de fleurs"
-          class="aspect-[4/5] w-full object-cover saturate-[1.15] contrast-[1.05] transition-transform duration-500 hover:scale-105 md:aspect-[3/4]"
-          widths={[400, 800, 1200]}
-          sizes="(min-width: 768px) 50vw, 100vw"
-        />
-      </div>
-
-      <div class="reveal text-center md:order-1 md:text-left" style="--reveal-delay:150ms">
-        <h2 class="mb-6 font-heading text-3xl font-bold text-primary-dark md:text-4xl">Du champ à votre assiette.</h2>
-        <p class="font-body text-base leading-relaxed text-anthracite/90 md:text-lg">
-          Chez Yummy Street Food, nous cultivons nous-mêmes la majorité des légumes qui composent nos recettes.
-          Récoltés à maturité, sans traitements et dans le respect de la nature, ils arrivent directement
-          dans votre assiette. Une cuisine locale, sincère et pleine de goût.
-        </p>
-        <div class="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
-          <a
-            href="/menu"
-            class="inline-block rounded-full bg-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-md transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-lg"
-          >
-            Voir nos propositions →
-          </a>
-          <a
-            href="/localisation"
-            class="inline-block rounded-full border-2 border-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-          >
-            Où nous trouver
-          </a>
+        <div>
+          <h2 class="font-heading text-xl font-semibold md:text-2xl">Repérez notre remorque verte</h2>
+          <p class="mt-2 font-body text-base leading-relaxed text-muted">
+            Sur les marchés et événements, on y revisite les classiques de la street food, en version végétale.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="px-4 py-20 md:py-28">
-    <div class="reveal-scale relative isolate mx-auto max-w-6xl overflow-hidden rounded-3xl shadow-2xl">
+  <!-- Aperçu du menu -->
+  <section class="border-t border-primary-dark/10 py-12 md:py-16" aria-labelledby="apercu-titre">
+    <div class="container-y">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="kicker text-primary">Au menu</p>
+          <h2 id="apercu-titre" class="mt-1 font-heading text-3xl font-semibold md:text-4xl">Quelques classiques</h2>
+        </div>
+        <a href="/menu" class="btn-outline btn-sm">Voir le menu</a>
+      </div>
+      <ul class="mt-8 grid gap-5 sm:grid-cols-3">
+        {
+          apercu.map((plat) => (
+            <li class="card overflow-hidden">
+              <Image
+                src={plat.src}
+                alt={plat.alt}
+                class="aspect-[4/3] w-full object-cover"
+                style={`object-position:${plat.pos}`}
+                widths={[360, 480, 640, 800]}
+                sizes="(min-width: 640px) 33vw, calc(100vw - 2rem)"
+                quality={68}
+              />
+              <div class="p-4">
+                <h3 class="font-heading text-xl font-semibold">{plat.nom}</h3>
+                <p class="mt-1 font-body text-base text-muted">{plat.desc}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-4 font-body text-sm text-muted">Carte variable selon la saison et l'événement.</p>
+    </div>
+  </section>
+
+  <!-- Potager -->
+  <section class="bg-mint py-12 md:py-16" aria-labelledby="potager-titre">
+    <div class="container-y grid items-center gap-8 md:grid-cols-2 md:gap-12">
+      <Image
+        src={potagerPhoto}
+        alt="Notre jardin et sa serre, entourés de fleurs"
+        class="aspect-[16/9] w-full rounded-3xl object-cover object-[25%_50%] md:aspect-[4/3]"
+        widths={[480, 640, 800, 1200]}
+        sizes="(min-width: 768px) 50vw, calc(100vw - 2rem)"
+        quality={62}
+      />
+      <div>
+        <p class="kicker text-primary-dark">Du potager à l'assiette</p>
+        <h2 id="potager-titre" class="mt-1 font-heading text-3xl font-semibold md:text-4xl">Les légumes de saison de notre potager</h2>
+        <p class="mt-4 max-w-prose font-body text-lg leading-relaxed text-anthracite">
+          Nos recettes suivent les saisons et ce que donne notre potager, avec des produits bio et locaux autant que possible.
+        </p>
+        <a href="/galerie" class="btn-dark mt-6">Voir le potager et nos récoltes</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Événements privés -->
+  <section class="px-4 py-12 sm:px-6 md:py-16" aria-labelledby="evenements-titre">
+    <div class="relative isolate mx-auto max-w-6xl overflow-hidden rounded-3xl bg-primary-dark">
       <Image
         src={eventPhoto}
-        alt="Bowls végétaux servis pour un événement"
-        class="absolute inset-0 -z-10 h-full w-full object-cover"
-        widths={[600, 1200, 1800]}
+        alt=""
+        class="absolute inset-0 -z-10 h-full w-full object-cover object-[60%_60%]"
+        widths={[480, 800, 1200, 1800]}
         sizes="(min-width: 1152px) 1152px, 100vw"
+        quality={60}
       />
-      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-primary-dark/90 via-primary-dark/70 to-primary-dark/20"></div>
-      <div class="max-w-xl px-6 py-16 text-center text-cream md:px-14 md:py-24 md:text-left">
-        <span class="mb-4 inline-block rounded-full bg-lime px-4 py-1.5 font-heading text-xs font-bold uppercase tracking-[0.2em] text-primary-dark">Événements privés</span>
-        <h2 class="mb-5 font-heading text-3xl font-bold md:text-4xl">Un événement à organiser ?</h2>
-        <p class="mb-8 font-body text-base leading-relaxed text-cream/90 md:text-lg">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-primary-dark via-primary-dark/90 to-primary-dark/30 md:via-primary-dark/80"></div>
+      <div class="max-w-xl px-6 py-12 text-cream md:px-12 md:py-16">
+        <p class="kicker text-lime">Événements privés</p>
+        <h2 id="evenements-titre" class="mt-2 font-heading text-3xl font-semibold text-cream md:text-4xl">Un événement à organiser ?</h2>
+        <p class="mt-4 font-body text-lg leading-relaxed text-cream">
           Mariages, anniversaires, fêtes d'entreprise, festivals : notre remorque s'installe chez vous et régale vos invités avec une street food végétale faite maison.
         </p>
-        <div class="flex flex-wrap justify-center gap-3 md:justify-start">
-          <a
-            href="/evenements-prives"
-            class="inline-block rounded-full bg-lime px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-primary-dark shadow-sm transition-all hover:-translate-y-0.5 hover:bg-lime/90 hover:shadow-md"
-          >
-            Demander un devis →
-          </a>
-          <a
-            href="/evenements-prives"
-            class="inline-block rounded-full border-2 border-cream px-6 py-3 font-heading text-sm font-bold uppercase tracking-wide text-cream transition-all hover:-translate-y-0.5 hover:bg-cream hover:text-primary-dark"
-          >
-            Nos formules
-          </a>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="/evenements-prives#formules" class="btn-lime">Voir les formules</a>
+          <a href="/evenements-prives#devis" class="btn-outline-light">Demander un devis</a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-primary-dark py-14 text-cream">
-    <div class="reveal mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center">
-      <h2 class="font-heading text-xl font-bold">Retrouvez-nous aussi ici</h2>
-      <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 font-body text-sm text-mint">
-        <a href={`mailto:${contact.email}`} class="flex items-center gap-1.5 hover:text-lime hover:underline">
-          <Mail class="h-4 w-4 shrink-0" />
-          {contact.email}
-        </a>
-        <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="flex items-center gap-1.5 hover:text-lime hover:underline">
-          <Phone class="h-4 w-4 shrink-0" />
-          {contact.telephone}
-        </a>
-        <a href={contact.reseaux.instagramUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-lime hover:underline">
-          <Instagram class="h-4 w-4 shrink-0" />
-          {contact.reseaux.instagram}
-        </a>
-        <a href={contact.reseaux.facebookUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-lime hover:underline">
-          <Facebook class="h-4 w-4 shrink-0" />
-          {contact.reseaux.facebook}
-        </a>
       </div>
     </div>
   </section>
