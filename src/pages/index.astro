@@ -48,7 +48,7 @@ const apercu = [
       style="background: radial-gradient(120% 90% at 30% 0%, #159E7B 0%, #0B4A2C 45%, #083E23 100%);"
       aria-hidden="true"
     ></div>
-    <div class="container-y grid items-center gap-10 py-12 md:grid-cols-[0.9fr_1.1fr] md:gap-10 md:py-16 lg:py-20">
+    <div class="container-y grid items-center gap-10 py-12 md:grid-cols-[0.8fr_1.2fr] md:gap-6 md:py-16 lg:py-20">
       <div class="flex flex-col items-center gap-5 text-center md:items-start md:text-left">
         <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="w-60 max-w-[75vw] drop-shadow-xl md:w-80 lg:w-96" loading="eager" fetchpriority="high" />
         <h1 class="sr-only">Yummy Street Food, street food végétale à Virton et en Gaume</h1>
@@ -60,91 +60,102 @@ const apercu = [
         </div>
       </div>
 
-      <div class="relative min-w-0">
-        <p class="sr-only" id="manege-titre">Nos propositions et notre remorque en images, sur un carrousel 3D qui tourne tout seul : faites-le tourner à la souris ou au doigt, ou avec les flèches du clavier.</p>
+      <div class="relative min-w-0 md:translate-x-10 lg:translate-x-16">
+        <p class="sr-only" id="manege-titre">Nos propositions et notre remorque en images, sur un carrousel 3D qui tourne lentement : faites-le glisser à la souris ou au doigt, ou utilisez les flèches du clavier, pour le faire tourner plus vite.</p>
         <div id="manege" class="manege" role="region" aria-labelledby="manege-titre" tabindex="0">
-          <div class="manege-anneau" id="manege-anneau" style={`--n:${propositions.length}`}>
-            {propositions.map((p, i) => (
-              <figure class="manege-carte" style={`--i:${i}`}>
-                <Image
-                  src={p.src}
-                  alt={p.alt}
-                  class="h-full w-full select-none object-cover"
-                  style={`object-position:${p.pos}`}
-                  widths={[240, 360, 480]}
-                  sizes="(min-width: 1024px) 220px, 150px"
-                  loading={i < 4 ? 'eager' : 'lazy'}
-                  draggable="false"
-                />
-                <figcaption>{p.nom}</figcaption>
-              </figure>
-            ))}
-          </div>
-          <div class="manege-sol" aria-hidden="true"></div>
+          {propositions.map((p, i) => (
+            <figure class="manege-carte" data-nom={p.nom}>
+              <Image
+                src={p.src}
+                alt={p.alt}
+                class="h-full w-full select-none object-cover"
+                style={`object-position:${p.pos}`}
+                widths={[280, 420, 560]}
+                sizes="(min-width: 1024px) 240px, (min-width: 640px) 200px, 150px"
+                loading={i < 5 ? 'eager' : 'lazy'}
+                draggable="false"
+              />
+            </figure>
+          ))}
+          <div class="manege-ombre" aria-hidden="true"></div>
         </div>
+        <p id="manege-legende" class="manege-legende" aria-live="off">{propositions[0].nom}</p>
       </div>
     </div>
   </section>
 
   <style>
-    .manege { --w: 100px; --h: 136px; position: relative; height: calc(var(--h) + 150px); perspective: 900px; perspective-origin: 50% 0%; cursor: grab; touch-action: pan-y; outline: none; }
-    @media (min-width: 640px) { .manege { --w: 140px; --h: 188px; } }
-    @media (min-width: 1024px) { .manege { --w: 165px; --h: 220px; perspective: 1200px; } }
+    .manege { --w: 130px; --h: 174px; --r: 222px; position: relative; height: calc(var(--h) + 70px); perspective: 1400px; cursor: grab; touch-action: pan-y; outline: none; user-select: none; }
+    @media (min-width: 640px) { .manege { --w: 170px; --h: 228px; --r: 288px; } }
+    @media (min-width: 1024px) { .manege { --w: 205px; --h: 275px; --r: 345px; } }
     .manege.is-dragging { cursor: grabbing; }
     .manege:focus-visible { box-shadow: 0 0 0 3px #BED70B; border-radius: 1.5rem; }
-    .manege-anneau { --r: calc(var(--w) * 0.5 / tan(calc(180deg / var(--n))) + 18px); position: absolute; left: 50%; top: 55px; width: var(--w); height: var(--h); margin-left: calc(var(--w) / -2); transform-style: preserve-3d; transform: rotateX(-14deg) rotateY(0deg); will-change: transform; }
-    .manege-carte { position: absolute; inset: 0; margin: 0; overflow: hidden; border-radius: 1.25rem; box-shadow: 0 18px 40px rgba(0,0,0,.35); transform: rotateY(calc(var(--i) * 360deg / var(--n))) translateZ(var(--r)); background: #083E23; transition: opacity .2s; }
-    .manege-carte.dos figcaption { visibility: hidden; }
-    .manege-carte figcaption { position: absolute; inset: auto 0 0 0; padding: 2.25rem .9rem .8rem; background: linear-gradient(to top, rgba(8,62,35,.92), transparent); color: #FAF5EA; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 1rem; line-height: 1.15; }
-    .manege-sol { position: absolute; left: 12%; right: 12%; bottom: 22px; height: 46px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.45), transparent); filter: blur(6px); }
+    .manege-carte { position: absolute; left: 50%; top: 20px; width: var(--w); height: var(--h); margin: 0 0 0 calc(var(--w) / -2); overflow: hidden; border-radius: 22px; background: #083E23; box-shadow: 0 30px 60px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(250,245,234,.08); will-change: transform, opacity; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .manege-carte::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 38%); opacity: var(--reflet, 0); pointer-events: none; }
+    .manege-ombre { position: absolute; left: 50%; bottom: 4px; width: calc(var(--w) * 2.4); height: 36px; margin-left: calc(var(--w) * -1.2); border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.4), transparent); filter: blur(8px); pointer-events: none; }
+    .manege-legende { margin-top: .75rem; text-align: center; font-family: Fredoka, sans-serif; font-weight: 500; font-size: 1.05rem; letter-spacing: .14em; text-transform: uppercase; color: #FAF5EA; transition: opacity .35s ease; }
   </style>
 
   <script>
-    // Carrousel 3D en cercle : tourne tout seul autour de son axe ; on le fait tourner plus vite en le faisant glisser.
+    // Carrousel 3D : tourne toujours lentement ; glisser (souris, doigt) ou les flèches l'accélèrent, sans jamais l'arrêter.
     const scene = document.getElementById('manege');
-    const anneau = document.getElementById('manege-anneau');
-    if (scene && anneau) {
+    const legende = document.getElementById('manege-legende');
+    if (scene) {
       const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const n = Number(getComputedStyle(anneau).getPropertyValue('--n')) || 10;
-      const pas = 360 / n;
-      let angle = 0, vitesse = reduit ? 0 : -0.12, elan = 0, drag = false, survol = false, dernierX = 0;
-      const cartes = [...anneau.querySelectorAll('.manege-carte')];
-      const appliquer = () => {
-        anneau.style.transform = `rotateX(-14deg) rotateY(${angle}deg)`;
+      const cartes = [...scene.querySelectorAll('.manege-carte')];
+      const n = cartes.length, pas = 360 / n;
+      const base = reduit ? 0 : -0.045;          // vitesse de croisière (deg/image) : un tour en ~2 min
+      let angle = 0, vitesse = base, drag = false, dernierX = 0, t = 0, nomCourant = '';
+      const rayon = () => parseFloat(getComputedStyle(scene).getPropertyValue('--r')) || 300;
+      const lisse = (a, b, x) => { const k = Math.min(1, Math.max(0, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+      const dessiner = () => {
+        const R = rayon();
+        let meilleur = -2, devant = 0;
         cartes.forEach((c, i) => {
-          const a = ((angle + i * pas) * Math.PI) / 180;
-          const face = Math.cos(a); // 1 = devant, -1 = derrière
-          c.style.filter = `brightness(${(0.45 + 0.55 * Math.max(face, 0)).toFixed(2)})`;
-          c.style.opacity = face < -0.1 ? '0.55' : '1';
-          c.classList.toggle('dos', face < 0);
+          const th = ((angle + i * pas) * Math.PI) / 180;
+          const cos = Math.cos(th), sin = Math.sin(th);
+          const x = sin * R, z = (cos - 1) * R;
+          const flotte = reduit ? 0 : Math.sin(t * 0.9 + i * 1.3) * 6;
+          const deg = ((((angle + i * pas) + 180) % 360) + 360) % 360 - 180;
+          const tourne = deg * 0.55;          // chaque photo pivote sur elle-même en passant
+          const incl = reduit ? 0 : Math.sin(t * 0.7 + i) * 2.5;
+          c.style.transform = `translate3d(${x.toFixed(1)}px, ${flotte.toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${tourne.toFixed(2)}deg) rotateX(${incl.toFixed(2)}deg)`;
+          const vis = lisse(-0.05, 0.55, cos);              // les photos de derrière disparaissent
+          c.style.opacity = vis.toFixed(3);
+          c.style.zIndex = String(Math.round((cos + 1) * 100));
+          c.style.visibility = vis < 0.01 ? 'hidden' : 'visible';
+          c.style.setProperty('--reflet', (Math.max(0, cos) * 0.9).toFixed(2));
+          if (cos > meilleur) { meilleur = cos; devant = i; }
         });
+        const nom = cartes[devant].dataset.nom || '';
+        if (legende && nom !== nomCourant) {
+          nomCourant = nom; legende.style.opacity = '0';
+          setTimeout(() => { if (legende.textContent !== nomCourant) legende.textContent = nomCourant; legende.style.opacity = '1'; }, 180);
+        }
       };
       const boucle = () => {
-        if (!drag) {
-          if (Math.abs(elan) > 0.02) { angle += elan; elan *= 0.95; }
-          else if (!survol) angle += vitesse;
-          appliquer();
-        }
+        t += 1 / 60;
+        if (!drag) { vitesse += (base - vitesse) * 0.025; angle += vitesse; }
+        dessiner();
         requestAnimationFrame(boucle);
       };
       scene.addEventListener('pointerdown', (e) => {
-        drag = true; scene.classList.add('is-dragging'); dernierX = e.clientX; elan = 0;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        drag = true; scene.classList.add('is-dragging'); dernierX = e.clientX;
         scene.setPointerCapture(e.pointerId);
       });
       scene.addEventListener('pointermove', (e) => {
         if (!drag) return;
-        const dx = e.clientX - dernierX; dernierX = e.clientX;
-        const d = dx * 0.35; angle += d; elan = d; appliquer();
+        const d = (e.clientX - dernierX) * 0.22; dernierX = e.clientX;
+        angle += d; vitesse = vitesse * 0.6 + d * 0.4;
       });
       const fin = () => { drag = false; scene.classList.remove('is-dragging'); };
       scene.addEventListener('pointerup', fin); scene.addEventListener('pointercancel', fin);
-      scene.addEventListener('mouseenter', () => (survol = true));
-      scene.addEventListener('mouseleave', () => (survol = false));
       scene.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') { elan = -pas / 12; e.preventDefault(); }
-        if (e.key === 'ArrowLeft') { elan = pas / 12; e.preventDefault(); }
+        if (e.key === 'ArrowRight') { vitesse -= 1.2; e.preventDefault(); }
+        if (e.key === 'ArrowLeft') { vitesse += 1.2; e.preventDefault(); }
       });
-      appliquer();
+      dessiner();
       requestAnimationFrame(boucle);
     }
   </script>
