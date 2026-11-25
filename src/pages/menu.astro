@@ -75,7 +75,7 @@ const aBoire: Plat[] = [
               class="aspect-[4/3] w-full object-cover"
               style={`object-position:${plat.photo!.pos}`}
               widths={[360, 480, 640, 800]}
-              quality={70}
+              quality={65}
               sizes="(min-width: 1024px) 25vw, 50vw"
             />
             <div class="flex flex-1 flex-col p-3 sm:p-4">
@@ -122,8 +122,9 @@ const aBoire: Plat[] = [
             src={bowlAutomne}
             alt="Bowl de saison garni de légumes, radis et sauce crémeuse"
             class="aspect-[4/3] w-full object-cover"
-            widths={[480, 800]}
+            widths={[480, 640, 800]}
             sizes="(min-width: 1024px) 50vw, calc(100vw - 2rem)"
+            quality={62}
           />
           <div class="p-5">
             <p class="kicker text-primary">De saison</p>
@@ -166,8 +167,9 @@ const aBoire: Plat[] = [
                 src={c.src}
                 alt={c.alt}
                 class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                widths={[300, 600, 1200]}
+                widths={[300, 450, 600, 1200]}
                 sizes="(min-width: 768px) 25vw, 50vw"
+                quality={65}
               />
             </button>
           </li>
