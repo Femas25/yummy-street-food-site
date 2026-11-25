@@ -3,15 +3,33 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-cream text-anthracite font-body;
+    @apply bg-cream font-body text-anthracite antialiased;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    @apply font-heading;
+    @apply font-heading text-primary-dark;
+    text-wrap: balance;
+  }
+
+  /* Les ancres (#devis, #formules, #prochain-passage…) s'arrêtent sous le header collant (64 px mobile, 80 px ordinateur). */
+  [id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  /* Focus visible partout : anneau vert profond + halo citron, lisible sur fond clair comme sur fond vert. */
+  :focus-visible {
+    outline: 3px solid #083e23;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px #bed70b;
+    border-radius: 0.5rem;
   }
 
   /* L'attribut hidden doit l'emporter sur les classes d'affichage (flex, grid…). */
@@ -20,11 +38,49 @@
   }
 }
 
+@layer components {
+  .container-y {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  /* Boutons : hauteur mini 44 px (cible tactile). */
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-5 py-2.5 text-center font-heading text-base font-semibold leading-tight transition-colors duration-200;
+  }
+  .btn-lime {
+    @apply btn bg-lime text-primary-dark hover:bg-[#d0e63a];
+  }
+  .btn-dark {
+    @apply btn bg-primary-dark text-cream hover:bg-primary;
+  }
+  .btn-outline {
+    @apply btn border-2 border-primary-dark text-primary-dark hover:bg-primary-dark hover:text-cream;
+  }
+  .btn-outline-light {
+    @apply btn border-2 border-cream text-cream hover:bg-cream hover:text-primary-dark;
+  }
+  .btn-sm {
+    @apply min-h-[44px] px-4 py-2 text-sm;
+  }
+
+  .kicker {
+    @apply font-heading text-sm font-semibold uppercase tracking-[0.14em];
+  }
+
+  .card {
+    @apply rounded-2xl bg-paper shadow-[0_1px_2px_rgba(8,62,35,0.06),0_8px_24px_-12px_rgba(8,62,35,0.18)];
+  }
+
+  .lien {
+    @apply font-semibold text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary;
+  }
+}
+
 @layer utilities {
   .reveal {
     opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
     transition-delay: var(--reveal-delay, 0ms);
   }
   .reveal.is-visible {
@@ -34,8 +90,8 @@
 
   .reveal-scale {
     opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: scale(0.96);
+    transition: opacity 0.5s ease, transform 0.5s ease;
     transition-delay: var(--reveal-delay, 0ms);
   }
   .reveal-scale.is-visible {
@@ -44,34 +100,33 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .reveal-scale {
-    transition: none;
-    opacity: 1;
-    transform: none;
-  }
-}
-
 .leaf-deco {
   transform: rotate(var(--rot, 0deg));
-  animation: leaf-float 6s ease-in-out infinite;
-  animation-delay: var(--float-delay, 0s);
   filter: drop-shadow(0 6px 10px rgba(8, 62, 35, 0.22));
 }
 
-@keyframes leaf-float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(var(--rot, 0deg));
-  }
-  50% {
-    transform: translateY(-7px) rotate(calc(var(--rot, 0deg) + 3deg));
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
+/* Mouvements réduits : aucune animation, aucun défilement doux, contenus visibles d'emblée. */
 @media (prefers-reduced-motion: reduce) {
-  .leaf-deco {
-    animation: none;
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
   }
 }

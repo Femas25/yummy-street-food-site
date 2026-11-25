@@ -1,484 +1,385 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ProchainPassage from '../components/ProchainPassage.astro';
 import planning from '../data/planning.json';
-import evenementsData from '../data/evenements.json';
-import Trailer from '../components/icons/Trailer.astro';
-import Leaf from '../components/icons/Leaf.astro';
+import {
+  tousLesPassages,
+  passagesAVenir,
+  dateLongue,
+  moisAnnee,
+  jourRelatif,
+  itineraire,
+  lienPlans,
+  lienWaze,
+  schemaEvenement,
+  type Passage,
+} from '../lib/agenda';
 
-const isoDateRe = /^\d{4}-\d{2}-\d{2}$/;
+// Une seule source : src/data/evenements.json (lu par src/lib/agenda.ts), comme la carte « Prochain passage »
+// de l'accueil et les données schema.org ci-dessous. Champs facultatifs par événement :
+// « commune » (sinon lue dans l'adresse) et « statut »: "annulé" (affiché barré, sans itinéraire).
+const maintenant = Date.now();
+const site = new URL('/', Astro.site).toString();
+const passages = tousLesPassages();
+const aVenir = passagesAVenir(maintenant, passages);
 
-const formatDate = (iso: string) => {
-  if (!isoDateRe.test(iso)) return iso;
-  const d = new Date(`${iso}T00:00:00`);
-  return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+// Regroupement par mois puis par jour (plusieurs passages possibles le même jour).
+const mois: { cle: string; label: string; jours: { date: string; passages: Passage[] }[] }[] = [];
+for (const p of aVenir) {
+  const cle = p.date.slice(0, 7);
+  let m = mois.find((x) => x.cle === cle);
+  if (!m) mois.push((m = { cle, label: moisAnnee(p.date), jours: [] }));
+  let j = m.jours.find((x) => x.date === p.date);
+  if (!j) m.jours.push((j = { date: p.date, passages: [] }));
+  j.passages.push(p);
+}
+
+// Pour Google : uniquement les passages publics à venir (l'entreprise est décrite à part dans le Layout).
+const eventsSchema = aVenir.filter((p) => !p.prive && p.adresse).map((p) => schemaEvenement(p, site));
+
+// Calendrier : tout l'historique.
+const couleurs: Record<string, string> = {
+  primary: 'bg-primary',
+  leaf: 'bg-leaf',
+  lime: 'bg-lime',
+  red: 'bg-red-600',
+  noel: 'bg-red-600',
 };
-
-const mapsUrl = (adresse: string) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(adresse)}`;
-const appleMapsUrl = (adresse: string) => `https://maps.apple.com/?daddr=${encodeURIComponent(adresse)}`;
-const wazeUrl = (adresse: string) => `https://www.waze.com/ul?q=${encodeURIComponent(adresse)}&navigate=yes`;
-
-// Palette discrète par marché : un vert de la charte graphique par lieu. Le rouge est réservé
-// aux événements ponctuels/exceptionnels à mettre en évidence.
-const eventColors: Record<string, { border: string; dot: string }> = {
-  primary: { border: 'border-primary', dot: 'bg-primary' },
-  leaf: { border: 'border-leaf', dot: 'bg-leaf' },
-  lime: { border: 'border-lime', dot: 'bg-lime' },
-  red: { border: 'border-red-500', dot: 'bg-red-500' },
-  noel: { border: 'border-red-600', dot: 'bg-red-600' },
-};
-const colorFor = (couleur?: string) => eventColors[couleur ?? 'primary'] ?? eventColors.primary;
-
-// Classés par ordre de passage (date la plus proche en premier).
-const evenementsTous = [...evenementsData.evenements].sort((a, b) => a.date.localeCompare(b.date));
-
-// Seuls les événements à venir (heure belge) sont listés et décrits pour Google ; le calendrier garde tout
-// l'historique. Le site étant statique, un script masque aussi dans le navigateur ceux passés depuis le build.
-const aujourdhui = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Brussels' }).format(new Date());
-const evenements = evenementsTous.filter((e) => !isoDateRe.test(e.date) || e.date >= aujourdhui);
-
-const eventsForCalendar = evenementsTous
-  .filter((e) => isoDateRe.test(e.date))
-  .map((e) => ({ date: e.date, titre: e.titre, lieu: e.lieu, adresse: e.adresse, horaires: e.horaires, couleur: e.couleur, dateFormatted: formatDate(e.date) }));
-
-// Données structurées (schema.org) par événement, pour que Google puisse afficher
-// les dates de marché directement dans les résultats de recherche.
-const parseHoraires = (horaires: string) => {
-  const match = horaires.match(/(\d+)h(\d{2})?\s*-\s*(\d+)h(\d{2})?/);
-  if (!match) return null;
-  return {
-    start: `${match[1].padStart(2, '0')}:${match[2] ?? '00'}`,
-    end: `${match[3].padStart(2, '0')}:${match[4] ?? '00'}`,
-  };
-};
-// « 16h - 0h » : la fin à minuit est ramenée à 23h59 le même jour pour Google.
-const horairesSchema = (horaires: string) => {
-  const t = parseHoraires(horaires);
-  if (t && t.end <= t.start) t.end = '23:59';
-  return t;
-};
-
-// Décalage horaire belge du jour (+01:00 en hiver, +02:00 en été).
-const brusselsOffset = (iso: string) => {
-  const name = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Brussels', timeZoneName: 'shortOffset' })
-    .formatToParts(new Date(`${iso}T12:00:00Z`))
-    .find((p) => p.type === 'timeZoneName')?.value ?? 'GMT+1';
-  return name === 'GMT+2' ? '+02:00' : '+01:00';
-};
-
-const eventsSchema = evenements
-  .filter((e) => isoDateRe.test(e.date) && e.adresse)
-  .map((e) => {
-    const times = horairesSchema(e.horaires) ?? { start: '08:00', end: '18:00' };
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: `${e.titre} — Yummy Street Food`,
-      description: `Retrouvez le food truck Yummy Street Food : ${e.lieu}, ${e.horaires}.`,
-      startDate: `${e.date}T${times.start}:00${brusselsOffset(e.date)}`,
-      endDate: `${e.date}T${times.end}:00${brusselsOffset(e.date)}`,
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      eventStatus: 'https://schema.org/EventScheduled',
-      location: {
-        '@type': 'Place',
-        name: e.lieu,
-        address: e.adresse,
-      },
-      organizer: {
-        '@type': 'Organization',
-        name: 'Yummy Street Food',
-        url: 'https://yummy-streetfood.be',
-      },
-    };
-  });
+const eventsForCalendar = passages.map((p) => ({
+  date: p.date,
+  titre: p.titre,
+  lieu: p.lieu,
+  commune: p.commune ?? '',
+  adresse: p.adresse ?? '',
+  horaires: p.horaires,
+  couleur: p.couleur,
+  annule: p.annule,
+  prive: p.prive,
+  dateFormatted: dateLongue(p.date, 0),
+}));
 
 const hasProchainsPassages = planning.prochains_passages.length > 0;
-const hasEvenements = evenements.length > 0;
 ---
 
 <Layout
   title="Où nous trouver"
-  description="Retrouvez Yummy Street Food grâce à notre calendrier des prochains événements publics et nos emplacements confirmés."
+  description="Agenda du food truck Yummy Street Food : prochains marchés et événements à Virton, Arlon et en Gaume, avec horaires et itinéraire."
 >
-  <div class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-      <Leaf class="leaf-deco absolute left-1 top-4 w-12 opacity-45 sm:w-14 md:left-6 md:w-16 md:opacity-55" style="--rot:-11deg; --float-delay: 0.4s" />
-      <Leaf class="leaf-deco absolute bottom-10 left-1 w-12 opacity-40 sm:w-16 md:left-6 md:w-20 md:opacity-55" style="--rot:10deg; --float-delay: 1.6s" />
-      <Trailer class="leaf-deco absolute right-1 top-6 w-20 opacity-70 sm:w-24 md:right-8 md:w-28 md:opacity-85" style="--rot:6deg; --float-delay: 0.9s" />
+  <section class="bg-primary-dark text-cream">
+    <div class="container-y py-10 md:py-12">
+      <p class="kicker text-lime">Agenda</p>
+      <h1 class="mt-2 font-heading text-4xl font-semibold text-cream md:text-5xl">Où nous trouver</h1>
+      <p class="mt-3 max-w-prose font-body text-lg text-mint">Nos prochains marchés et événements publics, avec horaires et itinéraire.</p>
+    </div>
+  </section>
+
+  <div class="container-y py-8 md:py-12">
+    <ProchainPassage class="mx-auto max-w-3xl lg:mx-0" />
+
+    <div class="mt-10 flex flex-col gap-10 lg:grid lg:grid-cols-[380px_1fr] lg:items-start lg:gap-12">
+      <!-- Liste chronologique (avant la grille sur mobile) -->
+      <section aria-labelledby="liste-titre" class="lg:col-start-2 lg:row-start-1">
+        <h2 id="liste-titre" class="font-heading text-2xl font-semibold md:text-3xl">Toutes les dates à venir</h2>
+
+        <p data-agenda-vide hidden={aVenir.length > 0} class="card mt-5 p-5 font-body text-base text-muted">
+          Aucun passage annoncé pour le moment.
+        </p>
+
+        <div class="mt-5 flex flex-col gap-8">
+          {
+            mois.map((m) => (
+              <div data-mois>
+                <h3 class="kicker border-b border-primary-dark/15 pb-2 capitalize text-primary">{m.label}</h3>
+                <ol class="mt-4 flex flex-col gap-5">
+                  {m.jours.map((j) => (
+                    <li data-jour>
+                      <p class="mb-2 font-heading text-lg font-semibold first-letter:uppercase text-primary-dark">{dateLongue(j.date, maintenant)}</p>
+                      <ul class="flex flex-col gap-3">
+                        {j.passages.map((p) => {
+                          const rel = jourRelatif(p, maintenant);
+                          return (
+                            <li
+                              data-passage
+                              data-date={p.date}
+                              data-debut={p.debut}
+                              data-fin={p.fin}
+                              class={`card border-l-4 p-4 sm:p-5 ${p.annule ? 'border-red-700' : p.prive ? 'border-muted/40' : 'border-primary'}`}
+                            >
+                              <article>
+                                <div class="flex flex-wrap items-center gap-2">
+                                  {p.commune && <p class="kicker text-primary">{p.commune}</p>}
+                                  <span data-badge hidden={!rel || p.annule} class="rounded-full bg-lime px-2.5 py-0.5 font-heading text-xs font-semibold uppercase tracking-wide text-primary-dark">{rel}</span>
+                                  {p.annule && <span class="rounded-full bg-red-700 px-2.5 py-0.5 font-heading text-xs font-semibold uppercase tracking-wide text-white">Annulé</span>}
+                                </div>
+                                <h4 class={`mt-1 font-heading text-xl font-semibold ${p.annule ? 'line-through decoration-2' : ''}`}>{p.titre}</h4>
+                                {!p.prive && <p class="mt-1 font-body text-base text-anthracite">{p.lieu}</p>}
+                                <p class="mt-1 font-body text-base font-semibold text-anthracite">
+                                  {p.prive ? 'Événement privé, non ouvert au public' : p.horaires}
+                                  {p.finApresMinuit && <span class="font-normal text-muted"> (se termine le lendemain)</span>}
+                                </p>
+                                {p.annule && <p class="mt-1 font-body text-sm text-red-800">Ce passage est annulé.</p>}
+                                {p.adresse && !p.annule && !p.prive && (
+                                  <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                    <a href={itineraire(p.adresse)} rel="noopener" class="btn-dark btn-sm">
+                                      Itinéraire
+                                    </a>
+                                    <span class="font-body text-sm text-muted">
+                                      ou{' '}
+                                      <a href={lienPlans(p.adresse)} rel="noopener" class="lien inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-1">Plans</a>
+                                      ·
+                                      <a href={lienWaze(p.adresse)} rel="noopener" class="lien inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-1">Waze</a>
+                                    </span>
+                                  </div>
+                                )}
+                              </article>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Calendrier (après la liste sur mobile, colonne de gauche sur ordinateur) -->
+      <section aria-labelledby="cal-titre" class="lg:sticky lg:top-28 lg:col-start-1 lg:row-start-1">
+        <h2 id="cal-titre" class="sr-only">Calendrier</h2>
+        <div class="card p-4 sm:p-6">
+          <div class="mb-3 flex items-center justify-between">
+            <button id="cal-prev" type="button" aria-label="Mois précédent" class="flex h-11 w-11 items-center justify-center rounded-full bg-mint font-heading text-xl text-primary-dark hover:bg-primary-dark hover:text-cream">‹</button>
+            <p id="cal-label" aria-live="polite" class="font-heading text-xl font-semibold capitalize text-primary-dark">—</p>
+            <button id="cal-next" type="button" aria-label="Mois suivant" class="flex h-11 w-11 items-center justify-center rounded-full bg-mint font-heading text-xl text-primary-dark hover:bg-primary-dark hover:text-cream">›</button>
+          </div>
+          <div class="mb-1 grid grid-cols-7 gap-1 text-center font-heading text-xs font-semibold uppercase text-muted" aria-hidden="true">
+            <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+          </div>
+          <div id="cal-grid" class="grid grid-cols-7 gap-1"></div>
+          <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-primary-dark/10 pt-3 font-body text-sm text-muted">
+            <p class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-primary" aria-hidden="true"></span>Jour avec un passage</p>
+            <p class="flex items-center gap-2"><span class="h-3 w-3 rounded border-2 border-primary-dark" aria-hidden="true"></span>Aujourd'hui</p>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <section class="relative z-10 mx-auto max-w-5xl px-4 pt-16">
-      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Où nous trouver</h1>
-      <p class="reveal mb-4 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">
-        Retrouvez-nous lors de nos prochains événements publics — consultez le calendrier ci-dessous.
-      </p>
-    </section>
-
-    <section class="relative z-10 bg-mint/50 py-14 md:py-16">
-      <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <Leaf class="leaf-deco absolute right-0 top-[10%] hidden w-24 opacity-20 md:block lg:w-32" style="--rot:-4deg; --float-delay: 2.4s" />
-      </div>
-
-      <div class="relative mx-auto max-w-5xl px-4">
-        <div class="reveal mb-10 text-center">
-          <span class="mb-2 inline-block rounded-full bg-primary px-4 py-1 font-heading text-xs font-bold uppercase tracking-wide text-cream">
-            Calendrier
-          </span>
-          <h2 class="font-heading text-2xl font-bold text-primary-dark md:text-3xl">Nos prochains événements</h2>
-          <p class="mx-auto mt-2 max-w-xl font-body text-anthracite/70">
-            Marchés, festivals, soirées spéciales — cliquez sur un jour marqué pour voir le détail.
-          </p>
-        </div>
-
-        <div class={`grid gap-8 ${hasEvenements ? 'lg:grid-cols-[400px_1fr] lg:items-start lg:gap-12' : 'mx-auto max-w-md'}`}>
-          <div class="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
-          <div class="reveal-scale rounded-2xl bg-white p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl md:p-7">
-            <div class="mb-4 flex items-center justify-between">
-              <button
-                id="cal-prev"
-                type="button"
-                aria-label="Mois précédent"
-                class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 font-heading text-lg text-primary-dark transition-colors hover:bg-primary hover:text-cream"
-              >
-                ‹
-              </button>
-              <h3 id="cal-label" class="font-heading text-xl font-bold capitalize text-primary-dark">—</h3>
-              <button
-                id="cal-next"
-                type="button"
-                aria-label="Mois suivant"
-                class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 font-heading text-lg text-primary-dark transition-colors hover:bg-primary hover:text-cream"
-              >
-                ›
-              </button>
-            </div>
-
-            <div class="mb-2 grid grid-cols-7 gap-1 text-center font-heading text-[0.7rem] font-bold uppercase tracking-wide text-primary/60">
-              <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
-            </div>
-            <div id="cal-grid" class="grid grid-cols-7 gap-1"></div>
-
-            <div class="mt-5 flex flex-col gap-2 border-t border-mint pt-4 font-body text-xs text-anthracite/70">
-              <p class="flex items-center gap-2">
-                <span class="h-2.5 w-2.5 rounded-full bg-primary shadow-[0_0_0_3px_rgba(21,158,123,0.2)]"></span>
-                Jour avec un événement Yummy
-              </p>
-              <p class="flex items-center gap-2">
-                <span class="h-2.5 w-2.5 rounded-full border-2 border-primary-dark"></span>
-                Aujourd'hui
-              </p>
-            </div>
-          </div>
-
-          </div>
-
-          {hasEvenements && (
-          <div class="flex flex-col gap-4">
-            {
-              evenements.map((ev, i) => (
-                <div
-                  id={isoDateRe.test(ev.date) ? `event-${ev.date}` : undefined}
-                  data-event-date={isoDateRe.test(ev.date) ? ev.date : undefined}
-                  class={`reveal-scale group flex flex-col gap-2 rounded-2xl border-l-4 ${colorFor(ev.couleur).border} bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4`}
-                  style={`--reveal-delay:${i * 110}ms`}
-                >
-                  <div>
-                    <p class="font-heading text-base font-bold text-primary-dark">{ev.titre}</p>
-                    <p class="font-body text-sm capitalize text-anthracite/70">{formatDate(ev.date)}</p>
-                  </div>
-                  <div class="flex flex-col gap-1 sm:items-end">
-                    <span class="font-body text-xs text-anthracite/60">{ev.horaires}</span>
-                    {ev.adresse && (
-                      <div class="mt-1 flex flex-wrap items-center gap-2 sm:justify-end">
-                        <a
-                          href={mapsUrl(ev.adresse)}
-                          rel="noopener"
-                          class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
-                          onclick="event.stopPropagation()"
-                        >
-                          Google Maps
-                        </a>
-                        <a
-                          href={appleMapsUrl(ev.adresse)}
-                          rel="noopener"
-                          class="inline-flex items-center gap-1.5 rounded-full border-2 border-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-                          onclick="event.stopPropagation()"
-                        >
-                          Plan
-                        </a>
-                        <a
-                          href={wazeUrl(ev.adresse)}
-                          rel="noopener"
-                          class="inline-flex items-center gap-1.5 rounded-full border-2 border-primary px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-                          onclick="event.stopPropagation()"
-                        >
-                          Waze
-                        </a>
-                      </div>
-                    )}
-                  </div>
+    {
+      hasProchainsPassages && (
+        <section class="mt-12" aria-labelledby="reguliers-titre">
+          <h2 id="reguliers-titre" class="font-heading text-2xl font-semibold">Nos emplacements réguliers</h2>
+          <ul class="mt-4 flex flex-col gap-3">
+            {planning.prochains_passages.map((p: { jour: string; lieu: string; horaires: string }) => (
+              <li class="card flex flex-col gap-1 border-l-4 border-primary p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="font-heading text-lg font-semibold text-primary-dark">{p.jour}</p>
+                  <p class="font-body text-base text-anthracite">{p.lieu}</p>
                 </div>
-              ))
-            }
-          </div>
-          )}
-        </div>
-      </div>
-    </section>
-
-    {hasProchainsPassages && (
-    <section class="relative z-10 mx-auto max-w-5xl px-4 py-16">
-      <div class="grid gap-10">
-        {
-          (
-            <div class="flex flex-col gap-4">
-              <h2 class="reveal mb-2 font-heading text-xl font-bold text-primary-dark">Nos emplacements réguliers</h2>
-              {planning.prochains_passages.map((p, i) => (
-                <div
-                  class="reveal-scale flex flex-col gap-1 rounded-2xl border-l-4 border-primary bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4"
-                  style={`--reveal-delay:${i * 90}ms`}
-                >
-                  <div>
-                    <p class="font-heading text-base font-bold text-primary-dark">{p.jour}</p>
-                    <p class="font-body text-sm text-anthracite/70">{p.lieu}</p>
-                  </div>
-                  <span class="rounded-full bg-mint px-3 py-1 font-heading text-xs font-bold uppercase tracking-wide text-primary-dark sm:shrink-0">
-                    {p.horaires}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )
-        }
-
-      </div>
-    </section>
-    )}
+                <span class="font-body font-semibold">{p.horaires}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </div>
 
-  <div
-    id="event-modal"
-    class="fixed inset-0 z-[60] hidden items-center justify-center bg-anthracite/50 p-4 backdrop-blur-[2px]"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="event-modal-title"
-  >
-    <div id="event-modal-card" class="relative w-full max-w-sm scale-95 rounded-2xl bg-white p-6 opacity-0 shadow-2xl transition-all duration-200">
-      <button
-        id="event-modal-close"
-        type="button"
-        aria-label="Fermer"
-        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary-dark transition-colors hover:bg-primary hover:text-cream"
-      >
-        ✕
-      </button>
-      <p id="event-modal-date" class="mb-1 font-heading text-xs font-bold uppercase tracking-wide text-primary/70"></p>
-      <h3 id="event-modal-title" class="mb-4 font-heading text-xl font-bold text-primary-dark"></h3>
-      <div class="flex flex-col gap-3">
-        <div class="rounded-xl bg-primary/5 p-3">
-          <p class="font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70">Lieu</p>
-          <p id="event-modal-lieu" class="font-body text-sm text-anthracite/80"></p>
-        </div>
-        <div class="rounded-xl bg-primary/5 p-3">
-          <p class="font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70">Horaires</p>
-          <p id="event-modal-horaires" class="font-body text-sm text-anthracite/80"></p>
-        </div>
-        <div id="event-modal-others" class="hidden flex-col gap-2"></div>
-        <div class="flex flex-wrap gap-2">
-          <a
-            id="event-modal-maps-google"
-            href="#"
-            rel="noopener"
-            class="hidden flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-md"
-          >
-            Google Maps
-          </a>
-          <a
-            id="event-modal-maps-apple"
-            href="#"
-            rel="noopener"
-            class="hidden flex-1 items-center justify-center gap-2 rounded-full border-2 border-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-          >
-            Plan
-          </a>
-          <a
-            id="event-modal-maps-waze"
-            href="#"
-            rel="noopener"
-            class="hidden flex-1 items-center justify-center gap-2 rounded-full border-2 border-primary px-4 py-2.5 font-heading text-sm font-bold uppercase tracking-wide text-primary transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-cream"
-          >
-            Waze
-          </a>
-        </div>
+  <div id="event-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-anthracite/60 p-4" role="dialog" aria-modal="true" aria-labelledby="event-modal-title">
+    <div id="event-modal-card" class="relative max-h-[90vh] w-full max-w-sm overflow-y-auto rounded-2xl bg-paper p-6 shadow-2xl">
+      <button id="event-modal-close" type="button" aria-label="Fermer" class="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-mint text-primary-dark hover:bg-primary-dark hover:text-cream">✕</button>
+      <p id="event-modal-date" class="mb-1 pr-12 font-heading text-sm font-semibold first-letter:uppercase text-primary"></p>
+      <h3 id="event-modal-title" class="mb-4 pr-10 font-heading text-xl font-semibold"></h3>
+      <dl class="flex flex-col gap-3 font-body text-base">
+        <div><dt class="text-sm font-semibold text-muted">Lieu</dt><dd id="event-modal-lieu"></dd></div>
+        <div><dt class="text-sm font-semibold text-muted">Horaires</dt><dd id="event-modal-horaires"></dd></div>
+      </dl>
+      <p id="event-modal-annule" hidden class="mt-3 rounded-lg bg-red-50 px-3 py-2 font-body text-sm font-semibold text-red-800">Ce passage est annulé.</p>
+      <div id="event-modal-links" class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a id="event-modal-maps-google" href="#" rel="noopener" class="btn-dark btn-sm">Itinéraire</a>
+        <span class="font-body text-sm text-muted">ou <a id="event-modal-maps-apple" href="#" rel="noopener" class="lien inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-1">Plans</a> · <a id="event-modal-maps-waze" href="#" rel="noopener" class="lien inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-1">Waze</a></span>
       </div>
+      <div id="event-modal-others" hidden class="mt-5 flex flex-col gap-2 border-t border-primary-dark/10 pt-4"></div>
     </div>
   </div>
+
+  {eventsSchema.map((schema) => <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />)}
 </Layout>
 
-{eventsSchema.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
-
 <script>
-  // Masque les événements passés depuis la dernière mise en ligne (comparaison en heure belge).
-  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Brussels' }).format(new Date());
-  document.querySelectorAll<HTMLElement>('[data-event-date]').forEach((card) => {
-    if ((card.dataset.eventDate ?? '') < today) card.style.display = 'none';
-  });
+  // Liste : masque dans le navigateur les passages terminés depuis la dernière mise en ligne
+  // (une sortie en cours reste visible jusqu'à sa fin, même après minuit) et met à jour les badges.
+  import { jourBruxelles } from '../lib/agenda';
+
+  const majListe = () => {
+    const maintenant = Date.now();
+    const auj = jourBruxelles(maintenant);
+    const demain = jourBruxelles(maintenant + 24 * 3600 * 1000);
+    let visibles = 0;
+    document.querySelectorAll<HTMLElement>('[data-passage]').forEach((el) => {
+      const debut = Number(el.dataset.debut);
+      const fin = Number(el.dataset.fin);
+      const fini = fin <= maintenant;
+      el.hidden = fini;
+      if (!fini) visibles++;
+      const badge = el.querySelector<HTMLElement>('[data-badge]');
+      if (badge && !el.querySelector('.line-through')) {
+        const txt = debut <= maintenant ? 'En ce moment' : el.dataset.date === auj ? "Aujourd'hui" : el.dataset.date === demain ? 'Demain' : '';
+        badge.textContent = txt;
+        badge.hidden = !txt;
+      }
+    });
+    document.querySelectorAll<HTMLElement>('[data-jour], [data-mois]').forEach((g) => {
+      g.hidden = !g.querySelector('[data-passage]:not([hidden])');
+    });
+    const vide = document.querySelector<HTMLElement>('[data-agenda-vide]');
+    if (vide) vide.hidden = visibles > 0;
+  };
+  majListe();
+  setInterval(majListe, 60_000);
 </script>
 
-<script define:vars={{ eventsForCalendar, eventDotColors: Object.fromEntries(Object.entries(eventColors).map(([k, v]) => [k, v.dot])) }}>
+<script define:vars={{ eventsForCalendar, couleurs }}>
   const grid = document.getElementById('cal-grid');
   const label = document.getElementById('cal-label');
   const prevBtn = document.getElementById('cal-prev');
   const nextBtn = document.getElementById('cal-next');
 
-  // Plusieurs événements possibles le même jour (ex. marché le matin + nocturne le soir).
   const eventsByDate = new Map();
   eventsForCalendar.forEach((e) => {
     if (!eventsByDate.has(e.date)) eventsByDate.set(e.date, []);
     eventsByDate.get(e.date).push(e);
   });
-  const modalOthers = document.getElementById('event-modal-others');
 
   const modal = document.getElementById('event-modal');
   const modalCard = document.getElementById('event-modal-card');
   const modalClose = document.getElementById('event-modal-close');
-  const modalDate = document.getElementById('event-modal-date');
-  const modalTitle = document.getElementById('event-modal-title');
-  const modalLieu = document.getElementById('event-modal-lieu');
-  const modalHoraires = document.getElementById('event-modal-horaires');
-  const modalMapsGoogle = document.getElementById('event-modal-maps-google');
-  const modalMapsApple = document.getElementById('event-modal-maps-apple');
-  const modalMapsWaze = document.getElementById('event-modal-maps-waze');
+  const $ = (id) => document.getElementById(id);
+  let declencheur = null;
 
-  function openEventModal(event, sameDay = [event]) {
-    const others = sameDay.filter((e) => e !== event);
-    modalOthers.innerHTML = '';
-    if (others.length) {
-      const heading = document.createElement('p');
-      heading.className = 'font-heading text-xs font-bold uppercase tracking-wide text-primary-dark/70';
-      heading.textContent = 'Aussi ce jour-là';
-      modalOthers.appendChild(heading);
-      others.forEach((other) => {
+  const enc = encodeURIComponent;
+
+  function openEventModal(event, sameDay, trigger) {
+    if (trigger) declencheur = trigger;
+    $('event-modal-date').textContent = event.dateFormatted;
+    $('event-modal-title').textContent = event.titre;
+    $('event-modal-lieu').textContent = event.prive ? 'Événement privé, non ouvert au public' : event.lieu;
+    $('event-modal-horaires').textContent = event.horaires;
+    $('event-modal-annule').hidden = !event.annule;
+    const liens = $('event-modal-links');
+    liens.hidden = !event.adresse || event.annule || event.prive;
+    if (event.adresse) {
+      $('event-modal-maps-google').href = `https://www.google.com/maps/dir/?api=1&destination=${enc(event.adresse)}`;
+      $('event-modal-maps-apple').href = `https://maps.apple.com/?daddr=${enc(event.adresse)}`;
+      $('event-modal-maps-waze').href = `https://www.waze.com/ul?q=${enc(event.adresse)}&navigate=yes`;
+    }
+    const others = $('event-modal-others');
+    others.innerHTML = '';
+    const autres = sameDay.filter((e) => e !== event);
+    others.hidden = autres.length === 0;
+    if (autres.length) {
+      const h = document.createElement('p');
+      h.className = 'font-heading text-sm font-semibold text-muted';
+      h.textContent = 'Aussi ce jour-là';
+      others.appendChild(h);
+      autres.forEach((other) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className =
-          'rounded-xl border-2 border-primary/30 p-3 text-left font-body text-sm text-primary-dark transition-colors hover:bg-primary/10';
-        btn.textContent = `${other.titre} — ${other.horaires ?? ''}`;
-        btn.addEventListener('click', () => openEventModal(other, sameDay));
-        modalOthers.appendChild(btn);
+        btn.className = 'min-h-[44px] rounded-xl border-2 border-primary/30 px-3 py-2 text-left font-body text-base text-primary-dark hover:bg-mint';
+        btn.textContent = `${other.titre} — ${other.horaires}`;
+        btn.addEventListener('click', () => {
+          openEventModal(other, sameDay);
+          modalClose.focus();
+        });
+        others.appendChild(btn);
       });
-      modalOthers.classList.remove('hidden');
-      modalOthers.classList.add('flex');
-    } else {
-      modalOthers.classList.add('hidden');
-      modalOthers.classList.remove('flex');
-    }
-    modalDate.textContent = event.dateFormatted;
-    modalTitle.textContent = event.titre;
-    modalLieu.textContent = event.lieu;
-    modalHoraires.textContent = event.horaires;
-    if (event.adresse) {
-      modalMapsGoogle.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.adresse)}`;
-      modalMapsApple.href = `https://maps.apple.com/?daddr=${encodeURIComponent(event.adresse)}`;
-      modalMapsWaze.href = `https://www.waze.com/ul?q=${encodeURIComponent(event.adresse)}&navigate=yes`;
-      modalMapsGoogle.classList.remove('hidden');
-      modalMapsGoogle.classList.add('flex');
-      modalMapsApple.classList.remove('hidden');
-      modalMapsApple.classList.add('flex');
-      modalMapsWaze.classList.remove('hidden');
-      modalMapsWaze.classList.add('flex');
-    } else {
-      modalMapsGoogle.classList.add('hidden');
-      modalMapsGoogle.classList.remove('flex');
-      modalMapsApple.classList.add('hidden');
-      modalMapsApple.classList.remove('flex');
-      modalMapsWaze.classList.add('hidden');
-      modalMapsWaze.classList.remove('flex');
     }
     modal.classList.remove('hidden');
     modal.classList.add('flex');
-    requestAnimationFrame(() => {
-      modalCard.classList.remove('scale-95', 'opacity-0');
-      modalCard.classList.add('scale-100', 'opacity-100');
-    });
     document.body.classList.add('overflow-hidden');
+    modalClose.focus();
   }
+
+  const isOpen = () => !modal.classList.contains('hidden');
 
   function closeEventModal() {
-    modalCard.classList.add('scale-95', 'opacity-0');
-    modalCard.classList.remove('scale-100', 'opacity-100');
+    if (!isOpen()) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
     document.body.classList.remove('overflow-hidden');
-    setTimeout(() => {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }, 200);
+    declencheur?.focus();
   }
 
-  modalClose?.addEventListener('click', closeEventModal);
-  modal?.addEventListener('click', (e) => {
+  modalClose.addEventListener('click', closeEventModal);
+  modal.addEventListener('click', (e) => {
     if (e.target === modal) closeEventModal();
   });
   window.addEventListener('keydown', (e) => {
+    if (!isOpen()) return;
     if (e.key === 'Escape') closeEventModal();
+    if (e.key === 'Tab') {
+      // Garde le focus dans la fenêtre.
+      const f = [...modalCard.querySelectorAll('button, a[href]')].filter((el) => el.offsetParent !== null);
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
 
-  const today = new Date();
-  let viewYear = today.getFullYear();
-  let viewMonth = today.getMonth();
-
+  // Aujourd'hui en heure belge.
+  const todayIso = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Brussels' }).format(new Date());
+  let viewYear = Number(todayIso.slice(0, 4));
+  let viewMonth = Number(todayIso.slice(5, 7)) - 1;
   const pad = (n) => String(n).padStart(2, '0');
 
   function render() {
     const first = new Date(viewYear, viewMonth, 1);
-    const startOffset = (first.getDay() + 6) % 7; // Monday-first
+    const startOffset = (first.getDay() + 6) % 7; // lundi en premier
     const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-
-    label.textContent = first.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-
+    const nomMois = first.toLocaleDateString('fr-BE', { month: 'long' });
+    label.textContent = first.toLocaleDateString('fr-BE', { month: 'long', year: 'numeric' });
     grid.innerHTML = '';
 
-    for (let i = 0; i < startOffset; i++) {
-      const empty = document.createElement('div');
-      grid.appendChild(empty);
-    }
+    for (let i = 0; i < startOffset; i++) grid.appendChild(document.createElement('div'));
 
     for (let d = 1; d <= daysInMonth; d++) {
       const iso = `${viewYear}-${pad(viewMonth + 1)}-${pad(d)}`;
-      const isToday = iso === `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+      const isToday = iso === todayIso;
       const dayEvents = eventsByDate.get(iso) ?? [];
-      const event = dayEvents.find((e) => e.couleur === 'noel') ?? dayEvents[0];
+      const event = dayEvents.find((e) => !e.annule) ?? dayEvents[0];
 
-      const cell = document.createElement('button');
-      cell.type = 'button';
+      const cell = document.createElement(event ? 'button' : 'div');
       cell.textContent = String(d);
-      cell.className =
-        'relative flex h-9 items-center justify-center rounded-lg font-body text-sm transition-all duration-200 hover:bg-primary/10';
-
+      cell.className = 'relative flex h-11 items-center justify-center rounded-lg font-body text-sm';
       if (isToday) cell.classList.add('border-2', 'border-primary-dark', 'font-bold', 'text-primary-dark');
-      else cell.classList.add('text-anthracite/80');
+      else cell.classList.add('text-anthracite');
 
       if (event) {
-        cell.classList.add('bg-primary/10', 'font-bold', 'text-primary-dark', 'hover:scale-110');
-        const dayTitle = dayEvents.map((e) => e.titre).join(' + ');
-        cell.setAttribute('aria-label', `${dayTitle} — voir les détails`);
+        cell.type = 'button';
+        cell.classList.add('bg-mint', 'font-bold', 'text-primary-dark', 'hover:bg-primary-dark', 'hover:text-cream');
+        const dayTitle = dayEvents.map((e) => `${e.titre}${e.annule ? ' (annulé)' : ''}`).join(' + ');
+        cell.setAttribute('aria-label', `${d} ${nomMois} : ${dayTitle}`);
+        cell.setAttribute('aria-haspopup', 'dialog');
         cell.title = dayTitle;
         const dot = document.createElement('span');
-        if (event.couleur === 'noel') {
-          dot.textContent = '🎄';
-          dot.className = 'absolute -top-1 -right-1 text-xs leading-none';
-          cell.classList.add('ring-2', 'ring-red-600/60');
-        } else {
-          const dotColor = eventDotColors[event.couleur] ?? eventDotColors.primary;
-          dot.className = `absolute bottom-1 h-1.5 w-1.5 rounded-full ${dotColor}`;
-        }
+        dot.setAttribute('aria-hidden', 'true');
+        dot.className = `absolute bottom-1 h-1.5 w-1.5 rounded-full ${event.annule ? 'bg-muted' : couleurs[event.couleur] ?? couleurs.primary}`;
         cell.appendChild(dot);
-        cell.addEventListener('click', () => openEventModal(dayEvents[0], dayEvents));
+        cell.addEventListener('click', () => openEventModal(dayEvents[0], dayEvents, cell));
       }
-
       grid.appendChild(cell);
     }
   }
 
-  prevBtn?.addEventListener('click', () => {
+  prevBtn.addEventListener('click', () => {
     viewMonth -= 1;
     if (viewMonth < 0) {
       viewMonth = 11;
@@ -486,8 +387,7 @@ const hasEvenements = evenements.length > 0;
     }
     render();
   });
-
-  nextBtn?.addEventListener('click', () => {
+  nextBtn.addEventListener('click', () => {
     viewMonth += 1;
     if (viewMonth > 11) {
       viewMonth = 0;
@@ -495,6 +395,5 @@ const hasEvenements = evenements.length > 0;
     }
     render();
   });
-
   render();
 </script>

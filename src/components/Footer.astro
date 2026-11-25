@@ -11,27 +11,28 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="bg-primary-dark text-cream">
-  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
+  <div class="container-y grid gap-8 py-10 md:grid-cols-3">
     <div class="flex flex-col items-start gap-3">
-      <Image src={logo} alt="Yummy Street Food" width={1500} height={868} class="h-14 w-auto" />
+      <Image src={logo} alt="Yummy Street Food" width={1500} height={868} widths={[200, 400]} sizes="120px" class="h-14 w-auto" />
       <p class="font-body text-sm text-mint">
         Food truck — Local • Végétal • Gourmand.
       </p>
     </div>
 
     <div>
-      <h3 class="mb-3 font-heading text-sm font-bold uppercase tracking-wide text-lime">Navigation</h3>
-      <ul class="flex flex-col gap-2 font-body text-sm">
+      <h2 class="mb-3 font-heading text-sm font-semibold uppercase tracking-[0.14em] text-lime">Navigation</h2>
+      <ul class="flex flex-col gap-1 font-body text-sm [&_a]:inline-block [&_a]:py-1.5">
         <li><a href="/menu" class="hover:text-lime">Nos propositions</a></li>
         <li><a href="/localisation" class="hover:text-lime">Où nous trouver</a></li>
+        <li><a href="/galerie" class="hover:text-lime">Galerie photos</a></li>
         <li><a href="/evenements-prives" class="hover:text-lime">Événements privés</a></li>
         <li><a href="/contact" class="hover:text-lime">Contact</a></li>
       </ul>
     </div>
 
     <div>
-      <h3 class="mb-3 font-heading text-sm font-bold uppercase tracking-wide text-lime">Contact</h3>
-      <ul class="flex flex-col gap-2 font-body text-sm">
+      <h2 class="mb-3 font-heading text-sm font-semibold uppercase tracking-[0.14em] text-lime">Contact</h2>
+      <ul class="flex flex-col gap-1 font-body text-sm [&_a]:inline-block [&_a]:py-1.5">
         <li class="flex items-center gap-2">
           <Mail class="h-4 w-4 shrink-0 text-lime" />
           <a href={`mailto:${contact.email}`} class="hover:text-lime">{contact.email}</a>
@@ -52,12 +53,12 @@ const year = new Date().getFullYear();
     </div>
   </div>
 
-  <div class="border-t border-primary/40 px-4 py-4 text-center font-body text-xs text-mint/70">
+  <div class="border-t border-primary/40 px-4 py-4 text-center font-body text-xs text-mint">
     <p>© {year} Yummy Street Food — Tous droits réservés.</p>
     <p class="mt-1 flex flex-wrap justify-center gap-x-3 gap-y-1">
-      <a href="/mentions-legales" class="hover:text-lime hover:underline">Mentions légales</a>
+      <a href="/mentions-legales" class="inline-block py-1.5 hover:text-lime hover:underline">Mentions légales</a>
       <span aria-hidden="true">·</span>
-      <a href="/politique-de-confidentialite" class="hover:text-lime hover:underline">Politique de confidentialité</a>
+      <a href="/politique-de-confidentialite" class="inline-block py-1.5 hover:text-lime hover:underline">Politique de confidentialité</a>
     </p>
   </div>
 </footer>

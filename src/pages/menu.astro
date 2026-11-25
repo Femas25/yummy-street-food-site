@@ -3,8 +3,7 @@
 // puis l'ajouter au tableau `creations` : { src: monPlat, alt: 'Description du plat' }.
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import Trailer from '../components/icons/Trailer.astro';
-import Leaf from '../components/icons/Leaf.astro';
+import contact from '../data/contact.json';
 import sandwichLegumes from '../assets/menu/sandwich-legumes-truck.jpg';
 import pitaLegumes from '../assets/menu/pita-legumes-jardin.jpg';
 import bowlsVegetauxFleurs from '../assets/menu/bowls-vegetaux-fleurs.jpg';
@@ -17,7 +16,7 @@ import bowlAutomne from '../assets/menu/bowl-automne.jpg';
 const creations: { src: ImageMetadata; alt: string; wide?: boolean }[] = [
   { src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce' },
   { src: sandwichLegumes, alt: 'Sandwich garni de légumes grillés, cornichons et oignons rouges, devant le truck Yummy Street Food' },
-  { src: bowlAutomne, alt: '' },
+  { src: bowlAutomne, alt: 'Bowl de saison garni de légumes, radis et sauce crémeuse' },
   { src: bowlChili, alt: 'Chili sin carne : haricots rouges, maïs, riz, sauce crémeuse, coriandre, oignons nouveaux et nachos' },
   { src: bowlsVegetauxFleurs, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles' },
   { src: pitaLegumes, alt: 'Pitas garnis de légumes, tomates, oignons rouges, salade et sauce blanche' },
@@ -25,16 +24,19 @@ const creations: { src: ImageMetadata; alt: string; wide?: boolean }[] = [
   { src: boulettesSauceYaourt, alt: 'Boulettes végétales en bouchées apéritives, servies avec une sauce au yaourt et aux herbes' },
 ];
 
-const aManger = [
-  { emoji: '🥙', nom: 'Pita', desc: 'Pain pita généreusement garni' },
-  { emoji: '🍔', nom: 'Burger', desc: 'Le burger version végétale' },
+// Plats : noms et descriptions déjà validés. Prix : seulement s'ils sont fournis par Yummy (aucun pour l'instant).
+// Photo seulement quand elle montre vraiment le plat ; sinon carte texte.
+type Plat = { emoji: string; nom: string; desc: string; prix?: string; photo?: { src: ImageMetadata; alt: string; pos: string } };
+const aManger: Plat[] = [
+  { emoji: '🍔', nom: 'Burger', desc: 'Le burger version végétale', photo: { src: burgerBetterave, alt: 'Burger à la betterave, salade et sauce', pos: '50% 55%' } },
+  { emoji: '🥙', nom: 'Pita', desc: 'Pain pita généreusement garni', photo: { src: pitaGarniSauceBlanche, alt: 'Pita garni de protéines végétales, tomate, oignon rouge, salade et sauce blanche', pos: '55% 42%' } },
+  { emoji: '🌶️', nom: 'Chili sin carne', desc: 'Haricots rouges, maïs, riz et nachos', photo: { src: bowlChili, alt: 'Chili sin carne : haricots rouges, maïs, riz, sauce crémeuse, coriandre et nachos', pos: '50% 50%' } },
+  { emoji: '🥗', nom: 'Bowl', desc: 'Un bol plein de bonnes choses', photo: { src: bowlsVegetauxFleurs, alt: 'Deux bowls végétaux avec couscous, lentilles, radis, tomates et fleurs comestibles', pos: '55% 62%' } },
   { emoji: '🌯', nom: 'Wrap', desc: 'Roulé, frais et gourmand' },
   { emoji: '🍲', nom: 'Soupe', desc: 'Légumes du potager' },
-  { emoji: '🥗', nom: 'Bowl', desc: 'Un bol plein de bonnes choses' },
-  { emoji: '🌶️', nom: 'Chili sin carne', desc: 'Haricots rouges, maïs, riz et nachos' },
 ];
 
-const aBoire = [
+const aBoire: Plat[] = [
   { emoji: '🥛', nom: 'Kéfir', desc: 'Boisson fermentée' },
   { emoji: '🥤', nom: 'Loumonade cola', desc: 'Limonade brassée à Gouvy' },
   { emoji: '🥤', nom: 'Loumonade pomme-cerise', desc: 'Limonade brassée à Gouvy' },
@@ -44,94 +46,139 @@ const aBoire = [
 
 <Layout
   title="Nos propositions"
-  description="Découvrez nos propositions culinaires de Yummy Street Food : des recettes végétales préparées à partir de légumes locaux et de saison."
+  description="Le menu du food truck Yummy Street Food : burger, pita, chili sin carne, bowl, wrap et soupe en version végétale, boissons locales. Carte variable selon la saison."
 >
-  <div class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-      <Leaf class="leaf-deco absolute left-1 top-4 w-12 opacity-45 sm:w-14 md:left-6 md:w-16 md:opacity-60" style="--rot:12deg; --float-delay: 0s" />
-      <Leaf class="leaf-deco absolute bottom-10 right-1 w-12 opacity-40 sm:w-16 md:right-6 md:w-20 md:opacity-55" style="--rot:-10deg; --float-delay: 1.4s" />
-      <Leaf class="leaf-deco absolute bottom-0 left-0 hidden w-28 opacity-20 md:block lg:w-36" style="--rot:4deg; --float-delay: 2.6s" />
-      <Trailer class="leaf-deco absolute right-1 top-6 w-20 opacity-70 sm:w-24 md:right-8 md:w-32 md:opacity-90" style="--rot:-6deg; --float-delay: 0.7s" />
-    </div>
-
-    <section class="relative z-10 mx-auto max-w-6xl px-4 py-16">
-      <h1 class="reveal mb-2 text-center font-heading text-3xl font-extrabold text-primary-dark md:text-4xl">Nos propositions</h1>
-      <p class="reveal mb-12 text-center font-body text-anthracite/70" style="--reveal-delay:80ms">
-        Un aperçu de ce qui sort du truck — recettes végétales, gourmandes et pleines de couleurs.
+  <section class="bg-primary-dark text-cream">
+    <div class="container-y py-10 md:py-14">
+      <p class="kicker text-lime">Le menu</p>
+      <h1 class="mt-2 font-heading text-4xl font-semibold text-cream md:text-5xl">Nos propositions</h1>
+      <p class="mt-4 max-w-prose font-body text-lg leading-relaxed text-mint">
+        Un aperçu de ce qui sort du truck : des recettes végétales, gourmandes et pleines de couleurs.
       </p>
+      <p class="mt-5 inline-flex items-center gap-2 rounded-full bg-cream/10 px-4 py-2 font-body text-base font-semibold text-cream">
+        <span aria-hidden="true">🌿</span> Carte variable selon la saison et l'événement
+      </p>
+    </div>
+  </section>
 
-      <div class="reveal-scale mb-16 rounded-2xl bg-white p-6 shadow-lg md:p-10">
-        <h2 class="mb-8 text-center font-heading text-2xl font-bold text-primary-dark md:text-3xl">Aperçu de nos propositions</h2>
-        <div class="grid gap-10 md:grid-cols-2">
-          <div>
-            <h3 class="mb-4 border-b-2 border-mint pb-2 font-heading text-lg font-bold uppercase tracking-wide text-primary-dark">À manger</h3>
-            <ul class="flex flex-col gap-4">
-              {aManger.map((item) => (
-                <li class="flex items-center gap-4">
-                  <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mint text-2xl">{item.emoji}</span>
-                  <div>
-                    <p class="font-heading text-base font-bold text-primary-dark">{item.nom}</p>
-                    <p class="font-body text-sm text-anthracite/70">{item.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 class="mb-4 border-b-2 border-mint pb-2 font-heading text-lg font-bold uppercase tracking-wide text-primary-dark">À boire</h3>
-            <ul class="flex flex-col gap-4">
-              {aBoire.map((item) => (
-                <li class="flex items-center gap-4">
-                  <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mint text-2xl">{item.emoji}</span>
-                  <div>
-                    <p class="font-heading text-base font-bold text-primary-dark">{item.nom}</p>
-                    <p class="font-body text-sm text-anthracite/70">{item.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div class="mt-6 flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-center font-heading text-sm font-bold text-cream">
-              🌿 Légumes de saison, du potager
+  <section class="py-12 md:py-16" aria-labelledby="manger-titre">
+    <div class="container-y">
+      <h2 id="manger-titre" class="font-heading text-3xl font-semibold md:text-4xl">À manger</h2>
+      <ul class="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+        {aManger.filter((p) => p.photo).map((plat, i) => (
+          <li class="card flex flex-col overflow-hidden">
+            <Image
+              loading={i < 2 ? 'eager' : 'lazy'}
+              fetchpriority={i < 2 ? 'high' : 'auto'}
+              src={plat.photo!.src}
+              alt={plat.photo!.alt}
+              class="aspect-[4/3] w-full object-cover"
+              style={`object-position:${plat.photo!.pos}`}
+              widths={[360, 480, 640, 800]}
+              quality={70}
+              sizes="(min-width: 1024px) 25vw, 50vw"
+            />
+            <div class="flex flex-1 flex-col p-3 sm:p-4">
+              <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+                <h3 class="font-heading text-lg font-semibold sm:text-xl">{plat.nom}</h3>
+                {plat.prix && <p class="font-heading text-lg font-semibold text-primary-dark">{plat.prix}</p>}
+              </div>
+              <p class="mt-1 font-body text-sm text-muted sm:text-base">{plat.desc}</p>
             </div>
-          </div>
-        </div>
-      </div>
+          </li>
+        ))}
+      </ul>
+      <ul class="mt-3 grid gap-3 sm:mt-5 sm:grid-cols-2 sm:gap-4">
+        {aManger.filter((p) => !p.photo).map((plat) => (
+          <li class="card flex items-center gap-4 p-4">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mint text-2xl" aria-hidden="true">{plat.emoji}</span>
+            <div class="min-w-0 flex-1">
+              <h3 class="font-heading text-xl font-semibold">{plat.nom}</h3>
+              <p class="font-body text-base text-muted">{plat.desc}</p>
+            </div>
+            {plat.prix && <p class="font-heading text-lg font-semibold text-primary-dark">{plat.prix}</p>}
+          </li>
+        ))}
+      </ul>
 
-      {
-        creations.length > 0 ? (
-          <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {creations.map((c, i) => (
-              <button
-                type="button"
-                class={`creation-thumb reveal-scale group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${c.wide ? 'col-span-2 md:row-span-2' : ''}`}
-                style={`--reveal-delay:${i * 70}ms`}
-                aria-label={`Agrandir la photo : ${c.alt}`}
-              >
-                <Image
-                  src={c.src}
-                  alt={c.alt}
-                  class={`w-full object-cover saturate-[1.15] transition-transform duration-500 group-hover:scale-110 ${c.wide ? 'aspect-video md:aspect-auto md:h-full' : 'aspect-square'}`}
-                  widths={[300, 600, 1200]}
-                  sizes={c.wide ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
-                />
-              </button>
+      <div class="mt-12 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
+        <div>
+          <h2 class="font-heading text-3xl font-semibold md:text-4xl">À boire</h2>
+          <ul class="card mt-6 divide-y divide-primary-dark/10">
+            {aBoire.map((item) => (
+              <li class="flex items-center gap-4 px-4 py-3">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-mint text-xl" aria-hidden="true">{item.emoji}</span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-heading text-lg font-semibold">{item.nom}</h3>
+                  <p class="font-body text-sm text-muted">{item.desc}</p>
+                </div>
+                {item.prix && <p class="font-heading font-semibold text-primary-dark">{item.prix}</p>}
+              </li>
             ))}
-          </div>
-        ) : (
-          <div class="reveal-scale mx-auto max-w-xl rounded-2xl bg-white/80 p-8 text-center shadow-xl">
-            <p class="mb-2 font-heading text-xl font-bold text-primary-dark">Nos propositions arrivent bientôt</p>
-            <p class="font-body text-anthracite/80">
-              Les photos de nos recettes seront bientôt ici. En attendant, suivez-nous sur Instagram et Facebook pour ne rien rater.
+          </ul>
+        </div>
+        <aside class="card overflow-hidden lg:mt-[4.25rem]" aria-labelledby="saison-titre">
+          <Image
+            src={bowlAutomne}
+            alt="Bowl de saison garni de légumes, radis et sauce crémeuse"
+            class="aspect-[4/3] w-full object-cover"
+            widths={[480, 800]}
+            sizes="(min-width: 1024px) 50vw, calc(100vw - 2rem)"
+          />
+          <div class="p-5">
+            <p class="kicker text-primary">De saison</p>
+            <h2 id="saison-titre" class="mt-1 font-heading text-2xl font-semibold">La suggestion du moment</h2>
+            <p class="mt-2 font-body text-base text-muted">
+              La carte change avec les saisons et les événements : demandez-nous la suggestion du jour au truck.
             </p>
           </div>
-        )
-      }
-    </section>
-  </div>
+        </aside>
+      </div>
+
+      <div class="mt-10 rounded-2xl border-2 border-primary-dark/15 bg-paper p-5 md:flex md:items-center md:justify-between md:gap-6">
+        <div>
+          <h2 class="font-heading text-xl font-semibold">Allergènes</h2>
+          <p class="mt-1 font-body text-base text-anthracite">
+            Pour connaître les allergènes d'un plat, demandez-nous au truck ou par téléphone.
+          </p>
+        </div>
+        <a href={`tel:${contact.telephone.replace(/\s+/g, '')}`} class="btn-outline mt-4 shrink-0 md:mt-0">
+          Appeler le {contact.telephone}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-primary-dark/10 py-12 md:py-16" aria-labelledby="images-titre">
+    <div class="container-y">
+      <h2 id="images-titre" class="font-heading text-3xl font-semibold md:text-4xl">En images</h2>
+      <p class="mt-2 font-body text-base text-muted">Touchez une photo pour l'agrandir.</p>
+      <ul class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        {creations.map((c) => (
+          <li>
+            <button
+              type="button"
+              class="creation-thumb group block w-full overflow-hidden rounded-2xl"
+              aria-label={`Agrandir la photo : ${c.alt}`}
+              aria-haspopup="dialog"
+            >
+              <Image
+                src={c.src}
+                alt={c.alt}
+                class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                widths={[300, 600, 1200]}
+                sizes="(min-width: 768px) 25vw, 50vw"
+              />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
   <div
     id="lightbox"
-    class="fixed inset-0 z-[70] hidden items-center justify-center bg-anthracite/90 p-4 backdrop-blur-sm"
+    class="fixed inset-0 z-[70] hidden items-center justify-center bg-anthracite/90 p-4"
     role="dialog"
     aria-modal="true"
     aria-label="Photo en plein écran"
@@ -139,24 +186,21 @@ const aBoire = [
     <button
       id="lightbox-close"
       type="button"
-      aria-label="Fermer"
-      class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cream/10 text-cream transition-colors hover:bg-cream/20"
+      aria-label="Fermer la photo"
+      class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-cream/15 text-2xl text-cream transition-colors hover:bg-cream/25"
     >
       ✕
     </button>
-    <img
-      id="lightbox-img"
-      src=""
-      alt=""
-      class="max-h-[85vh] max-w-full scale-95 rounded-2xl object-contain opacity-0 shadow-2xl transition-all duration-200"
-    />
+    <img id="lightbox-img" src="" alt="" class="max-h-[85vh] max-w-full rounded-2xl object-contain shadow-2xl" />
   </div>
 </Layout>
 
 <script>
-  const lightbox = document.getElementById('lightbox');
+  // Visionneuse : Échap ou ✕ pour fermer, focus gardé dans la fenêtre puis rendu à la vignette d'origine.
+  const lightbox = document.getElementById('lightbox')!;
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxClose = document.getElementById('lightbox-close') as HTMLButtonElement;
+  let declencheur: HTMLElement | null = null;
 
   function largestFromSrcset(img: HTMLImageElement) {
     const srcset = img.getAttribute('srcset');
@@ -169,42 +213,44 @@ const aBoire = [
     return candidates[0]?.url ?? img.currentSrc ?? img.src;
   }
 
-  function openLightbox(img: HTMLImageElement) {
-    if (!lightbox || !lightboxImg) return;
+  const isOpen = () => !lightbox.classList.contains('hidden');
+
+  function openLightbox(img: HTMLImageElement, trigger: HTMLElement) {
+    declencheur = trigger;
     lightboxImg.src = largestFromSrcset(img);
     lightboxImg.alt = img.alt;
     lightbox.classList.remove('hidden');
     lightbox.classList.add('flex');
-    requestAnimationFrame(() => {
-      lightboxImg.classList.remove('scale-95', 'opacity-0');
-      lightboxImg.classList.add('scale-100', 'opacity-100');
-    });
     document.body.classList.add('overflow-hidden');
+    lightboxClose.focus();
   }
 
   function closeLightbox() {
-    if (!lightbox || !lightboxImg) return;
-    lightboxImg.classList.add('scale-95', 'opacity-0');
-    lightboxImg.classList.remove('scale-100', 'opacity-100');
+    if (!isOpen()) return;
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
     document.body.classList.remove('overflow-hidden');
-    setTimeout(() => {
-      lightbox.classList.add('hidden');
-      lightbox.classList.remove('flex');
-    }, 200);
+    declencheur?.focus();
   }
 
   document.querySelectorAll<HTMLButtonElement>('.creation-thumb').forEach((thumb) => {
     thumb.addEventListener('click', () => {
       const img = thumb.querySelector('img');
-      if (img) openLightbox(img);
+      if (img) openLightbox(img, thumb);
     });
   });
 
-  lightboxClose?.addEventListener('click', closeLightbox);
-  lightbox?.addEventListener('click', (e) => {
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();
   });
   window.addEventListener('keydown', (e) => {
+    if (!isOpen()) return;
     if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'Tab') {
+      // Un seul élément focalisable dans la visionneuse : le bouton Fermer.
+      e.preventDefault();
+      lightboxClose.focus();
+    }
   });
 </script>
